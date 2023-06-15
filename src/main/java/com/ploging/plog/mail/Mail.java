@@ -35,7 +35,7 @@ public class Mail {
 
   @ManyToOne
   @Column(nullable = false)
-  private User recipient;
+  private User receiver;
 
   @OneToMany(mappedBy = "mail")
   private List<Attachment> attachments;

@@ -2,26 +2,27 @@ package com.ploging.plog.mail;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import javax.mail.internet.MimeMessage;
 import java.util.UUID;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MailServiceImpl {
+public class MailServiceImpl implements MailService {
 
   private final JavaMailSender javaMailSender;
 
-  public void sendMail(MailContents contents, String type) {
+  @Override
+  public void sendMail(MailDto dto) {
+    SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+    simpleMailMessage.setTo(dto.getAddress());
+    simpleMailMessage.setSubject(dto.getTitle());
+    simpleMailMessage.setText(dto.getContent());
 
-    String authNumber = createTempCode();
-    MimeMessage mimeMailMessage = javaMailSender.createMimeMessage();
-
-//    if (type.equals("password")) userService.SetTempPassword();
-
+    javaMailSender.send(simpleMailMessage);
   }
 
   public String createTempCode() {
