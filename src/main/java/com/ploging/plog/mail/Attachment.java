@@ -27,8 +27,8 @@ public class Attachment {
   @Column(nullable = false)
   private String fileType;
 
-  @ManyToOne
-  @Column(nullable = false)
-  private Mail mail;
+//  @ManyToOne
+//  @Column(nullable = false)
+//  private Mail mail;
 
 }

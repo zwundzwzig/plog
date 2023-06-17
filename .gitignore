@@ -44,3 +44,4 @@ out/
 .LSOverride
 
 application.yml
+src/main/java/com/ploging/plog/mail/MailConfig.java

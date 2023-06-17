@@ -2,6 +2,6 @@ package com.ploging.plog.mail;
 
 public interface MailService {
 
-  void sendMail(MailDto dto);
+  String sendMail(MailMessage mailMessage, String type);
 
 }
