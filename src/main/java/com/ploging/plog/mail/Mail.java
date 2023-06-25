@@ -29,15 +29,15 @@ public class Mail {
   @Column(nullable = false)
   private LocalDateTime sendTime; // 보낸 시간
 
-  @ManyToOne
-  @Column(nullable = false)
-  private User sender;
+//  @ManyToOne
+//  @Column(nullable = false)
+//  private User sender;
 
-  @ManyToOne
-  @Column(nullable = false)
-  private User receiver;
+//  @ManyToOne
+//  @Column(nullable = false)
+//  private User receiver;
 
-  @OneToMany(mappedBy = "mail")
-  private List<Attachment> attachments;
+//  @OneToMany(mappedBy = "mail")
+//  private List<Attachment> attachments;
 
 }

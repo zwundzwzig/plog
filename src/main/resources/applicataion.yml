@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        #        show_sql: true
+        format_sql: true
+  servlet:
+    multipart:
+      enable: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+      springframework: debug
+#  org.hibernate.type: trace
+
+spring.h2.console.enabled: true
+spring.h2.console.settings.trace: false
+spring.h2.console.settings.web-allow-others: false
