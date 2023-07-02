@@ -14,7 +14,7 @@ import java.util.UUID;
 public class Attachment {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "attachment_id")
   private UUID id; // 식별자 id
 
@@ -26,9 +26,5 @@ public class Attachment {
 
   @Column(nullable = false)
   private String fileType;
-
-//  @ManyToOne
-//  @Column(nullable = false)
-//  private Mail mail;
 
 }

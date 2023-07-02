@@ -3,6 +3,7 @@ package com.ploging.plog.mail;
 import com.ploging.plog.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ import java.util.UUID;
 public class Mail {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "mail_id")
   private UUID id; // 식별자 id
 
@@ -39,5 +40,13 @@ public class Mail {
 
 //  @OneToMany(mappedBy = "mail")
 //  private List<Attachment> attachments;
+  @Column
+  @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
+  private LocalDateTime created; // 생성
+
+  @Column
+  @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
+  private LocalDateTime modified;
+
 
 }

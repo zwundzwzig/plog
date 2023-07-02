@@ -2,8 +2,10 @@ package com.ploging.plog.user;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -13,7 +15,7 @@ import java.util.UUID;
 public class User {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "user_id")
   private UUID id; // 식별자 id
 
@@ -32,5 +34,14 @@ public class User {
   @Enumerated(EnumType.STRING)
   @Column
   private SocialProvider provider;
+
+  @Column
+  @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
+  private LocalDateTime created; // 생성
+
+  @Column
+  @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
+  private LocalDateTime modified;
+
 
 }
