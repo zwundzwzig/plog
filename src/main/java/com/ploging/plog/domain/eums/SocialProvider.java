@@ -1,4 +1,4 @@
-package com.ploging.plog.domain;
+package com.ploging.plog.domain.eums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

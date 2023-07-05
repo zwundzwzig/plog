@@ -1,9 +1,8 @@
 package com.ploging.plog.controller;
 
-import com.ploging.plog.controller.RequestCouplerMail;
 import com.ploging.plog.domain.MailMessage;
-import com.ploging.plog.dto.MailRequestDto;
-import com.ploging.plog.dto.MailResponseDto;
+import com.ploging.plog.domain.dto.MailRequestDto;
+import com.ploging.plog.domain.dto.MailResponseDto;
 import com.ploging.plog.service.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

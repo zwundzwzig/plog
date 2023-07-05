@@ -1,5 +1,6 @@
 package com.ploging.plog.domain;
 
+import com.ploging.plog.domain.eums.SocialProvider;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
@@ -42,6 +43,5 @@ public class User {
   @Column
   @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
   private LocalDateTime modified;
-
 
 }

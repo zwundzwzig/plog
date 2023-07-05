@@ -1,6 +1,6 @@
 package com.ploging.plog.controller;
 
-import com.ploging.plog.dto.MailRequestDto;
+import com.ploging.plog.domain.dto.MailRequestDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

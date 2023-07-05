@@ -1,9 +1,7 @@
 package com.ploging.plog.domain;
 
 import com.ploging.plog.domain.eums.RecruitStatus;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
@@ -13,15 +11,14 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "communities")
+@Table(name = "events")
 @Getter
 @RequiredArgsConstructor
-@Builder
-public class Community {
+public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "community_id")
+    @Column(name = "event_id")
     private UUID id; // 식별자 id
 
     @NotBlank
@@ -37,10 +34,29 @@ public class Community {
     private String description;
 
     @Column
-    private String owner;
+    private String organizer;
+
+    @Column
+    private String dues;
 
     @Column
     private RecruitStatus status;
+
+    @Column
+    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
+    private LocalDateTime beginRecruit; // 모집
+
+    @Column
+    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
+    private LocalDateTime expiredRecruit;
+
+    @Column
+    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
+    private LocalDateTime beginEvent; // 행사
+
+    @Column
+    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
+    private LocalDateTime expiredEvent;
 
     @Column
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)

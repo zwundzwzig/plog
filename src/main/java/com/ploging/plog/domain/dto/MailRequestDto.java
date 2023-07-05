@@ -1,4 +1,4 @@
-package com.ploging.plog.dto;
+package com.ploging.plog.domain.dto;
 
 import lombok.Getter;
 
