@@ -1,6 +1,6 @@
-package com.ploging.plog.mail;
+package com.ploging.plog.service;
 
-import com.ploging.plog.user.UserService;
+import com.ploging.plog.domain.MailMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;

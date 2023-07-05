@@ -1,4 +1,4 @@
-package com.ploging.plog.user;
+package com.ploging.plog.service;
 
 import org.springframework.stereotype.Service;
 

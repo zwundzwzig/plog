@@ -1,4 +1,4 @@
-package com.ploging.plog.user;
+package com.ploging.plog.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

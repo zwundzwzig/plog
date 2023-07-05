@@ -1,4 +1,4 @@
-package com.ploging.plog.mail;
+package com.ploging.plog.domain;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,4 +1,6 @@
-package com.ploging.plog.mail;
+package com.ploging.plog.service;
+
+import com.ploging.plog.domain.MailMessage;
 
 public interface MailService {
 

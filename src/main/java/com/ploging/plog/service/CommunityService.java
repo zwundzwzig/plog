@@ -1,5 +1,7 @@
-package com.ploging.plog.community;
+package com.ploging.plog.service;
 
+import com.ploging.plog.domain.Community;
+import com.ploging.plog.repository.CommunityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

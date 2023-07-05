@@ -1,6 +1,5 @@
-package com.ploging.plog.mail;
+package com.ploging.plog.domain;
 
-import com.ploging.plog.mail.Mail;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

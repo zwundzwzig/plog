@@ -1,13 +1,11 @@
-package com.ploging.plog.mail;
+package com.ploging.plog.domain;
 
-import com.ploging.plog.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Entity

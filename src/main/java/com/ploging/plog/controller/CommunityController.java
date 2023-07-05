@@ -1,4 +1,4 @@
-package com.ploging.plog.community;
+package com.ploging.plog.controller;
 
 import com.ploging.plog.utils.GoogleApiUtil;
 import lombok.RequiredArgsConstructor;

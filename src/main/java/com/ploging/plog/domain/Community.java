@@ -1,4 +1,4 @@
-package com.ploging.plog.community;
+package com.ploging.plog.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
