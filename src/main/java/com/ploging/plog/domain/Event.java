@@ -1,6 +1,7 @@
 package com.ploging.plog.domain;
 
 import com.ploging.plog.domain.eums.RecruitStatus;
+import com.ploging.plog.utils.BaseTimeEntity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @Table(name = "events")
 @Getter
 @RequiredArgsConstructor
-public class Event {
+public class Event extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,7 +49,7 @@ public class Event {
 
     @Column
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-    private LocalDateTime expiredRecruit;
+    private LocalDateTime finishRecruit;
 
     @Column
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
@@ -56,14 +57,6 @@ public class Event {
 
     @Column
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-    private LocalDateTime expiredEvent;
-
-    @Column
-    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-    private LocalDateTime created; // 생성
-
-    @Column
-    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-    private LocalDateTime modified;
+    private LocalDateTime finishEvent;
 
 }

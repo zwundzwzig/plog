@@ -45,7 +45,7 @@ public class GoogleApiUtil {
      * scopes, delete your previously saved tokens/ folder.
      */
     private static final List<String> SCOPES = Arrays.asList(SheetsScopes.SPREADSHEETS, SheetsScopes.DRIVE);
-    private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+    private static final String CREDENTIALS_FILE_PATH = "/";
 
     /**
      * Creates an authorized Credential object.
@@ -54,7 +54,7 @@ public class GoogleApiUtil {
      * @return An authorized Credential object.
      * @throws IOException If the credentials.json file cannot be found.
      */
-    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
+    static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         // Load client secrets.
         InputStream in = GoogleApiUtil.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
@@ -74,8 +74,8 @@ public class GoogleApiUtil {
 
     public Map<Object, Object> getDataFromSheet() throws GeneralSecurityException, IOException {
         // Build a new authorized API client service.
-        final String spreadsheetId = "1afda9a6e217d80993f1e1348b0bc3e3cbd6a101";
-        final String range = "행사 정보!A1:B2";
+        final String spreadsheetId = "";
+        final String range = "s!A1:B2";
         Sheets service = getSheetService();
         System.out.printf(service.getBaseUrl());
         ValueRange response = service.spreadsheets().values().get(spreadsheetId, range).execute();

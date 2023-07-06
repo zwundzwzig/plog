@@ -46,3 +46,5 @@ out/
 application.yml
 src/main/resources/credentials.json
 src/main/java/com/ploging/plog/mail/MailConfig.java
+*.json
+/tokens/path/*

@@ -2,10 +2,6 @@ package com.ploging.plog.domain.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
-
-import javax.persistence.Column;
-import javax.persistence.Convert;
 import java.time.LocalDateTime;
 
 @Getter

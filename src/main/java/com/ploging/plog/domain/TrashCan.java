@@ -1,5 +1,6 @@
 package com.ploging.plog.domain;
 
+import com.ploging.plog.domain.eums.TrashType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
@@ -34,6 +35,6 @@ public class TrashCan {
 
     @Enumerated(EnumType.STRING)
     @Column
-    private String type;
+    private TrashType type;
 
 }
