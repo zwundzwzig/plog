@@ -1,12 +1,10 @@
 package com.ploging.plog.domain;
 
 import com.ploging.plog.domain.eums.RecruitStatus;
-import com.ploging.plog.repository.CommunityRepository;
-import com.ploging.plog.utils.BaseTimeEntity;
+import com.ploging.plog.domain.utils.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;

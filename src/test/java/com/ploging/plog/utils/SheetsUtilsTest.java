@@ -14,13 +14,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class SheetsUtilsTest {
 
+    @Value("${api.google.app-name}")
+    private String APPLICATION_NAME;
+
     @Autowired
     private SheetsUtils sheetsUtils;
 
     @Test
-    public void getsheet_service방식() throws GeneralSecurityException, IOException {
+    public void 서비스_이름_테스트() throws GeneralSecurityException, IOException {
         Sheets sheets = sheetsUtils.getSheetsFromServiceAccount();
-        assertThat(sheets.getApplicationName()).isEqualTo("sokuri");
+        assertThat(sheets.getApplicationName()).isEqualTo(APPLICATION_NAME);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.ploging.plog.utils;
+package com.ploging.plog.domain.dto;
 
 import lombok.Getter;
 import lombok.Setter;

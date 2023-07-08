@@ -1,4 +1,4 @@
-package com.ploging.plog.utils;
+package com.ploging.plog.domain.utils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

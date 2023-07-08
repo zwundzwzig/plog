@@ -1,7 +1,7 @@
 package com.ploging.plog.domain;
 
 import com.ploging.plog.domain.eums.RecruitStatus;
-import com.ploging.plog.utils.BaseTimeEntity;
+import com.ploging.plog.domain.utils.BaseTimeEntity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;

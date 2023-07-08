@@ -11,6 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ploging.plog.domain.dto.GoogleSheetResponseDto;
+import com.ploging.plog.domain.dto.GoogleSheetsDto;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import com.google.api.client.auth.oauth2.Credential;
@@ -33,19 +38,41 @@ import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.SpreadsheetProperties;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
-@Component
-public class GoogleApiUtil {
+import javax.annotation.PostConstruct;
 
-    private static final String APPLICATION_NAME = "so-cool-it";
+@Component
+public class GoogleApiUtil implements ApplicationContextAware {
+
+    private static ApplicationContext applicationContext;
+    private static String CREDENTIALS_FILE_PATH;
+    private static String TOKENS_DIRECTORY_PATH;
+    private static String APPLICATION_NAME;
+    private static String SPREAD_SHEET_ID;
+    private static String SPREAD_SHEET_RANGE;
+    private static int SERVER_PORT;
+
+    @PostConstruct
+    public void initializeVariable() {
+        SERVER_PORT = Integer.parseInt(applicationContext.getEnvironment().getProperty("server.port"));
+        CREDENTIALS_FILE_PATH = applicationContext.getEnvironment().getProperty("api.google.credentials-file-path");
+        TOKENS_DIRECTORY_PATH = applicationContext.getEnvironment().getProperty("api.google.tokens-directory-path");
+        APPLICATION_NAME = applicationContext.getEnvironment().getProperty("api.google.app-name");
+        SPREAD_SHEET_ID = applicationContext.getEnvironment().getProperty("api.google.spread-sheet-id");
+        SPREAD_SHEET_RANGE = applicationContext.getEnvironment().getProperty("api.google.spread-sheet-range");
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext context) throws BeansException {
+        applicationContext = context;
+    }
+
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private static final String TOKENS_DIRECTORY_PATH = "tokens/path";
 
     /**
      * Global instance of the scopes required by this quickstart. If modifying these
      * scopes, delete your previously saved tokens/ folder.
      */
     private static final List<String> SCOPES = Arrays.asList(SheetsScopes.SPREADSHEETS, SheetsScopes.DRIVE);
-    private static final String CREDENTIALS_FILE_PATH = "/";
 
     /**
      * Creates an authorized Credential object.
@@ -68,26 +95,19 @@ public class GoogleApiUtil {
                 .setDataStoreFactory(new FileDataStoreFactory(
                         new java.io.File(System.getProperty("user.home"), TOKENS_DIRECTORY_PATH)))
                 .setAccessType("offline").build();
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8080).build();
+        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(SERVER_PORT).build();
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
     public Map<Object, Object> getDataFromSheet() throws GeneralSecurityException, IOException {
         // Build a new authorized API client service.
-        final String spreadsheetId = "";
-        final String range = "s!A1:B2";
         Sheets service = getSheetService();
-        System.out.printf(service.getBaseUrl());
-        ValueRange response = service.spreadsheets().values().get(spreadsheetId, range).execute();
+        System.out.println(service.getBaseUrl());
+        ValueRange response = service.spreadsheets().values().get(SPREAD_SHEET_ID, SPREAD_SHEET_RANGE).execute();
         List<List<Object>> values = response.getValues();
         Map<Object, Object> storeDataFromGoogleSheet = new HashMap<>();
-        if (values == null || values.isEmpty()) {
-            System.out.println("No data found.");
-        } else {
-            for (List row : values) {
-                storeDataFromGoogleSheet.put(row.get(0), row.get(4));
-            }
-        }
+        if (values == null || values.isEmpty()) System.out.println("No data found.");
+        else values.forEach(row -> storeDataFromGoogleSheet.put(row, row));
         return storeDataFromGoogleSheet;
     }
 

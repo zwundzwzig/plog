@@ -24,13 +24,6 @@
 //
 //@SpringBootTest
 //public class GoogleSheetData {
-//
-//    private static final String APPLICATION_NAME = "so-cool-it";
-//    private static final String SPREADSHEET_ID = "111862997132899959027";
-//    //private static final String CREDENTIALS_FILE_PATH = "/path/to/credentials.json";
-//    private static final String RANGE = "Sheet1!A1:B2"; // 가져올 데이터의 범위 (시트 이름!셀 범위)
-//    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-//    private final Sheets sheetsServcie;
 //    public GoogleSheetData(Sheets sheetsService) {
 //        this.sheetsServcie = sheetsService;
 //    }

@@ -4,11 +4,14 @@ import java.io.*;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -32,9 +35,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @RequiredArgsConstructor
 class GoogleApiUtilTest {
 
-    private static final String APPLICATION_NAME = "sokuri";
+    @Value("${api.google.app-name}")
+    private String APPLICATION_NAME;
+    @Value("${api.google.credentials-file-path}")
+    private String CREDENTIALS_FILE_PATH;
+    @Value("${api.google.tokens-directory-path}")
+    private String TOKENS_DIRECTORY_PATH;
+    @Value("${spring.mail.username}")
+    private String AUTHORIZE_MAIL;
+    @Value("${server.port}")
+    private int SERVER_PORT;
+
+    @Autowired
+    private GoogleApiUtil googleApiUtil;
+
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private static final String TOKENS_DIRECTORY_PATH = "tokens/path";
 
     /**
      * Global instance of the scopes required by this quickstart. If modifying these
@@ -42,19 +57,8 @@ class GoogleApiUtilTest {
      */
     private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS_READONLY);
 
-    @Value("${api.google.app-name}")
-    private String appName;
-
-    @Value("${api.google.credentials-file-path}")
-    private String CREDENTIALS_FILE_PATH;
-
     @Test
-    public void 시트_앱_이름_테스트() {
-        assertThat(appName).isEqualTo(APPLICATION_NAME);
-    }
-
-    @Test
-    public void token_받아오기() throws IOException {
+    public void 최초_접근_토큰_받아오기() throws IOException {
         File initialFile = new File("src/main/resources/" + CREDENTIALS_FILE_PATH);
         InputStream in = new FileInputStream(initialFile);
 
@@ -70,28 +74,53 @@ class GoogleApiUtilTest {
                 .setAccessType("offline")
                 .build();
 
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8080).build();
-        Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("ploginglo@gmail.com");
+        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(SERVER_PORT).build();
+        Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize(AUTHORIZE_MAIL);
 
-        System.out.println("clientSecrets" + clientSecrets);
+        assertThat(clientSecrets).isNotNull();
+        assertThat(credential.getAccessToken()).isNotBlank();
+        assertThat(credential.getTokenServerEncodedUrl()).isEqualTo("https://accounts.google.com/o/oauth2/token");
+        assertThat(credential.getRefreshToken()).isNull();
+        assertThat(credential.refreshToken()).isFalse();
+
     }
 
     @Test
-    public void getCredentialFile_에러유발() throws GeneralSecurityException, IOException {
+    public void Credential_검증시_에러유발() throws GeneralSecurityException, IOException {
 
         // given
         NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         CREDENTIALS_FILE_PATH += "plog"; // 임의로 path 변경함
 
         // when
-        FileNotFoundException e = assertThrows(FileNotFoundException.class,()->{
-            new Sheets.Builder(httpTransport, JSON_FACTORY, GoogleApiUtil.getCredentials(httpTransport))
-                    .setApplicationName(appName)
-                    .build();
-        });
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,() ->
+            new Sheets.Builder(httpTransport, JSON_FACTORY, googleApiUtil.getCredentials(httpTransport))
+                    .setApplicationName(APPLICATION_NAME)
+                    .build()
+        );
 
         // then
-        assertThat(e.getMessage()).contains("Resource not found");
+        assertThat(e).isNotNull();
+        assertThat(GoogleApiUtil.class.getResourceAsStream(CREDENTIALS_FILE_PATH)).isNull();
 
     }
+
+    @Test
+    public void 시트_접근_테스트() throws GeneralSecurityException, IOException {
+        Map<Object, Object> sheetData = googleApiUtil.getDataFromSheet();
+        AtomicBoolean isFirstRow = new AtomicBoolean(true);
+
+        sheetData.entrySet().stream()
+                .forEach(entry -> {
+                    if (isFirstRow.getAndSet(false))
+                        System.out.println("Column output: " + entry.getKey());
+                    else System.out.println("Row output: " + entry.getKey());
+        });
+
+        System.out.println("-----------------");
+
+        assertThat(sheetData).isNotNull();
+        assertThat(sheetData.size()).isGreaterThan(1);
+    }
+
 }
