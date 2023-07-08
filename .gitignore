@@ -2,6 +2,7 @@ HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/*
 !**/src/main/**/build/
 !**/src/test/**/build/
 
@@ -44,3 +45,7 @@ out/
 .LSOverride
 
 application.yml
+src/main/resources/credentials.json
+src/main/java/com/ploging/plog/mail/MailConfig.java
+*.json
+/tokens/path/*
