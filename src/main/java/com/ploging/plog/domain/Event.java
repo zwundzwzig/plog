@@ -4,6 +4,7 @@ import com.ploging.plog.domain.eums.RecruitStatus;
 import com.ploging.plog.domain.utils.BaseTimeEntity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import javax.persistence.*;
@@ -18,8 +19,9 @@ import java.util.UUID;
 public class Event extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "event_id")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")
+    @GenericGenerator(name="uuid2", strategy = "uuid2")
+    @Column(name = "event_id", columnDefinition = "BINARY(16)")
     private UUID id; // 식별자 id
 
     @NotBlank
@@ -38,7 +40,7 @@ public class Event extends BaseTimeEntity {
     private String organizer;
 
     @Column
-    private String dues;
+    private int dues;
 
     @Column
     private RecruitStatus status;

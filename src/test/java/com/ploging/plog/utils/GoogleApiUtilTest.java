@@ -77,6 +77,9 @@ class GoogleApiUtilTest {
         LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(SERVER_PORT).build();
         Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize(AUTHORIZE_MAIL);
 
+        System.out.println(clientSecrets);
+        System.out.println(credential.getAccessToken());
+
         assertThat(clientSecrets).isNotNull();
         assertThat(credential.getAccessToken()).isNotBlank();
         assertThat(credential.getTokenServerEncodedUrl()).isEqualTo("https://accounts.google.com/o/oauth2/token");
