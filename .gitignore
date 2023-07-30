@@ -44,6 +44,7 @@ out/
 .AppleDouble
 .LSOverride
 
+src/main/resources/data.sql
 application.yml
 src/main/resources/credentials.json
 src/main/java/com/ploging/plog/mail/MailConfig.java

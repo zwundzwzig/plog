@@ -7,10 +7,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum RecruitStatus {
 
-    RECRUITING(0, "모집전"),
-    FINISH(1, "모집중");
+    BEFORE("모집전"),
+    RECRUITING("모집중"),
+    FINISH("모집완료");
 
-    private final int statusCode;
     private final String status;
 
 }

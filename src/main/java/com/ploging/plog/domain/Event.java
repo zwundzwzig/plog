@@ -21,7 +21,7 @@ public class Event extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name = "event_id", columnDefinition = "BINARY(16)")
+    @Column(name = "event_id", columnDefinition = "CHAR(36)")
     private UUID id; // 식별자 id
 
     @NotBlank
@@ -42,7 +42,7 @@ public class Event extends BaseTimeEntity {
     @Column
     private int dues;
 
-    @Column
+    @Enumerated(EnumType.STRING)
     private RecruitStatus status;
 
     @Column

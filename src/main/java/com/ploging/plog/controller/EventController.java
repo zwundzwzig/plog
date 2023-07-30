@@ -3,6 +3,7 @@ package com.ploging.plog.controller;
 import com.ploging.plog.domain.dto.EventForPlogingTabDto;
 import com.ploging.plog.service.EventService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +20,9 @@ public class EventController {
     private final EventService eventService;
 
     @GetMapping("/")
-    @ResponseBody
-    public List<EventForPlogingTabDto> getRecruitingEvent() {
-
+    public ResponseEntity<List<EventForPlogingTabDto>> getRecruitingEvent() {
         List<EventForPlogingTabDto> event = eventService.getRecruitingEvent();
-
-        return event;
+        return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
 }

@@ -20,7 +20,7 @@ public class Community extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid")
     @GenericGenerator(name = "sequence", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "community_id", columnDefinition = "BINARY(16)")
+    @Column(name = "community_id", columnDefinition = "CHAR(36)")
     private UUID id; // 식별자 id
 
     @NotBlank
