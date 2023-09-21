@@ -27,7 +27,7 @@ class CommunityServiceTest {
     @Transactional
     void testGetRecruitingEvent() {
 
-        List<EventForPlogingTabDto> dto = eventRepository.findEventsByStatusIsAndBeginRecruitIsBeforeAndFinishRecruitIsAfter(RecruitStatus.RECRUITING, LocalDateTime.now(), LocalDateTime.now())
+        List<EventForPlogingTabDto> dto = eventRepository.findEventsByStatusIsAndRecruitPeriodBeginRecruitIsBeforeAndRecruitPeriodFinishRecruitIsAfter(RecruitStatus.RECRUITING, LocalDateTime.now(), LocalDateTime.now())
                 .stream()
                 .map(EventForPlogingTabDto::new)
                 .collect(Collectors.toList());

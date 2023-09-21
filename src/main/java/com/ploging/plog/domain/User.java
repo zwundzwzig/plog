@@ -1,6 +1,7 @@
 package com.ploging.plog.domain;
 
 import com.ploging.plog.domain.eums.SocialProvider;
+import com.ploging.plog.domain.utils.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Table(name = "users")
 @Getter
 @NoArgsConstructor
-public class User {
+public class User extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,13 +36,5 @@ public class User {
   @Enumerated(EnumType.STRING)
   @Column
   private SocialProvider provider;
-
-  @Column
-  @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-  private LocalDateTime created; // 생성
-
-  @Column
-  @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-  private LocalDateTime modified;
 
 }
