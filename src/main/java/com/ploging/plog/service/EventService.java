@@ -18,7 +18,7 @@ public class EventService {
     private final EventRepository eventRepository;
 
     public List<EventForPlogingTabDto> getRecruitingEvent() {
-        return eventRepository.findEventsByStatusIsAndBeginRecruitIsBeforeAndFinishRecruitIsAfter(RecruitStatus.RECRUITING, LocalDateTime.now(), LocalDateTime.now())
+        return eventRepository.findEventsByStatusIsAndRecruitPeriodBeginRecruitIsBeforeAndRecruitPeriodFinishRecruitIsAfter(RecruitStatus.RECRUITING, LocalDateTime.now(), LocalDateTime.now())
                 .stream()
                 .map(EventForPlogingTabDto::new)
                 .collect(Collectors.toList());

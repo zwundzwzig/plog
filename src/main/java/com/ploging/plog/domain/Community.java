@@ -9,6 +9,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -26,8 +28,10 @@ public class Community extends BaseTimeEntity {
     @NotBlank
     private String title;
 
-    @Column
-    private String image;
+    @ElementCollection
+    @CollectionTable(name = "images", joinColumns = @JoinColumn(name = "image_id"))
+    @Column(name = "image_url")
+    private Set<String> images = new HashSet<>();
 
     @NotBlank
     private String location;
@@ -38,7 +42,7 @@ public class Community extends BaseTimeEntity {
     @Column
     private String owner;
 
-    @Column
+    @Enumerated(EnumType.STRING)
     private RecruitStatus status;
 
     @Builder

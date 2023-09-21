@@ -45,13 +45,8 @@ public class Event extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private RecruitStatus status;
 
-    @Column
-    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-    private LocalDateTime beginRecruit; // 모집
-
-    @Column
-    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-    private LocalDateTime finishRecruit;
+    @Embedded
+    private RecruitPeriod recruitPeriod;
 
     @Column
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)

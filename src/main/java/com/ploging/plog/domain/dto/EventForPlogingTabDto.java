@@ -2,9 +2,6 @@ package com.ploging.plog.domain.dto;
 
 import com.ploging.plog.domain.Event;
 import lombok.Data;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Data
@@ -22,8 +19,8 @@ public class EventForPlogingTabDto {
         this.title = entity.getTitle();
         this.location = entity.getLocation();
         this.organizer = entity.getOrganizer();
-        this.beginRecruit = entity.getBeginRecruit();
-        this.finishRecruit = entity.getFinishRecruit();
+        this.beginRecruit = entity.getRecruitPeriod().getBeginRecruit();
+        this.finishRecruit = entity.getRecruitPeriod().getFinishRecruit();
         this.beginEvent = entity.getBeginEvent();
         this.finishEvent = entity.getFinishEvent();
     }

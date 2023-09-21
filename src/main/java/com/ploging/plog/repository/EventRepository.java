@@ -11,7 +11,6 @@ import java.util.UUID;
 
 public interface EventRepository extends JpaRepository<Event, UUID> {
 
-    List<Event> findEventsByStatusIsAndBeginRecruitIsBeforeAndFinishRecruitIsAfter(RecruitStatus status, LocalDateTime begin, LocalDateTime finish);
+    List<Event> findEventsByStatusIsAndRecruitPeriodBeginRecruitIsBeforeAndRecruitPeriodFinishRecruitIsAfter(RecruitStatus status, LocalDateTime begin, LocalDateTime finish);
 
-    List<Event> findEventsByBeginRecruitIsBefore(LocalDateTime now);
 }
