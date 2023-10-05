@@ -2,6 +2,7 @@ package com.ploging.plog.domain;
 
 import com.ploging.plog.domain.eums.RecruitStatus;
 import com.ploging.plog.domain.utils.BaseTimeEntity;
+import com.ploging.plog.domain.utils.StringListConverter;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "communities")
@@ -21,17 +20,16 @@ public class Community extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid")
-    @GenericGenerator(name = "sequence", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "community_id", columnDefinition = "CHAR(36)")
+    @GenericGenerator(name="uuid2", strategy = "uuid2")
+    @Column(name = "community_id", columnDefinition = "BINARY(16) DEFAULT UUID()")
     private UUID id; // 식별자 id
 
     @NotBlank
     private String title;
 
-    @ElementCollection
-    @CollectionTable(name = "images", joinColumns = @JoinColumn(name = "image_id"))
-    @Column(name = "image_url")
-    private Set<String> images = new HashSet<>();
+    @Convert(converter = StringListConverter.class)
+    @Column(columnDefinition = "TEXT")
+    private List<String> images = new ArrayList<>();
 
     @NotBlank
     private String location;
@@ -39,11 +37,18 @@ public class Community extends BaseTimeEntity {
     @Column
     private String description;
 
-    @Column
-    private String owner;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User organizer;
 
     @Enumerated(EnumType.STRING)
     private RecruitStatus status;
+
+    @Column(columnDefinition = "INT DEFAULT 100")
+    private int maxParticipants;
+
+    @Column(columnDefinition = "INT DEFAULT 0")
+    private int currentParticipants;
 
     @Builder
     public Community(String title, String location, String description) {

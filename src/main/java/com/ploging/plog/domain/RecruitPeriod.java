@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 public class RecruitPeriod {
 
-    @Column
+    @Column()
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
     private LocalDateTime beginRecruit; // 모집
 
