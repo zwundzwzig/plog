@@ -2,6 +2,7 @@ package com.ploging.plog.domain;
 
 import com.ploging.plog.domain.eums.RecruitStatus;
 import com.ploging.plog.domain.utils.BaseTimeEntity;
+import com.ploging.plog.domain.utils.StringListConverter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -10,6 +11,8 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,16 +22,18 @@ import java.util.UUID;
 public class Event extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")
-    @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name = "event_id", columnDefinition = "CHAR(36)")
+//    @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")
+//    @GenericGenerator(name="uuid2", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "event_id", columnDefinition = "BINARY(16) DEFAULT UUID()")
     private UUID id; // 식별자 id
 
     @NotBlank
     private String title;
 
-    @Column
-    private String image;
+    @Convert(converter = StringListConverter.class)
+    private List<String> images = new ArrayList<>();
 
     @NotBlank
     private String location;

@@ -46,10 +46,13 @@ out/
 
 src/main/resources/data.sql
 application.yml
+application-real.yml
+application-mail.yml
+application-oauth.yml
 src/main/resources/credentials.json
 src/main/java/com/ploging/plog/mail/MailConfig.java
 *.json
-/tokens/path/*
+tokens/
 
 gradlew.bat
 gradlew
