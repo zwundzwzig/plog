@@ -56,3 +56,4 @@ tokens/
 
 gradlew.bat
 gradlew
+/src/test/java/com/ploging/plog/config/EncryptionTest.java
