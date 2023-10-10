@@ -50,10 +50,10 @@ application-real.yml
 application-mail.yml
 application-oauth.yml
 src/main/resources/credentials.json
-src/main/java/com/ploging/plog/mail/MailConfig.java
+src/main/java/com/sokuri/plog/mail/MailConfig.java
 *.json
 tokens/
 
 gradlew.bat
 gradlew
-/src/test/java/com/ploging/plog/config/EncryptionTest.java
+/src/test/java/com/sokuri/plog/config/EncryptionTest.java
