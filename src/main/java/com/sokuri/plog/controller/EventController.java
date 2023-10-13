@@ -1,6 +1,6 @@
 package com.sokuri.plog.controller;
 
-import com.sokuri.plog.domain.dto.EventForPlogingTabDto;
+import com.sokuri.plog.domain.dto.RecruitingEventsResponse;
 import com.sokuri.plog.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

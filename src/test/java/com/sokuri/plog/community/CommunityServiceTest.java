@@ -1,6 +1,5 @@
 package com.sokuri.plog.community;
 
-import com.sokuri.plog.domain.dto.EventForPlogingTabDto;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.repository.EventRepository;
 import lombok.RequiredArgsConstructor;

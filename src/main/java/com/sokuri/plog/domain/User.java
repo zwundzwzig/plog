@@ -1,6 +1,7 @@
 package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
+import com.sokuri.plog.domain.utils.StringToUuidConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;

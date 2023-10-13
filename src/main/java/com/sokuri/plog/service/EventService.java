@@ -1,6 +1,7 @@
 package com.sokuri.plog.service;
 
-import com.sokuri.plog.domain.dto.EventForPlogingTabDto;
+import com.sokuri.plog.domain.Event;
+import com.sokuri.plog.domain.dto.RecruitingEventsResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
