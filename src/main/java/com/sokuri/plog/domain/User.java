@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,15 +17,17 @@ import java.util.UUID;
 public class User extends BaseTimeEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid")
+  @GeneratedValue(generator = "uuid2")
   @GenericGenerator(name="uuid2", strategy = "uuid2")
-  @Column(name = "user_id", columnDefinition = "BINARY(16) DEFAULT UUID()")
+  @Column(name = "user_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
+  @Convert(converter = StringToUuidConverter.class)
   private UUID id; // 식별자 id
 
   @Column(nullable = false, unique = true)
   private String nickname;
 
   @Column(nullable = false)
+  @Email(message = "메일 형식에 맞춰 작성해주세요")
   private String email;
 
   @Column(nullable = false)

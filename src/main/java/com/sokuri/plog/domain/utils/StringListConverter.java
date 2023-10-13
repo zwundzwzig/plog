@@ -1,11 +1,13 @@
 package com.sokuri.plog.domain.utils;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Converter
@@ -24,6 +26,6 @@ public class StringListConverter implements AttributeConverter<List<String>, Str
     @SneakyThrows
     @Override
     public List<String> convertToEntityAttribute(String dbData) {
-        return mapper.readValue(dbData, List.class);
+        return dbData != null ? mapper.readValue(dbData, new TypeReference<>() {}) : new ArrayList<>();
     }
 }

@@ -3,11 +3,8 @@ package com.sokuri.plog.controller;
 import com.sokuri.plog.domain.dto.EventForPlogingTabDto;
 import com.sokuri.plog.service.EventService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,10 +15,10 @@ public class EventController {
 
     private final EventService eventService;
 
-    @GetMapping("/")
-    public ResponseEntity<List<EventForPlogingTabDto>> getRecruitingEvent() {
-        List<EventForPlogingTabDto> event = eventService.getRecruitingEvent();
-        return new ResponseEntity<>(event, HttpStatus.OK);
+    @GetMapping("")
+    public ResponseEntity<List<RecruitingEventsResponse>> getRecruitingEvent() {
+        List<RecruitingEventsResponse> response = eventService.getRecruitingEvent();
+        return ResponseEntity.ok(response);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.sokuri.plog.config;
 
-import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,11 +11,12 @@ import static org.assertj.core.api.Assertions.*;
 public class S3ConnectionTest {
 
     @Autowired
-    private AmazonS3 amazonS3;
+    private AmazonS3Client amazonS3Client;
 
     @Test
     public void s3ConnectionTest() {
-        assertThat(amazonS3.listBuckets()).isNotNull();
+        System.out.println(amazonS3Client.listBuckets());
+        assertThat(amazonS3Client.listBuckets()).isNotNull();
     }
 }
 
