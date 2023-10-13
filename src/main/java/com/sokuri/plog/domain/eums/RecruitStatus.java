@@ -12,5 +12,6 @@ public enum RecruitStatus {
     FINISH("모집완료");
 
     private final String status;
+    public static final RecruitStatus DEFAULT = BEFORE;
 
 }

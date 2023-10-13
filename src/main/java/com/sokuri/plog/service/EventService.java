@@ -1,6 +1,7 @@
 package com.sokuri.plog.service;
 
-import com.sokuri.plog.domain.dto.EventForPlogingTabDto;
+import com.sokuri.plog.domain.Event;
+import com.sokuri.plog.domain.dto.RecruitingEventsResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +17,18 @@ public class EventService {
 
     private final EventRepository eventRepository;
 
-    public List<EventForPlogingTabDto> getRecruitingEvent() {
-        return eventRepository.findEventsByStatusIsAndRecruitPeriodBeginRecruitIsBeforeAndRecruitPeriodFinishRecruitIsAfter(RecruitStatus.RECRUITING, LocalDateTime.now(), LocalDateTime.now())
+    public List<RecruitingEventsResponse> getRecruitingEvent() {
+//        List<Event> events = eventRepository.findEventsByStatusIsAndRecruitPeriodBeginRecruitIsBeforeAndRecruitPeriodFinishRecruitIsAfter(RecruitStatus.RECRUITING, LocalDateTime.now(), LocalDateTime.now())
+//        List<Event> events = eventRepository.findEventsByRecruitPeriodBeginRecruitIsBeforeAndRecruitPeriodFinishRecruitIsAfter(LocalDateTime.now(), LocalDateTime.now())
+//        List<Event> events = eventRepository.findEventsByRecruitPeriodBeginRecruitIsBefore(LocalDateTime.now())
+        List<Event> events = eventRepository.findEventsByRecruitPeriodBeginRecruitIsBefore(LocalDateTime.now())
                 .stream()
-                .map(EventForPlogingTabDto::new)
                 .collect(Collectors.toList());
+
+        System.out.println("events " + events.size());
+        System.out.println("events " + events.get(0).getId());
+        System.out.println("eventRepository.findAll()1 " + eventRepository.findEventsByRecruitPeriodBeginRecruitIsBefore(LocalDateTime.now()).get(0));
+        System.out.println("eventRepository.findAll()2 " + eventRepository.findEventsByRecruitPeriodBeginRecruitIsBefore(LocalDateTime.now()).get(1));
+        return null;
     }
 }
