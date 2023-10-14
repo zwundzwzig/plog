@@ -2,6 +2,7 @@ package com.sokuri.plog.config;
 
 import com.sokuri.plog.cofig.S3Upload;
 import io.findify.s3mock.S3Mock;
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockMultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,14 +36,15 @@ class AwsS3UploaderTest {
     String contentType = "image/png";
     String dirName = "static";
 
-    MockMultipartFile file = new MockMultipartFile("test", path, contentType, "test".getBytes());
+    ClassLoader classLoader = getClass().getClassLoader();
+    File file = new File(classLoader.getResource(path).getFile());
+    MockMultipartFile mockMultipartFile = new MockMultipartFile("test", file.getName(), contentType, FileUtils.readFileToByteArray(file));
 
     // when
-//    String urlPath = s3Upload.uploadToAws(file, dirName);
-    String urlPath = s3Upload.uploadToAws(file, dirName);
+    String urlPath = s3Upload.uploadToAws(mockMultipartFile, dirName);
 
     // then
-    assertThat(urlPath).contains(path);
+    assertThat(urlPath).contains("demo.png");
     assertThat(urlPath).contains(dirName);
     System.out.println(urlPath);
   }

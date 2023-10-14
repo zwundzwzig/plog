@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Converter
+@Slf4j
 public class StringListConverter implements AttributeConverter<List<String>, String> {
 
     private static final ObjectMapper mapper = new ObjectMapper()
@@ -26,6 +28,11 @@ public class StringListConverter implements AttributeConverter<List<String>, Str
     @SneakyThrows
     @Override
     public List<String> convertToEntityAttribute(String dbData) {
-        return dbData != null ? mapper.readValue(dbData, new TypeReference<>() {}) : new ArrayList<>();
+        try {
+            return dbData != null ? mapper.readValue(dbData, new TypeReference<>() {}) : new ArrayList<>();
+        } catch (Exception e) {
+            log.error("Error while parsing JSON: {} :: {}", dbData, e);
+            return new ArrayList<>();
+        }
     }
 }

@@ -18,17 +18,12 @@ public class EventService {
     private final EventRepository eventRepository;
 
     public List<RecruitingEventsResponse> getRecruitingEvent() {
-//        List<Event> events = eventRepository.findEventsByStatusIsAndRecruitPeriodBeginRecruitIsBeforeAndRecruitPeriodFinishRecruitIsAfter(RecruitStatus.RECRUITING, LocalDateTime.now(), LocalDateTime.now())
-//        List<Event> events = eventRepository.findEventsByRecruitPeriodBeginRecruitIsBeforeAndRecruitPeriodFinishRecruitIsAfter(LocalDateTime.now(), LocalDateTime.now())
-//        List<Event> events = eventRepository.findEventsByRecruitPeriodBeginRecruitIsBefore(LocalDateTime.now())
-        List<Event> events = eventRepository.findEventsByRecruitPeriodBeginRecruitIsBefore(LocalDateTime.now())
+        List<Event> events = eventRepository.findEventsByStatusIsAndRecruitPeriodBeginRecruitIsBeforeAndRecruitPeriodFinishRecruitIsAfter(RecruitStatus.RECRUITING, LocalDateTime.now(), LocalDateTime.now())
                 .stream()
                 .collect(Collectors.toList());
 
         System.out.println("events " + events.size());
-        System.out.println("events " + events.get(0).getId());
-        System.out.println("eventRepository.findAll()1 " + eventRepository.findEventsByRecruitPeriodBeginRecruitIsBefore(LocalDateTime.now()).get(0));
-        System.out.println("eventRepository.findAll()2 " + eventRepository.findEventsByRecruitPeriodBeginRecruitIsBefore(LocalDateTime.now()).get(1));
+        System.out.println("events " + events.get(0));
         return null;
     }
 }

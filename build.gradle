@@ -29,6 +29,7 @@ dependencies {
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     implementation 'com.h2database:h2:1.4.200'
     implementation 'org.slf4j:slf4j-api'
+    implementation 'commons-io:commons-io:2.11.0'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'com.google.api-client:google-api-client:1.23.0'

@@ -6,6 +6,7 @@ import com.sokuri.plog.domain.utils.StringListConverter;
 import com.sokuri.plog.domain.utils.StringToUuidConverter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
@@ -20,6 +21,7 @@ import java.util.UUID;
 @Table(name = "events")
 @Getter
 @RequiredArgsConstructor
+@ToString
 public class Event extends BaseTimeEntity {
 
     @Id
