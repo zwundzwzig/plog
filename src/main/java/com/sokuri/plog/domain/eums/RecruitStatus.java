@@ -1,16 +1,21 @@
 package com.sokuri.plog.domain.eums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
-public enum RecruitStatus {
+@AllArgsConstructor
+public enum RecruitStatus implements BaseEnumCode<String> {
 
     BEFORE("모집전"),
     RECRUITING("모집중"),
     FINISH("모집완료");
 
     private final String status;
+    public static final RecruitStatus DEFAULT = BEFORE;
 
+    @Override
+    public String getValue() {
+        return this.status;
+    }
 }

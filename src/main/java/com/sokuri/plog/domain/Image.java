@@ -1,5 +1,6 @@
 package com.sokuri.plog.domain;
 
+import com.sokuri.plog.domain.utils.StringToUuidConverter;
 import lombok.Getter;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -13,12 +14,16 @@ import java.util.UUID;
 public class Image {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")
+    @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name = "image_id", columnDefinition = "BINARY(16) DEFAULT UUID()")
-    private UUID id; // 식별자 id
+    @Column(name = "image_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
+    @Convert(converter = StringToUuidConverter.class)
+    private UUID id;
 
     @Nullable
     private String url;
+
+    @Nullable
+    private String foreignId;
 
 }

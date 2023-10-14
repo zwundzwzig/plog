@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class EventForPlogingTabDto {
+public class RecruitingEventsRequest {
 
     private String title;
     private String location;
@@ -15,7 +15,7 @@ public class EventForPlogingTabDto {
     private LocalDateTime beginEvent;
     private LocalDateTime finishEvent;
 
-    public EventForPlogingTabDto(Event entity) {
+    public RecruitingEventsRequest(Event entity) {
         this.title = entity.getTitle();
         this.location = entity.getLocation();
         this.organizer = entity.getOrganizer();
