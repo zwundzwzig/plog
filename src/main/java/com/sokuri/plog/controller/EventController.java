@@ -18,7 +18,7 @@ public class EventController {
     @GetMapping("")
     public ResponseEntity<List<RecruitingEventsResponse>> getRecruitingEvent() {
         List<RecruitingEventsResponse> response = eventService.getRecruitingEvent();
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok().body(response);
     }
 
 }

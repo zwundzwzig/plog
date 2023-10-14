@@ -1,17 +1,18 @@
 package com.sokuri.plog.domain;
 
+import com.sokuri.plog.domain.dto.RecruitingEventsResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
 import com.sokuri.plog.domain.utils.StringListConverter;
 import com.sokuri.plog.domain.utils.StringToUuidConverter;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +21,10 @@ import java.util.UUID;
 @Entity
 @Table(name = "events")
 @Getter
-@RequiredArgsConstructor
 @ToString
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Event extends BaseTimeEntity {
 
     @Id
@@ -34,6 +37,7 @@ public class Event extends BaseTimeEntity {
     private UUID id; // 식별자 id
 
     @NotBlank
+    @Column(unique = true)
     private String title;
 
 //    @Column
@@ -61,10 +65,20 @@ public class Event extends BaseTimeEntity {
 
     @Column
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-    private LocalDateTime beginEvent; // 행사
+    private LocalDateTime beginEvent;
 
     @Column
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
     private LocalDateTime finishEvent;
+
+    public RecruitingEventsResponse toResponse() {
+        return RecruitingEventsResponse.builder()
+                .title(title)
+                .beginEvent(LocalDate.from(beginEvent))
+                .finishEvent(LocalDate.from(finishEvent))
+                .organizer(organizer)
+                .location(location)
+                .build();
+    }
 
 }

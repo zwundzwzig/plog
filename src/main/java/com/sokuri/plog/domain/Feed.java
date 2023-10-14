@@ -1,5 +1,7 @@
 package com.sokuri.plog.domain;
 
+import com.sokuri.plog.domain.dto.FeedsResponse;
+import com.sokuri.plog.domain.dto.RecruitingCommunitiesResponse;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
 import com.sokuri.plog.domain.utils.StringListConverter;
 import lombok.Getter;
@@ -9,6 +11,7 @@ import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -39,13 +42,21 @@ public class Feed extends BaseTimeEntity {
     @Convert(converter = StringListConverter.class)
     private List<String> images = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "feed")
+    @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY)
     @ToString.Exclude
     @Setter
     private Set<FeedHashtag> hashtags = new HashSet<>();
+
+    public FeedsResponse toResponse() {
+        return FeedsResponse.builder()
+                .userId(user.getNickname())
+                .createdAt(LocalDate.from(getCreateDate()))
+                .thumbnail(images.toString())
+                .build();
+    }
 
 }

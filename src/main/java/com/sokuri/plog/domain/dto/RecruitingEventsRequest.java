@@ -15,14 +15,14 @@ public class RecruitingEventsRequest {
     private LocalDateTime beginEvent;
     private LocalDateTime finishEvent;
 
-    public RecruitingEventsRequest(Event entity) {
-        this.title = entity.getTitle();
-        this.location = entity.getLocation();
-        this.organizer = entity.getOrganizer();
-        this.beginRecruit = entity.getRecruitPeriod().getBeginRecruit();
-        this.finishRecruit = entity.getRecruitPeriod().getFinishRecruit();
-        this.beginEvent = entity.getBeginEvent();
-        this.finishEvent = entity.getFinishEvent();
+    public Event toEntity() {
+        return Event.builder()
+                .title(title)
+                .location(location)
+                .organizer(organizer)
+                .beginEvent(beginEvent)
+                .finishEvent(finishEvent)
+                .build();
     }
 
 }
