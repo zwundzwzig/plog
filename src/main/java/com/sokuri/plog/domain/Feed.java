@@ -21,9 +21,9 @@ import java.util.*;
 public class Feed extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid")
+    @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name = "feed_id", columnDefinition = "BINARY(16) DEFAULT UUID()")
+    @Column(name = "feed_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
     private UUID id;
 
     //    @ManyToMany
