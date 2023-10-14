@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
-public class EventControllerTest {
+public class CommunityControllerTest {
 
     @Autowired
     private MockMvc mvc;
@@ -28,8 +28,8 @@ public class EventControllerTest {
     }
 
     @Test
-    void 모집_중인_행사_테스트() throws Exception {
-      mvc.perform(MockMvcRequestBuilders.get("/v1.0/event")
+    void 모집_중인_커뮤니티_테스트() throws Exception {
+      mvc.perform(MockMvcRequestBuilders.get("/v1.0/community")
                       .contentType(MediaType.APPLICATION_JSON)
                       .accept(MediaType.APPLICATION_JSON))
               .andExpect(status().isOk())

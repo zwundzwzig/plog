@@ -17,24 +17,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
-public class EventControllerTest {
+public class FeedControllerTest {
 
-    @Autowired
-    private MockMvc mvc;
+  @Autowired
+  private MockMvc mvc;
 
-    @BeforeEach
-    public void setup() {
-      this.mvc = mvc;
-    }
+  @BeforeEach
+  public void setup() {
+    this.mvc = mvc;
+  }
 
-    @Test
-    void 모집_중인_행사_테스트() throws Exception {
-      mvc.perform(MockMvcRequestBuilders.get("/v1.0/event")
-                      .contentType(MediaType.APPLICATION_JSON)
-                      .accept(MediaType.APPLICATION_JSON))
-              .andExpect(status().isOk())
-//              .andExpect(jsonPath("$.title").exists())
-              .andDo(print());
-    }
+  @Test
+  void 전체_피드_테스트() throws Exception {
+    mvc.perform(MockMvcRequestBuilders.get("/v1.0/feed")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(print());
+  }
 
 }

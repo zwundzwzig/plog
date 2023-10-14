@@ -1,27 +1,34 @@
 package com.sokuri.plog.domain;
 
+import com.sokuri.plog.domain.dto.RecruitingCommunitiesResponse;
+import com.sokuri.plog.domain.dto.RecruitingEventsResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
 import com.sokuri.plog.domain.utils.StringListConverter;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.sokuri.plog.domain.utils.StringToUuidConverter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
 @Table(name = "communities")
 @Getter
+@ToString
+@SuperBuilder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Community extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid")
+    @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name = "community_id", columnDefinition = "BINARY(16) DEFAULT UUID()")
+    @Column(name = "community_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
+    @Convert(converter = StringToUuidConverter.class)
     private UUID id; // 식별자 id
 
     @NotBlank
@@ -37,7 +44,7 @@ public class Community extends BaseTimeEntity {
     @Column
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User organizer;
 
@@ -46,15 +53,20 @@ public class Community extends BaseTimeEntity {
 
     @Column(columnDefinition = "INT DEFAULT 100")
     private int maxParticipants;
-
-    @Column(columnDefinition = "INT DEFAULT 0")
+    @Column
+    private int minParticipants;
+    @Column
     private int currentParticipants;
 
-    @Builder
-    public Community(String title, String location, String description) {
-        this.title = title;
-        this.location = location;
-        this.description = description;
+    public RecruitingCommunitiesResponse toResponse() {
+        return RecruitingCommunitiesResponse.builder()
+                .title(title)
+                .createdAt(LocalDate.from(getCreateDate()))
+                .thumbnail(images.toString())
+                .max(maxParticipants)
+                .min(minParticipants)
+                .location(location)
+                .build();
     }
 
 }
