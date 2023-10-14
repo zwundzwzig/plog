@@ -14,7 +14,7 @@ import java.util.UUID;
 public class Image {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")
+    @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(name = "image_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
     @Convert(converter = StringToUuidConverter.class)
@@ -22,5 +22,8 @@ public class Image {
 
     @Nullable
     private String url;
+
+    @Nullable
+    private String foreignId;
 
 }
