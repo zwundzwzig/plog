@@ -1,21 +1,24 @@
 package com.sokuri.plog.service;
 
 import com.sokuri.plog.domain.Community;
+import com.sokuri.plog.domain.dto.RecruitingCommunitiesResponse;
+import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.repository.CommunityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class CommunityService {
+  private final CommunityRepository communityRepository;
 
-    private final CommunityRepository communityRepository;
-
-    public void autoSaveDummyData(List<Community> communityList) {
-        communityRepository.saveAll(communityList);
-    }
-
-
+  public List<RecruitingCommunitiesResponse> getRecruitingCommunity() {
+    return communityRepository.findCommunitiesByStatusIs(RecruitStatus.RECRUITING)
+            .stream()
+            .map(Community::toResponse)
+            .collect(Collectors.toList());
+  }
 }

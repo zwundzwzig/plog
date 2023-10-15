@@ -1,6 +1,7 @@
 package com.sokuri.plog.domain.utils;
 
-import lombok.Getter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
@@ -12,6 +13,8 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@SuperBuilder
+@NoArgsConstructor
 public abstract class BaseTimeEntity {
 
   @CreatedDate
