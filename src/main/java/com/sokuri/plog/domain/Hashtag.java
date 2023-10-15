@@ -30,5 +30,4 @@ public class Hashtag extends BaseTimeEntity {
     @ToString.Exclude
     private Set<FeedHashtag> feeds = new HashSet<>();
 
-
 }

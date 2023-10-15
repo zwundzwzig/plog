@@ -39,8 +39,8 @@ public class Feed extends BaseTimeEntity {
 //    @Column(name = "image_url")
 //    private List<String> images = new ArrayList<>();
 
-    @Convert(converter = StringListConverter.class)
-    private List<String> images = new ArrayList<>();
+//    @Convert(converter = StringListConverter.class)
+//    private List<String> images = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -55,7 +55,7 @@ public class Feed extends BaseTimeEntity {
         return FeedsResponse.builder()
                 .userId(user.getNickname())
                 .createdAt(LocalDate.from(getCreateDate()))
-                .thumbnail(images.toString())
+//                .thumbnail(images.toString())
                 .build();
     }
 
