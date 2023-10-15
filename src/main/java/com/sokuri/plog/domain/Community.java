@@ -35,9 +35,11 @@ public class Community extends BaseTimeEntity {
     @Column(unique = true)
     private String title;
 
-    @Convert(converter = StringListConverter.class)
-    @Column(columnDefinition = "TEXT")
-    private List<String> images = new ArrayList<>();
+//    @Convert(converter = StringListConverter.class)
+//    @Column(columnDefinition = "TEXT")
+    @OneToMany(mappedBy = "community", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private final List<ImageCommunity> images = new ArrayList<>();
 
     @NotBlank
     private String location;

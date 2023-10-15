@@ -2,11 +2,12 @@ package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.utils.StringToUuidConverter;
 import lombok.Getter;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "images")
@@ -22,5 +23,13 @@ public class Image {
 
     @Nullable
     private String url;
+
+    @OneToMany(mappedBy = "image", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<ImageCommunity> communities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "image", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<ImageEvent> events = new ArrayList<>();
 
 }
