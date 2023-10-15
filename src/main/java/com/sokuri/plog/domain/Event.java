@@ -58,6 +58,7 @@ public class Event extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('BEFORE', 'RECRUITING', 'FINISH') DEFAULT 'BEFORE'")
+    @NotBlank
     private RecruitStatus status;
 
     @Embedded

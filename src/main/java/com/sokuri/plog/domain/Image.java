@@ -23,7 +23,4 @@ public class Image {
     @Nullable
     private String url;
 
-    @Nullable
-    private String foreignId;
-
 }
