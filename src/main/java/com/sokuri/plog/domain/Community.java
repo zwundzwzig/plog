@@ -32,6 +32,7 @@ public class Community extends BaseTimeEntity {
     private UUID id; // 식별자 id
 
     @NotBlank
+    @Column(unique = true)
     private String title;
 
     @Convert(converter = StringListConverter.class)
@@ -54,8 +55,6 @@ public class Community extends BaseTimeEntity {
     @Column(columnDefinition = "INT DEFAULT 100")
     private int maxParticipants;
     @Column
-    private int minParticipants;
-    @Column
     private int currentParticipants;
 
     public RecruitingCommunitiesResponse toResponse() {
@@ -63,8 +62,7 @@ public class Community extends BaseTimeEntity {
                 .title(title)
                 .createdAt(LocalDate.from(getCreateDate()))
                 .thumbnail(images.toString())
-                .max(maxParticipants)
-                .min(minParticipants)
+                .maxParticipants(maxParticipants)
                 .location(location)
                 .build();
     }

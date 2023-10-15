@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +28,7 @@ public class User extends BaseTimeEntity {
   @Column(nullable = false, unique = true)
   private String nickname;
 
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
   @Email(message = "메일 형식에 맞춰 작성해주세요")
   private String email;
 
@@ -35,11 +36,10 @@ public class User extends BaseTimeEntity {
   private String password;
 
   @Column
-  private String birthday;
+  private LocalDate birthday;
 
-  @OneToOne
-  @JoinColumn(name = "profile_image_id")
-  private Image profileImage;
+  @Column
+  private String profileImage;
 
   @OneToMany(mappedBy = "user")
   private List<Feed> feeds;

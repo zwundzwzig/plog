@@ -12,6 +12,5 @@ public class RecruitingCommunitiesResponse {
   private LocalDate createdAt;
   private String location;
   private String thumbnail;
-  private int max;
-  private int min;
+  private int maxParticipants;
 }
