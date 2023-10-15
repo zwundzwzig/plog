@@ -41,8 +41,10 @@ public class Event extends BaseTimeEntity {
     private String title;
 
 //    @Column
-    @Convert(converter = StringListConverter.class)
-    private List<String> images = new ArrayList<>();
+//    @Convert(converter = StringListConverter.class)
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<ImageEvent> images = new ArrayList<>();
 
     @NotBlank
     private String location;

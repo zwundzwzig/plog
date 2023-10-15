@@ -26,7 +26,7 @@ public class Hashtag extends BaseTimeEntity {
     @Column
     private String name;
 
-    @OneToMany(mappedBy = "hashtag")
+    @OneToMany(mappedBy = "hashtag", fetch = FetchType.LAZY)
     @ToString.Exclude
     private Set<FeedHashtag> feeds = new HashSet<>();
 
