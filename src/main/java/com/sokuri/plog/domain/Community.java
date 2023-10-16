@@ -56,7 +56,7 @@ public class Community extends BaseTimeEntity {
 
     @Column(columnDefinition = "INT DEFAULT 100")
     private int maxParticipants;
-    @Column
+    @Column(columnDefinition = "INT DEFAULT 0")
     private int currentParticipants;
 
     public RecruitingCommunitiesResponse toResponse() {

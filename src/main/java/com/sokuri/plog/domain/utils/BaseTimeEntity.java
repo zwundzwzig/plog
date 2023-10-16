@@ -18,7 +18,8 @@ import java.time.LocalDateTime;
 public abstract class BaseTimeEntity {
 
   @CreatedDate
-  @Column(columnDefinition = "DATETIME(6) DEFAULT NOW()")
+//  @Column(columnDefinition = "DATETIME(6) DEFAULT NOW()")
+  @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
   @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
   private LocalDateTime createDate;
 
