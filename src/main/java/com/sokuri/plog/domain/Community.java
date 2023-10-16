@@ -29,7 +29,7 @@ public class Community extends BaseTimeEntity {
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(name = "community_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
     @Convert(converter = StringToUuidConverter.class)
-    private UUID id; // 식별자 id
+    private UUID id;
 
     @NotBlank
     @Column(unique = true)

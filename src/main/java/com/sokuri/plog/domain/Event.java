@@ -34,7 +34,7 @@ public class Event extends BaseTimeEntity {
 //    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "event_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
     @Convert(converter = StringToUuidConverter.class)
-    private UUID id; // 식별자 id
+    private UUID id;
 
     @NotBlank
     @Column(unique = true)

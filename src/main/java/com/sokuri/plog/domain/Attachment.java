@@ -15,7 +15,7 @@ public class Attachment {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "attachment_id")
-  private UUID id; // 식별자 id
+  private UUID id;
 
   @Column(nullable = false)
   private String fileName;
