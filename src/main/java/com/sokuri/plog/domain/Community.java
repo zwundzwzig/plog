@@ -1,11 +1,10 @@
 package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.dto.RecruitingCommunitiesResponse;
-import com.sokuri.plog.domain.dto.RecruitingEventsResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
+import com.sokuri.plog.domain.relations.ImageCommunity;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
-import com.sokuri.plog.domain.utils.StringListConverter;
-import com.sokuri.plog.domain.utils.StringToUuidConverter;
+import com.sokuri.plog.domain.converter.StringToUuidConverter;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;

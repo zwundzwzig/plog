@@ -1,5 +1,7 @@
-package com.sokuri.plog.domain;
+package com.sokuri.plog.domain.relations;
 
+import com.sokuri.plog.domain.Community;
+import com.sokuri.plog.domain.Image;
 import lombok.Getter;
 
 import javax.persistence.*;

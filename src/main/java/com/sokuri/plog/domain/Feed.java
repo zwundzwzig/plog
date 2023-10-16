@@ -1,9 +1,8 @@
 package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.dto.FeedsResponse;
-import com.sokuri.plog.domain.dto.RecruitingCommunitiesResponse;
+import com.sokuri.plog.domain.relations.FeedHashtag;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
-import com.sokuri.plog.domain.utils.StringListConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

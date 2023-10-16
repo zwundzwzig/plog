@@ -1,4 +1,4 @@
-package com.sokuri.plog.domain;
+package com.sokuri.plog.domain.utils;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -7,7 +7,7 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Embeddable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Embeddable
 @Getter
@@ -16,10 +16,10 @@ public class RecruitPeriod {
 
     @Column
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-    private LocalDateTime beginRecruit;
+    private LocalDate beginRecruit;
 
     @Column
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-    private LocalDateTime finishRecruit;
+    private LocalDate finishRecruit;
 
 }

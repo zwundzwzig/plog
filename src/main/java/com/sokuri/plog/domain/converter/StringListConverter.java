@@ -1,4 +1,4 @@
-package com.sokuri.plog.domain.utils;
+package com.sokuri.plog.domain.converter;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;

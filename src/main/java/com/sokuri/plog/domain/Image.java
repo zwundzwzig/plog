@@ -1,6 +1,8 @@
 package com.sokuri.plog.domain;
 
-import com.sokuri.plog.domain.utils.StringToUuidConverter;
+import com.sokuri.plog.domain.converter.StringToUuidConverter;
+import com.sokuri.plog.domain.relations.ImageCommunity;
+import com.sokuri.plog.domain.relations.ImageEvent;
 import lombok.Getter;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;

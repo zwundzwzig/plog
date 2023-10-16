@@ -1,15 +1,17 @@
-package com.sokuri.plog.domain;
+package com.sokuri.plog.domain.relations;
 
+import com.sokuri.plog.domain.Community;
+import com.sokuri.plog.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_events")
+@Table(name = "user_communities")
 @Getter
 @NoArgsConstructor
-public class UserEvent {
+public class UserCommunity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +22,7 @@ public class UserEvent {
     private User user;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "event_id")
-    private Event event;
+    @JoinColumn(name = "community_id")
+    private Community community;
 
 }

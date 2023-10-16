@@ -1,5 +1,7 @@
-package com.sokuri.plog.domain;
+package com.sokuri.plog.domain.relations;
 
+import com.sokuri.plog.domain.Feed;
+import com.sokuri.plog.domain.Hashtag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
