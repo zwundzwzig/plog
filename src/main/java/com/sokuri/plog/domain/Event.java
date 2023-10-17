@@ -2,7 +2,8 @@ package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.dto.RecruitingEventsResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
-import com.sokuri.plog.domain.relations.ImageEvent;
+import com.sokuri.plog.domain.relations.image.CommunityImage;
+import com.sokuri.plog.domain.relations.image.EventImage;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
 import com.sokuri.plog.domain.utils.RecruitPeriod;
@@ -43,9 +44,9 @@ public class Event extends BaseTimeEntity {
 
 //    @Column
 //    @Convert(converter = StringListConverter.class)
-    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
-    private final List<ImageEvent> images = new ArrayList<>();
+    private List<EventImage> images = new ArrayList<>();
 
     @NotBlank
     private String location;

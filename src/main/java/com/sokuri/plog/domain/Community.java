@@ -2,7 +2,7 @@ package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.dto.RecruitingCommunitiesResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
-import com.sokuri.plog.domain.relations.ImageCommunity;
+import com.sokuri.plog.domain.relations.image.CommunityImage;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
 import lombok.*;
@@ -36,9 +36,9 @@ public class Community extends BaseTimeEntity {
 
 //    @Convert(converter = StringListConverter.class)
 //    @Column(columnDefinition = "TEXT")
-    @OneToMany(mappedBy = "community", fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
-    private final List<ImageCommunity> images = new ArrayList<>();
+    private List<CommunityImage> images = new ArrayList<>();
 
     @NotBlank
     private String location;

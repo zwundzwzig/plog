@@ -1,10 +1,7 @@
 package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
-import com.sokuri.plog.domain.relations.ImageCommunity;
-import com.sokuri.plog.domain.relations.ImageEvent;
 import lombok.Getter;
-import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.annotation.Nullable;
@@ -15,7 +12,6 @@ import java.util.*;
 @Table(name = "images")
 @Getter
 public class Image {
-
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
@@ -25,13 +21,4 @@ public class Image {
 
     @Nullable
     private String url;
-
-    @OneToMany(mappedBy = "image", fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private List<ImageCommunity> communities = new ArrayList<>();
-
-    @OneToMany(mappedBy = "image", fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private List<ImageEvent> events = new ArrayList<>();
-
 }

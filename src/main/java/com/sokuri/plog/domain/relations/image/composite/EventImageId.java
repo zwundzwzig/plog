@@ -1,19 +1,15 @@
-package com.sokuri.plog.domain.relations;
+package com.sokuri.plog.domain.relations.image.composite;
 
 import com.sokuri.plog.domain.Event;
 import com.sokuri.plog.domain.Image;
-import lombok.Getter;
+import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-@Entity
-@Table(name = "image_events")
-@Getter
-public class ImageEvent {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
+@Embeddable
+@Data
+public class EventImageId implements Serializable {
   @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "image_id")
   private Image image;

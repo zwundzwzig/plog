@@ -1,7 +1,8 @@
 package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.dto.FeedsResponse;
-import com.sokuri.plog.domain.relations.FeedHashtag;
+import com.sokuri.plog.domain.relations.hashtag.FeedHashtag;
+import com.sokuri.plog.domain.relations.image.CommunityImage;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,36 +19,18 @@ import java.util.*;
 @Getter
 @NoArgsConstructor
 public class Feed extends BaseTimeEntity {
-
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(name = "feed_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
     private UUID id;
 
-    //    @ManyToMany
-//    @JoinTable(
-//            name = "feed_images",
-//            joinColumns = @JoinColumn(name = "feed_id"),
-//            inverseJoinColumns = @JoinColumn(name = "image_id")
-//    )
-//    private List<Image> images;
-
-//    @ElementCollection
-//    @CollectionTable(name = "images", joinColumns = @JoinColumn(name = "image_id"))
-//    @Column(name = "image_url")
-//    private List<String> images = new ArrayList<>();
-
-//    @Convert(converter = StringListConverter.class)
-//    private List<String> images = new ArrayList<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
-    @Setter
     private Set<FeedHashtag> hashtags = new HashSet<>();
 
     public FeedsResponse toResponse() {
@@ -57,5 +40,4 @@ public class Feed extends BaseTimeEntity {
 //                .thumbnail(images.toString())
                 .build();
     }
-
 }

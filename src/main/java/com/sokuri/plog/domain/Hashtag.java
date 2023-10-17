@@ -1,6 +1,6 @@
 package com.sokuri.plog.domain;
 
-import com.sokuri.plog.domain.relations.FeedHashtag;
+import com.sokuri.plog.domain.relations.hashtag.FeedHashtag;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,18 +17,16 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 public class Hashtag extends BaseTimeEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name = "hashtag_id", columnDefinition = "BINARY(16)")
+    @Column(name = "hashtag_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
     private UUID id;
 
     @Column
     private String name;
 
-    @OneToMany(mappedBy = "hashtag", fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
     private Set<FeedHashtag> feeds = new HashSet<>();
-
 }
