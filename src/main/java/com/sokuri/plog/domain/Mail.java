@@ -17,10 +17,10 @@ public class Mail {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "mail_id")
-  private UUID id; // 식별자 id
+  private UUID id;
 
   @Column(length = 500, nullable = false)
-  private String title; // 메일 제목
+  private String title;
 
   @Column(columnDefinition = "TEXT", nullable = false)
   private String content; // 메일 내용

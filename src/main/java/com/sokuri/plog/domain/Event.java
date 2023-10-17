@@ -2,9 +2,11 @@ package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.dto.RecruitingEventsResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
+import com.sokuri.plog.domain.relations.image.CommunityImage;
+import com.sokuri.plog.domain.relations.image.EventImage;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
-import com.sokuri.plog.domain.utils.StringListConverter;
-import com.sokuri.plog.domain.utils.StringToUuidConverter;
+import com.sokuri.plog.domain.converter.StringToUuidConverter;
+import com.sokuri.plog.domain.utils.RecruitPeriod;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
@@ -34,7 +36,7 @@ public class Event extends BaseTimeEntity {
 //    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "event_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
     @Convert(converter = StringToUuidConverter.class)
-    private UUID id; // 식별자 id
+    private UUID id;
 
     @NotBlank
     @Column(unique = true)
@@ -42,9 +44,9 @@ public class Event extends BaseTimeEntity {
 
 //    @Column
 //    @Convert(converter = StringListConverter.class)
-    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
-    private final List<ImageEvent> images = new ArrayList<>();
+    private List<EventImage> images = new ArrayList<>();
 
     @NotBlank
     private String location;

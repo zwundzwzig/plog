@@ -17,7 +17,7 @@ public class TrashCan {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
-    private UUID id; // 식별자 id
+    private UUID id;
 
     @NotBlank
     private String gu;

@@ -1,4 +1,4 @@
-package com.sokuri.plog.domain.utils;
+package com.sokuri.plog.domain.converter;
 
 import java.util.UUID;
 import javax.persistence.AttributeConverter;

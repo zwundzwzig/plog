@@ -1,7 +1,7 @@
 package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
-import com.sokuri.plog.domain.utils.StringToUuidConverter;
+import com.sokuri.plog.domain.converter.StringToUuidConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -23,7 +23,7 @@ public class User extends BaseTimeEntity {
   @GenericGenerator(name="uuid2", strategy = "uuid2")
   @Column(name = "user_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
   @Convert(converter = StringToUuidConverter.class)
-  private UUID id; // 식별자 id
+  private UUID id;
 
   @Column(nullable = false, unique = true)
   private String nickname;

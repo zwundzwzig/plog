@@ -1,11 +1,10 @@
 package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.dto.RecruitingCommunitiesResponse;
-import com.sokuri.plog.domain.dto.RecruitingEventsResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
+import com.sokuri.plog.domain.relations.image.CommunityImage;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
-import com.sokuri.plog.domain.utils.StringListConverter;
-import com.sokuri.plog.domain.utils.StringToUuidConverter;
+import com.sokuri.plog.domain.converter.StringToUuidConverter;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
@@ -29,7 +28,7 @@ public class Community extends BaseTimeEntity {
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(name = "community_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
     @Convert(converter = StringToUuidConverter.class)
-    private UUID id; // 식별자 id
+    private UUID id;
 
     @NotBlank
     @Column(unique = true)
@@ -37,9 +36,9 @@ public class Community extends BaseTimeEntity {
 
 //    @Convert(converter = StringListConverter.class)
 //    @Column(columnDefinition = "TEXT")
-    @OneToMany(mappedBy = "community", fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
-    private final List<ImageCommunity> images = new ArrayList<>();
+    private List<CommunityImage> images = new ArrayList<>();
 
     @NotBlank
     private String location;
