@@ -1,7 +1,6 @@
 package com.sokuri.plog.controller;
 
 import com.sokuri.plog.domain.dto.FeedsResponse;
-import com.sokuri.plog.domain.dto.RecruitingEventsResponse;
 import com.sokuri.plog.service.FeedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

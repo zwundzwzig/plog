@@ -1,6 +1,6 @@
 package com.sokuri.plog.domain.relations.image;
 
-import com.sokuri.plog.domain.Community;
+import com.sokuri.plog.domain.Feed;
 import com.sokuri.plog.domain.Image;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
 import lombok.Getter;
@@ -10,9 +10,9 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "community_images")
+@Table(name = "feed_images")
 @Getter
-public class CommunityImage {
+public class FeedImage {
   @Id
   @GeneratedValue(generator = "uuid2")
   @GenericGenerator(name="uuid2", strategy = "uuid2")
@@ -21,8 +21,8 @@ public class CommunityImage {
   private UUID id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "community_id")
-  private Community community;
+  @JoinColumn(name = "feed_id")
+  private Feed feed;
 
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "image_id")

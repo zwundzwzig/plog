@@ -34,11 +34,8 @@ public class Community extends BaseTimeEntity {
     @Column(unique = true)
     private String title;
 
-//    @Convert(converter = StringListConverter.class)
-//    @Column(columnDefinition = "TEXT")
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<CommunityImage> images = new ArrayList<>();
+    @OneToMany(mappedBy = "community", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CommunityImage> images;
 
     @NotBlank
     private String location;
@@ -47,7 +44,7 @@ public class Community extends BaseTimeEntity {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "organizer")
     private User organizer;
 
     @Enumerated(EnumType.STRING)

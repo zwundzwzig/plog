@@ -1,14 +1,23 @@
 package com.sokuri.plog.domain.eums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
-public enum TrashType {
+@AllArgsConstructor
+public enum TrashType implements BaseEnumCode<String> {
 
-    일반(),
-    재활용(),
-    담배꽁초();
+    TRASH("일반"),
+    GARBAGE("음식물"),
+    RECYCLABLE("재활용"),
+    CIGARETTE("담배꽁초");
+
+    private final String value;
+    public static final TrashType DEFAULT = TRASH;
+
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
 }

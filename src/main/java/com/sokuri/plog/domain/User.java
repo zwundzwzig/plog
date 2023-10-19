@@ -2,6 +2,7 @@ package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Table(name = "users")
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class User extends BaseTimeEntity {
 
   @Id

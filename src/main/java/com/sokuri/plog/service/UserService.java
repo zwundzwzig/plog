@@ -1,5 +1,11 @@
 package com.sokuri.plog.service;
 
-public interface UserService {
-  void setTempPassword(String to, String authNum);
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+
+  public void setTempPassword(String to, String authNum) {
+  }
+
 }

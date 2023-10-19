@@ -2,12 +2,10 @@ package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.dto.FeedsResponse;
 import com.sokuri.plog.domain.relations.hashtag.FeedHashtag;
-import com.sokuri.plog.domain.relations.image.CommunityImage;
+import com.sokuri.plog.domain.relations.image.FeedImage;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -29,15 +27,17 @@ public class Feed extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @ToString.Exclude
+    @OneToMany(mappedBy = "image", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<FeedImage> images;
+
+    @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<FeedHashtag> hashtags = new HashSet<>();
 
     public FeedsResponse toResponse() {
         return FeedsResponse.builder()
                 .userId(user.getNickname())
                 .createdAt(LocalDate.from(getCreateDate()))
-//                .thumbnail(images.toString())
+                .thumbnail(images.toString())
                 .build();
     }
 }
