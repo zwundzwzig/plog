@@ -2,6 +2,7 @@ package com.sokuri.plog.service;
 
 import com.sokuri.plog.domain.Feed;
 import com.sokuri.plog.domain.dto.FeedsResponse;
+import com.sokuri.plog.domain.eums.AccessStatus;
 import com.sokuri.plog.repository.FeedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,8 @@ import java.util.stream.Collectors;
 public class FeedService {
   private final FeedRepository feedRepository;
 
-  public List<FeedsResponse> getFeeds() {
-    return feedRepository.findAll()
+  public List<FeedsResponse> getFeedList(AccessStatus status) {
+    return feedRepository.findAllByStatusIs(status)
             .stream()
             .map(Feed::toResponse)
             .collect(Collectors.toList());

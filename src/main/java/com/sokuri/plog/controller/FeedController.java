@@ -1,14 +1,10 @@
 package com.sokuri.plog.controller;
 
-import com.sokuri.plog.domain.dto.FeedsResponse;
+import com.sokuri.plog.domain.eums.AccessStatus;
 import com.sokuri.plog.service.FeedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,9 +14,9 @@ public class FeedController {
   private final FeedService feedService;
 
   @GetMapping("")
-  public ResponseEntity<List<FeedsResponse>> getFeeds() {
-    List<FeedsResponse> response = feedService.getFeeds();
-    return ResponseEntity.ok().body(response);
+  public ResponseEntity<?> getFeedList(@RequestParam(value = "status", defaultValue = "PUBLIC", required = false) String status) {
+    return ResponseEntity.ok()
+            .body(feedService.getFeedList(AccessStatus.fromString(status)));
   }
 
 }
