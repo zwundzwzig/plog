@@ -59,3 +59,4 @@ gradlew
 /src/test/java/com/sokuri/plog/config/EncryptionTest.java
 /src/test/java/com/ploging/plog/config/EncryptionTest.java
 /src/main/resources/images/
+/src/main/generated/
