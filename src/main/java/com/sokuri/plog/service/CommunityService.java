@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 public class CommunityService {
   private final CommunityRepository communityRepository;
 
-  public List<RecruitingCommunitiesResponse> getRecruitingCommunity() {
-    return communityRepository.findCommunitiesByStatusIs(RecruitStatus.RECRUITING)
+  public List<RecruitingCommunitiesResponse> getCommunityList(RecruitStatus status) {
+    return communityRepository.findCommunitiesByStatusIs(status)
             .stream()
             .map(Community::toResponse)
             .collect(Collectors.toList());

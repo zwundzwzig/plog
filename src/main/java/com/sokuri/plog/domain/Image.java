@@ -1,8 +1,6 @@
 package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
-import com.sokuri.plog.domain.relations.image.CommunityImage;
-import com.sokuri.plog.domain.relations.image.EventImage;
 import lombok.Getter;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -23,9 +21,4 @@ public class Image {
 
     @Nullable
     private String url;
-
-    @OneToOne(mappedBy = "image", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private CommunityImage community;
-    @OneToOne(mappedBy = "image", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private EventImage event;
 }

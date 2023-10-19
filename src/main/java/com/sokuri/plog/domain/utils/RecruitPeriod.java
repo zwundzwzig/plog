@@ -7,7 +7,7 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Embeddable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Embeddable
 @Getter
@@ -16,10 +16,10 @@ public class RecruitPeriod {
 
     @Column
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-    private LocalDate beginRecruit;
+    private LocalDateTime beginRecruit;
 
     @Column
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
-    private LocalDate finishRecruit;
+    private LocalDateTime finishRecruit;
 
 }

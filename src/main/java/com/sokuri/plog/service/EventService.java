@@ -17,9 +17,9 @@ public class EventService {
 
     private final EventRepository eventRepository;
 
-    public List<RecruitingEventsResponse> getRecruitingEvent() {
-        return eventRepository.findEventsByStatusIsAndRecruitPeriodBeginRecruitIsBeforeAndRecruitPeriodFinishRecruitIsAfter(
-                    RecruitStatus.RECRUITING, LocalDateTime.now(), LocalDateTime.now()
+    public List<RecruitingEventsResponse> getEventList(RecruitStatus status) {
+      return eventRepository.findEventsByStatusIsAndRecruitPeriodBeginRecruitIsBeforeAndRecruitPeriodFinishRecruitIsAfter(
+                    status, LocalDateTime.now(), LocalDateTime.now()
                 )
                 .stream()
                 .map(Event::toResponse)

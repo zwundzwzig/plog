@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Entity
@@ -22,9 +23,11 @@ public class CommunityImage {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "community_id")
+  @NotNull
   private Community community;
 
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "image_id")
+  @NotNull
   private Image image;
 }

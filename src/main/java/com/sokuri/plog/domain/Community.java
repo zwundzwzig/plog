@@ -1,5 +1,6 @@
 package com.sokuri.plog.domain;
 
+import com.sokuri.plog.domain.converter.DateToStringConverter;
 import com.sokuri.plog.domain.dto.RecruitingCommunitiesResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.domain.relations.image.CommunityImage;
@@ -11,7 +12,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -48,6 +48,8 @@ public class Community extends BaseTimeEntity {
     private User organizer;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "ENUM('BEFORE', 'RECRUITING', 'FINISH') DEFAULT 'BEFORE'")
+    @NotBlank
     private RecruitStatus status;
 
     @Column(columnDefinition = "INT DEFAULT 100")
@@ -57,10 +59,15 @@ public class Community extends BaseTimeEntity {
 
     public RecruitingCommunitiesResponse toResponse() {
         return RecruitingCommunitiesResponse.builder()
+                .id(id)
                 .title(title)
-                .createdAt(LocalDate.from(getCreateDate()))
-                .thumbnail(images.toString())
+                .timeSinceUpload(DateToStringConverter.explainDate(getCreateDate()))
+                .images(!images.isEmpty()
+                        ? images.stream()
+                        .map(image -> image.getImage().getUrl())
+                        .toList() : null)
                 .maxParticipants(maxParticipants)
+                .currentParticipants(currentParticipants)
                 .location(location)
                 .build();
     }

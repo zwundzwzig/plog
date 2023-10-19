@@ -71,10 +71,14 @@ public class Event extends BaseTimeEntity {
 
     public RecruitingEventsResponse toResponse() {
         return RecruitingEventsResponse.builder()
+                .id(id)
                 .title(title)
                 .beginEvent(LocalDate.from(beginEvent))
                 .finishEvent(LocalDate.from(finishEvent))
-                .thumbnail(images.toString())
+                .images(!images.isEmpty()
+                        ? images.stream()
+                        .map(image -> image.getImage().getUrl())
+                        .toList() : null)
                 .organizer(organizer)
                 .location(location)
                 .dues(dues)
