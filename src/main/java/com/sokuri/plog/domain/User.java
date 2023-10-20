@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -28,13 +29,16 @@ public class User extends BaseTimeEntity {
   private UUID id;
 
   @Column(nullable = false, unique = true)
+  @NotEmpty(message = "닉네임은 필수 입력값이에요")
   private String nickname;
 
   @Column(nullable = false, unique = true)
-  @Email(message = "메일 형식에 맞춰 작성해주세요")
+  @Email(message = "메일 형식에 맞춰 작성해주세요",
+          regexp = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")
+  @NotEmpty(message = "메일 형식에 맞춰 작성해주세요")
   private String email;
 
-  @Column(nullable = false)
+  @Column
   private String password;
 
   @Column

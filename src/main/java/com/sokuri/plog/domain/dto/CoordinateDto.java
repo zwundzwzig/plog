@@ -1,15 +1,15 @@
 package com.sokuri.plog.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @ToString
 public class CoordinateDto {
-  private double latitude;
-  private double longitude;
+  private final double lat;
+  private final double lng;
+  private String buildingName;
 }

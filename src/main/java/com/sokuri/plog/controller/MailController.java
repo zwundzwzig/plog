@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class MailController {
 
-//    private final MailService mailService;
-//
 //    @Override
 //    public String index() {
 //        return "index";

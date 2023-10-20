@@ -1,7 +1,6 @@
 package com.sokuri.plog.domain;
 
-import com.sokuri.plog.domain.converter.DateToStringConverter;
-import com.sokuri.plog.domain.dto.RecruitingCommunitiesResponse;
+import com.sokuri.plog.domain.dto.CommunitySummaryResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.domain.relations.image.CommunityImage;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
@@ -11,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.*;
 
 @Entity
@@ -30,14 +29,14 @@ public class Community extends BaseTimeEntity {
     @Convert(converter = StringToUuidConverter.class)
     private UUID id;
 
-    @NotBlank
+    @NotEmpty
     @Column(unique = true)
     private String title;
 
     @OneToMany(mappedBy = "community", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CommunityImage> images;
 
-    @NotBlank
+    @NotEmpty
     private String location;
 
     @Column
@@ -49,7 +48,6 @@ public class Community extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('BEFORE', 'RECRUITING', 'FINISH') DEFAULT 'BEFORE'")
-    @NotBlank
     private RecruitStatus status;
 
     @Column(columnDefinition = "INT DEFAULT 100")
@@ -57,16 +55,16 @@ public class Community extends BaseTimeEntity {
     @Column(columnDefinition = "INT DEFAULT 0")
     private int currentParticipants;
 
-    public RecruitingCommunitiesResponse toResponse() {
-        return RecruitingCommunitiesResponse.builder()
+    public CommunitySummaryResponse toResponse() {
+        return CommunitySummaryResponse.builder()
                 .id(id)
                 .title(title)
-                .timeSinceUpload(DateToStringConverter.explainDate(getCreateDate()))
                 .images(!images.isEmpty()
                         ? images.stream()
                         .map(image -> image.getImage().getUrl())
                         .toList() : null)
                 .maxParticipants(maxParticipants)
+                .createdAt(getCreateDate())
                 .currentParticipants(currentParticipants)
                 .location(location)
                 .build();

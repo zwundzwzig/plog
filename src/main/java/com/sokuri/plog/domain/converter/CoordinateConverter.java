@@ -34,6 +34,7 @@ public class CoordinateConverter implements AttributeConverter<List<CoordinateDt
     } catch (JsonProcessingException e) {
       log.error("Error while parsing JSON: {} :: {}", dbData, e);
     }
-    return Collections.singletonList(new CoordinateDto());
+//    return Collections.singletonList(new CoordinateDto());
+    return Collections.singletonList(null);
   }
 }

@@ -1,6 +1,6 @@
 package com.sokuri.plog.config;
 
-import com.sokuri.plog.cofig.S3Upload;
+import com.sokuri.plog.utils.S3Upload;
 import io.findify.s3mock.S3Mock;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;

@@ -1,4 +1,4 @@
-package com.sokuri.plog.cofig;
+package com.sokuri.plog.utils;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;

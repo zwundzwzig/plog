@@ -1,7 +1,7 @@
 package com.sokuri.plog.service;
 
 import com.sokuri.plog.domain.Community;
-import com.sokuri.plog.domain.dto.RecruitingCommunitiesResponse;
+import com.sokuri.plog.domain.dto.CommunitySummaryResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.repository.CommunityRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class CommunityService {
   private final CommunityRepository communityRepository;
 
-  public List<RecruitingCommunitiesResponse> getCommunityList(RecruitStatus status) {
+  public List<CommunitySummaryResponse> getCommunityList(RecruitStatus status) {
     return communityRepository.findCommunitiesByStatusIs(status)
             .stream()
             .map(Community::toResponse)

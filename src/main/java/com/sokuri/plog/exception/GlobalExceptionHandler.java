@@ -25,6 +25,12 @@ public class GlobalExceptionHandler {
             .body(ex.getMessage());
   }
 
+  @ExceptionHandler(IllegalStateException.class)
+  public ResponseEntity<?> handleIllegalStateException(IllegalStateException ex) {
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(ex.getMessage());
+  }
+
   @ExceptionHandler(MissingServletRequestParameterException.class)
   @ResponseBody
   public ResponseEntity<String> handleMissingServletRequestParameter(MissingServletRequestParameterException ex) {
