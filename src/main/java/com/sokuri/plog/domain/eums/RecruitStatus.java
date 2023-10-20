@@ -11,14 +11,14 @@ public enum RecruitStatus implements BaseEnumCode<String> {
     FINISH("모집완료");
 
     private final String status;
-    public static final RecruitStatus DEFAULT = BEFORE;
+    public static final RecruitStatus DEFAULT = RECRUITING;
 
     @Override
     public String getValue() {
         return this.status;
     }
 
-    public static RecruitStatus fromString(String value) {
+    public static RecruitStatus setDefaultValue(String value) {
         try {
             return RecruitStatus.valueOf(value);
         } catch (IllegalArgumentException e) {

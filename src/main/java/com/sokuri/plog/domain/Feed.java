@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -41,7 +40,6 @@ public class Feed extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('PRIVATE', 'PARTIAL', 'PUBLIC') DEFAULT 'PUBLIC'")
-    @NotBlank
     private AccessStatus status;
 
     public FeedsResponse toResponse() {

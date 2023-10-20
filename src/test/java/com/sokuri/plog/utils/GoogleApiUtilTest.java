@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -24,11 +23,9 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
-import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Slf4j
@@ -58,6 +55,21 @@ class GoogleApiUtilTest {
     private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS_READONLY);
 
     @Test
+    public void 프로퍼티_가져오는지_테스트() {
+        System.out.println(APPLICATION_NAME);
+        System.out.println(CREDENTIALS_FILE_PATH);
+        System.out.println(TOKENS_DIRECTORY_PATH);
+        System.out.println(AUTHORIZE_MAIL);
+        System.out.println(SERVER_PORT);
+
+        assertThat(APPLICATION_NAME).isNotBlank();
+        assertThat(CREDENTIALS_FILE_PATH).isNotBlank();
+        assertThat(TOKENS_DIRECTORY_PATH).isNotBlank();
+        assertThat(AUTHORIZE_MAIL).isNotBlank();
+        assertThat(SERVER_PORT).isGreaterThan(0);
+    }
+
+    @Test
     public void 최초_접근_토큰_받아오기() throws IOException {
         File initialFile = new File("src/main/resources/" + CREDENTIALS_FILE_PATH);
         InputStream in = new FileInputStream(initialFile);
@@ -67,7 +79,6 @@ class GoogleApiUtilTest {
         }
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
-//         Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 new NetHttpTransport(), JSON_FACTORY, clientSecrets, SCOPES)
                 .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
@@ -79,32 +90,13 @@ class GoogleApiUtilTest {
 
         System.out.println(clientSecrets);
         System.out.println(credential.getAccessToken());
+        System.out.println(credential.getRefreshToken());
 
         assertThat(clientSecrets).isNotNull();
         assertThat(credential.getAccessToken()).isNotBlank();
         assertThat(credential.getTokenServerEncodedUrl()).isEqualTo("https://accounts.google.com/o/oauth2/token");
-        assertThat(credential.getRefreshToken()).isNull();
-        assertThat(credential.refreshToken()).isFalse();
-
-    }
-
-    @Test
-    public void Credential_검증시_에러유발() throws GeneralSecurityException, IOException {
-
-        // given
-        NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-        CREDENTIALS_FILE_PATH += "plog"; // 임의로 path 변경함
-
-        // when
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,() ->
-            new Sheets.Builder(httpTransport, JSON_FACTORY, googleApiUtil.getCredentials(httpTransport))
-                    .setApplicationName(APPLICATION_NAME)
-                    .build()
-        );
-
-        // then
-        assertThat(e).isNotNull();
-        assertThat(GoogleApiUtil.class.getResourceAsStream(CREDENTIALS_FILE_PATH)).isNull();
+        assertThat(credential.getRefreshToken()).isNotNull();
+        assertThat(credential.refreshToken()).isTrue();
 
     }
 

@@ -1,6 +1,7 @@
 package com.sokuri.plog.domain;
 
-import com.sokuri.plog.domain.dto.RecruitingEventsResponse;
+import com.sokuri.plog.domain.dto.EventDetailResponse;
+import com.sokuri.plog.domain.dto.EventSummaryResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.domain.relations.image.EventImage;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
@@ -12,11 +13,14 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
+import static com.sokuri.plog.domain.converter.RoadNameAddressToCoordinateConverter.setAddressForSummary;
 
 @Entity
 @Table(name = "events")
@@ -34,14 +38,14 @@ public class Event extends BaseTimeEntity {
     @Convert(converter = StringToUuidConverter.class)
     private UUID id;
 
-    @NotBlank
     @Column(unique = true)
+    @NotEmpty(message = "행사명은 필수 입력값이에요")
     private String title;
 
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<EventImage> images;
 
-    @NotBlank
+    @NotEmpty(message = "행사장 위치는 필수 입력값이에요")
     private String location;
 
     @Column
@@ -53,9 +57,17 @@ public class Event extends BaseTimeEntity {
     @Column
     private int dues;
 
+    @Column
+    private String website;
+
+    @Column(columnDefinition = "INT DEFAULT 100")
+    private int maxParticipants;
+
+    @Column(columnDefinition = "INT DEFAULT 0")
+    private int currentParticipants;
+
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('BEFORE', 'RECRUITING', 'FINISH') DEFAULT 'BEFORE'")
-    @NotBlank
     private RecruitStatus status;
 
     @Embedded
@@ -69,9 +81,28 @@ public class Event extends BaseTimeEntity {
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
     private LocalDateTime finishEvent;
 
-    public RecruitingEventsResponse toResponse() {
-        return RecruitingEventsResponse.builder()
+    public EventSummaryResponse toSummaryResponse() {
+        return EventSummaryResponse.builder()
                 .id(id)
+                .title(title)
+                .beginEvent(LocalDate.from(beginEvent))
+                .finishEvent(LocalDate.from(finishEvent))
+                .createdAt(getCreateDate())
+                .images(!images.isEmpty()
+                        ? images.stream()
+                        .map(image -> image.getImage().getUrl())
+                        .toList() : null)
+                .organizer(organizer)
+                .location(!location.isBlank()
+                        ? setAddressForSummary(location)
+                        : null)
+                .dues(dues)
+                .status(status.getValue())
+                .build();
+    }
+
+    public EventDetailResponse toDetailResponse() {
+        return EventDetailResponse.builder()
                 .title(title)
                 .beginEvent(LocalDate.from(beginEvent))
                 .finishEvent(LocalDate.from(finishEvent))
@@ -80,8 +111,12 @@ public class Event extends BaseTimeEntity {
                         .map(image -> image.getImage().getUrl())
                         .toList() : null)
                 .organizer(organizer)
-                .location(location)
+                .location(setAddressForSummary(location))
                 .dues(dues)
+                .dueDate(Timestamp.valueOf(getRecruitPeriod().getFinishRecruit()))
+                .website(website)
+                .content(description)
+                .numOfPeople(maxParticipants + "명")
                 .build();
     }
 

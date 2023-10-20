@@ -1,7 +1,7 @@
 package com.sokuri.plog.config;
 
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.sokuri.plog.cofig.S3Upload;
+import com.sokuri.plog.utils.S3Upload;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

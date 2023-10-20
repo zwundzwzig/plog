@@ -16,7 +16,7 @@ public class FeedController {
   @GetMapping("")
   public ResponseEntity<?> getFeedList(@RequestParam(value = "status", defaultValue = "PUBLIC", required = false) String status) {
     return ResponseEntity.ok()
-            .body(feedService.getFeedList(AccessStatus.fromString(status)));
+            .body(feedService.getFeedList(AccessStatus.setDefaultValue(status)));
   }
 
 }

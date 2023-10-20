@@ -19,7 +19,7 @@ public class CommunityController {
   @GetMapping("")
   public ResponseEntity<?> getCommunityList(@RequestParam(value = "status", defaultValue = "RECRUITING", required = false) String status) {
     return ResponseEntity.ok()
-            .body(communityService.getCommunityList(RecruitStatus.fromString(status)));
+            .body(communityService.getCommunityList(RecruitStatus.setDefaultValue(status)));
   }
 
 }
