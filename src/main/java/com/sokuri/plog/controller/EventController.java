@@ -19,7 +19,7 @@ public class EventController {
     @GetMapping("")
     public ResponseEntity<?> getEventList(@RequestParam(value = "status", required = false) String status) {
         List<EventSummaryResponse> response = EnumUtils.isValidEnumIgnoreCase(RecruitStatus.class, status)
-                ? eventService.getEventList(RecruitStatus.valueOf(status))
+                ? eventService.getEventList(RecruitStatus.valueOf(status.toUpperCase()))
                 : eventService.getAllEventList();
         return ResponseEntity.ok().body(response);
     }

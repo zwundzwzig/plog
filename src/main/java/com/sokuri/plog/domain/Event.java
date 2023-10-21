@@ -97,7 +97,6 @@ public class Event extends BaseTimeEntity {
                         ? setAddressForSummary(location)
                         : null)
                 .dues(dues)
-                .status(status.getValue())
                 .build();
     }
 
@@ -119,5 +118,4 @@ public class Event extends BaseTimeEntity {
                 .numOfPeople(maxParticipants + "명")
                 .build();
     }
-
 }

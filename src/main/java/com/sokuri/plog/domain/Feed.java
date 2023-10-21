@@ -1,7 +1,7 @@
 package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.converter.DateToStringConverter;
-import com.sokuri.plog.domain.dto.FeedsResponse;
+import com.sokuri.plog.domain.dto.FeedSummaryResponse;
 import com.sokuri.plog.domain.eums.AccessStatus;
 import com.sokuri.plog.domain.relations.hashtag.FeedHashtag;
 import com.sokuri.plog.domain.relations.image.FeedImage;
@@ -42,8 +42,8 @@ public class Feed extends BaseTimeEntity {
     @Column(columnDefinition = "ENUM('PRIVATE', 'PARTIAL', 'PUBLIC') DEFAULT 'PUBLIC'")
     private AccessStatus status;
 
-    public FeedsResponse toResponse() {
-        return FeedsResponse.builder()
+    public FeedSummaryResponse toSummaryResponse() {
+        return FeedSummaryResponse.builder()
                 .id(id)
                 .nickname(user.getNickname())
                 .avatar(user.getProfileImage())
