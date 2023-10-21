@@ -1,6 +1,8 @@
 package com.sokuri.plog.domain;
 
+import com.sokuri.plog.domain.dto.CommunityDetailResponse;
 import com.sokuri.plog.domain.dto.CommunitySummaryResponse;
+import com.sokuri.plog.domain.dto.UserSimpleDto;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.domain.relations.image.CommunityImage;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
@@ -12,6 +14,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.*;
+
+import static com.sokuri.plog.domain.converter.RoadNameAddressToCoordinateConverter.setAddressForSummary;
 
 @Entity
 @Table(name = "communities")
@@ -55,7 +59,10 @@ public class Community extends BaseTimeEntity {
     @Column(columnDefinition = "INT DEFAULT 0")
     private int currentParticipants;
 
-    public CommunitySummaryResponse toResponse() {
+    @Column
+    private String link;
+
+    public CommunitySummaryResponse toSummaryResponse() {
         return CommunitySummaryResponse.builder()
                 .id(id)
                 .title(title)
@@ -70,4 +77,17 @@ public class Community extends BaseTimeEntity {
                 .build();
     }
 
+    public CommunityDetailResponse toDetailResponse() {
+        return CommunityDetailResponse.builder()
+                .title(title)
+                .images(!images.isEmpty()
+                        ? images.stream()
+                        .map(image -> image.getImage().getUrl())
+                        .toList() : null)
+                .organizer(new UserSimpleDto(organizer.getId(), organizer.getNickname(), organizer.getEmail()))
+                .location(setAddressForSummary(location))
+                .content(description)
+                .numOfPeople(currentParticipants + "/" + maxParticipants + "명")
+                .build();
+    }
 }

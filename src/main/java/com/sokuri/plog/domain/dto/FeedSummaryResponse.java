@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 @Builder
 //@JsonInclude(JsonInclude.Include.NON_NULL)
-public class FeedsResponse {
+public class FeedSummaryResponse {
   private UUID id;
   private String nickname;
   private String avatar;

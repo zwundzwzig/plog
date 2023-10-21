@@ -42,21 +42,20 @@ public class EventService {
   }
 
   public EventDetailResponse getEventDetail(String id) {
-    UUID uuid = UUID.fromString(id);
-    Event route = eventRepository.findById(uuid)
-            .orElseThrow(() -> new NoResultException("해당 ID 값을 가진 데이터는 존재하지 않아요."));
-    EventDetailResponse response = route.toDetailResponse();
-    CoordinateDto coordinate = roadNameAddressToCoordinateConverter.convertAddressToCoordinate(route.getLocation())
+    Event event = eventRepository.findById(UUID.fromString(id))
+            .orElseThrow(() -> new NoResultException("해당 ID 값을 가진 행사는 존재하지 않아요."));
+
+    EventDetailResponse response = event.toDetailResponse();
+    CoordinateDto coordinate = roadNameAddressToCoordinateConverter.convertAddressToCoordinate(event.getLocation())
             .block();
-    if (coordinate.getBuildingName().isEmpty()) {
-      response.setVenue(route.getLocation());
-      coordinate = new CoordinateDto(coordinate.getLat(), coordinate.getLng());
-    }
-    else if (!coordinate.getBuildingName().isEmpty()) {
-      response.setVenue(coordinate.getBuildingName() + " (" +route.getLocation() + ")");
-      coordinate = new CoordinateDto(coordinate.getLat(), coordinate.getLng());
-    }
+
+    response.setVenue(
+            coordinate.getBuildingName().isEmpty()
+            ? event.getLocation() : coordinate.getBuildingName() + " (" + event.getLocation() + ")");
+
+    coordinate = new CoordinateDto(coordinate.getLat(), coordinate.getLng());
     response.setPosition(coordinate);
+
     return response;
   }
 }
