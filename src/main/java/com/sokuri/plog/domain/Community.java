@@ -7,6 +7,8 @@ import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.domain.relations.image.CommunityImage;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
+import com.sokuri.plog.domain.utils.FestivalPeriod;
+import com.sokuri.plog.domain.utils.RecruitPeriod;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
@@ -33,14 +35,14 @@ public class Community extends BaseTimeEntity {
     @Convert(converter = StringToUuidConverter.class)
     private UUID id;
 
-    @NotEmpty
     @Column(unique = true)
+    @NotEmpty(message = "크루명은 필수 입력값이에요")
     private String title;
 
     @OneToMany(mappedBy = "community", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CommunityImage> images;
 
-    @NotEmpty
+    @NotEmpty(message = "모임 위치는 필수 입력값이에요")
     private String location;
 
     @Column
@@ -50,14 +52,21 @@ public class Community extends BaseTimeEntity {
     @JoinColumn(name = "organizer")
     private User organizer;
 
+    @Column(columnDefinition = "INT DEFAULT 100")
+    private int maxParticipants;
+
+    @Column(columnDefinition = "INT DEFAULT 0")
+    private int currentParticipants;
+
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('BEFORE', 'RECRUITING', 'FINISH') DEFAULT 'BEFORE'")
     private RecruitStatus status;
 
-    @Column(columnDefinition = "INT DEFAULT 100")
-    private int maxParticipants;
-    @Column(columnDefinition = "INT DEFAULT 0")
-    private int currentParticipants;
+    @Embedded
+    private RecruitPeriod recruitPeriod;
+
+    @Embedded
+    private FestivalPeriod eventPeriod;
 
     @Column
     private String link;
@@ -84,7 +93,7 @@ public class Community extends BaseTimeEntity {
                         ? images.stream()
                         .map(image -> image.getImage().getUrl())
                         .toList() : null)
-                .organizer(new UserSimpleDto(organizer.getId(), organizer.getNickname(), organizer.getEmail()))
+                .organizer(new UserSimpleDto(organizer.getId(), organizer.getNickname(), organizer.getProfileImage()))
                 .location(setAddressForSummary(location))
                 .content(description)
                 .numOfPeople(currentParticipants + "/" + maxParticipants + "명")

@@ -3,6 +3,7 @@ package com.sokuri.plog.domain.relations.user;
 import com.sokuri.plog.domain.Feed;
 import com.sokuri.plog.domain.User;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "likes")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Like {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -21,7 +22,6 @@ public class Like {
     @Column(name = "like_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
     @Convert(converter = StringToUuidConverter.class)
     private UUID id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;

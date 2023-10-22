@@ -3,17 +3,18 @@ package com.sokuri.plog.domain.dto;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Builder
-public class FeedSummaryResponse {
-  private UUID id;
+public class FeedDetailResponse {
   private String nickname;
   private String avatar;
+  private String description;
+  private List<String> hashtags;
+  private int likes;
   private List<String> images;
-  private LocalDate createdAt;
+  private LocalDateTime createdAt;
   private String timeSinceUpload;
 }
