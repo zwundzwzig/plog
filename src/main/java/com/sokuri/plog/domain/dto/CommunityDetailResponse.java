@@ -9,7 +9,6 @@ import java.util.List;
 
 @Data
 @Builder
-//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommunityDetailResponse {
   private String title;
   private LocalDate beginEvent;

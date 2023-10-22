@@ -1,6 +1,7 @@
 package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.converter.DateToStringConverter;
+import com.sokuri.plog.domain.dto.FeedDetailResponse;
 import com.sokuri.plog.domain.dto.FeedSummaryResponse;
 import com.sokuri.plog.domain.eums.AccessStatus;
 import com.sokuri.plog.domain.relations.hashtag.FeedHashtag;
@@ -25,7 +26,7 @@ public class Feed extends BaseTimeEntity {
     @Column(name = "feed_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -53,6 +54,24 @@ public class Feed extends BaseTimeEntity {
                         .map(image -> image.getImage().getUrl())
                         .toList() : null)
                 .timeSinceUpload(DateToStringConverter.explainDate(getCreateDate()))
+                .build();
+    }
+
+    public FeedDetailResponse toDetailResponse() {
+        return FeedDetailResponse.builder()
+                .nickname(user.getNickname())
+                .avatar(user.getProfileImage())
+                .createdAt(getCreateDate())
+                .description(description)
+                .images(!images.isEmpty()
+                        ? images.stream()
+                        .map(image -> image.getImage().getUrl())
+                        .toList() : null)
+                .timeSinceUpload(DateToStringConverter.explainDate(getCreateDate()))
+                .hashtags(!hashtags.isEmpty()
+                        ? hashtags.stream()
+                        .map(hashtag -> hashtag.getHashtag().getName())
+                        .toList() : null)
                 .build();
     }
 }

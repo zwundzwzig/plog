@@ -9,7 +9,6 @@ import java.util.UUID;
 
 @Data
 @Builder
-//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommunitySummaryResponse {
   private UUID id;
   private String title;

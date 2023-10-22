@@ -47,7 +47,7 @@ public class User extends BaseTimeEntity {
   @Column
   private String profileImage;
 
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private List<Feed> feeds;
 
 }
