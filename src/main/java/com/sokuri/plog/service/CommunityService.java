@@ -5,21 +5,29 @@ import com.sokuri.plog.domain.converter.RoadNameAddressToCoordinateConverter;
 import com.sokuri.plog.domain.dto.CommunityDetailResponse;
 import com.sokuri.plog.domain.dto.CommunitySummaryResponse;
 import com.sokuri.plog.domain.dto.CoordinateDto;
+import com.sokuri.plog.domain.dto.CreateCommunityRequest;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.repository.CommunityRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class CommunityService {
   private final CommunityRepository communityRepository;
+  private final ImageService imageService;
   private final RoadNameAddressToCoordinateConverter roadNameAddressToCoordinateConverter;
+
+  public void checkDuplicatedCommunity(String title) {
+    communityRepository.findByTitle(title).ifPresent(name -> {
+      throw new DataIntegrityViolationException("이미 존재하는 크루 이름이에요!");
+    });
+  }
 
   public List<CommunitySummaryResponse> getCommunityList(RecruitStatus status) {
     return communityRepository.findCommunitiesByStatusIs(status)
@@ -50,5 +58,19 @@ public class CommunityService {
     coordinate = new CoordinateDto(coordinate.getLat(), coordinate.getLng());
     response.setPosition(coordinate);
     return response;
+  }
+
+  public Map<String, String> create(CreateCommunityRequest request) {
+    Community community = request.toEntity();
+    checkDuplicatedCommunity(community.getTitle());
+
+    Community response = communityRepository.save(community);
+
+    Optional.ofNullable(request.getImages())
+            .ifPresent(files -> imageService.saveAllCommunityImage(files, response));
+
+    return new HashMap<>() {{
+      put("id", response.getId().toString());
+    }};
   }
 }

@@ -1,7 +1,7 @@
 package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
-import lombok.Getter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.annotation.Nullable;
@@ -11,6 +11,9 @@ import java.util.*;
 @Entity
 @Table(name = "images")
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Image {
     @Id
     @GeneratedValue(generator = "uuid2")
