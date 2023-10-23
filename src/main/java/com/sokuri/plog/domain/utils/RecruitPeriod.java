@@ -1,7 +1,6 @@
 package com.sokuri.plog.domain.utils;
 
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import javax.persistence.Column;
@@ -12,6 +11,8 @@ import java.time.LocalDateTime;
 @Embeddable
 @Getter
 @ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class RecruitPeriod {
 
     @Column
