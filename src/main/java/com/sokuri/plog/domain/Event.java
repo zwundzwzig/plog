@@ -41,7 +41,12 @@ public class Event extends BaseTimeEntity {
     @NotEmpty(message = "행사명은 필수 입력값이에요")
     private String title;
 
-    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(
+            mappedBy = "event"
+            , fetch = FetchType.LAZY
+            , cascade = CascadeType.PERSIST
+            , orphanRemoval = true
+    )
     private List<EventImage> images;
 
     @NotEmpty(message = "행사장 위치는 필수 입력값이에요")

@@ -25,6 +25,11 @@ public class Hashtag extends BaseTimeEntity {
     @Column
     private String name;
 
-    @OneToMany(mappedBy = "hashtag", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(
+            mappedBy = "hashtag"
+            , fetch = FetchType.LAZY
+            , cascade = CascadeType.PERSIST
+            , orphanRemoval = true
+    )
     private Set<FeedHashtag> feeds = new HashSet<>();
 }

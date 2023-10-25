@@ -22,11 +22,11 @@ public class FeedHashtag {
     @Convert(converter = StringToUuidConverter.class)
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "feed_id")
     private Feed feed;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "hashtag_id")
     private Hashtag hashtag;
 }

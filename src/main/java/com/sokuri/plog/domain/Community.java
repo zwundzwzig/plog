@@ -39,7 +39,12 @@ public class Community extends BaseTimeEntity {
     @NotEmpty(message = "크루명은 필수 입력값이에요")
     private String title;
 
-    @OneToMany(mappedBy = "community", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(
+            mappedBy = "community"
+            , fetch = FetchType.LAZY
+            , cascade = CascadeType.PERSIST
+            , orphanRemoval = true
+    )
     private List<CommunityImage> images;
 
     @NotEmpty(message = "모임 위치는 필수 입력값이에요")
