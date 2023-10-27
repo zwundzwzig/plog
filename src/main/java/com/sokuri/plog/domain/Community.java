@@ -108,9 +108,9 @@ public class Community extends BaseTimeEntity {
                 .location(setAddressForSummary(location))
                 .content(description)
                 .link(link)
-                .beginEvent(eventPeriod.getBeginEvent() != null ? eventPeriod.getBeginEvent() : null)
-                .finishEvent(eventPeriod.getFinishEvent() != null ? eventPeriod.getFinishEvent() : null)
-                .dueDate(recruitPeriod.getFinishRecruit() != null ? recruitPeriod.getFinishRecruit() : null)
+                .beginEvent(eventPeriod != null ? eventPeriod.getBeginEvent() : null)
+                .finishEvent(eventPeriod != null ? eventPeriod.getFinishEvent() : null)
+                .dueDate(recruitPeriod != null ? recruitPeriod.getFinishRecruit() : null)
                 .numOfPeople(currentParticipants + "/" + maxParticipants + "명")
                 .build();
     }
