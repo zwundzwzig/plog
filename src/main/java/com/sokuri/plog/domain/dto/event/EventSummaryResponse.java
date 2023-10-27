@@ -13,8 +13,8 @@ import java.util.UUID;
 public class EventSummaryResponse {
   private UUID id;
   private String title;
-  private LocalDate beginEvent;
-  private LocalDate finishEvent;
+  private LocalDateTime beginEvent;
+  private LocalDateTime finishEvent;
   private LocalDateTime createdAt;
   private String organizer;
   private List<String> images;
