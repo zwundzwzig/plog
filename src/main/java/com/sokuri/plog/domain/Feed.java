@@ -51,7 +51,7 @@ public class Feed extends BaseTimeEntity {
             cascade = CascadeType.PERSIST,
             orphanRemoval = true
     )
-    private Set<FeedHashtag> hashtags = new HashSet<>();
+    private Set<FeedHashtag> hashtags;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('PRIVATE', 'PARTIAL', 'PUBLIC') DEFAULT 'PUBLIC'")

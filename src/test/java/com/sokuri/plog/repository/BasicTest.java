@@ -15,6 +15,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
+@Transactional
 public class BasicTest {
 
   @Autowired
@@ -25,7 +26,6 @@ public class BasicTest {
   private UserRepositorySupport userRepositorySupport;
 
   @Test
-  @Transactional
   public void querydsl_Custom설정_기능_확인() {
     //given
     String nickname = "test_querydsl";
