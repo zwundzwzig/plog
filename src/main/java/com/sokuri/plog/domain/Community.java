@@ -1,8 +1,8 @@
 package com.sokuri.plog.domain;
 
-import com.sokuri.plog.domain.dto.CommunityDetailResponse;
-import com.sokuri.plog.domain.dto.CommunitySummaryResponse;
-import com.sokuri.plog.domain.dto.UserSimpleDto;
+import com.sokuri.plog.domain.dto.community.CommunityDetailResponse;
+import com.sokuri.plog.domain.dto.community.CommunitySummaryResponse;
+import com.sokuri.plog.domain.dto.user.UserSimpleDto;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.domain.relations.image.CommunityImage;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
@@ -15,6 +15,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 import static com.sokuri.plog.domain.converter.RoadNameAddressToCoordinateConverter.setAddressForSummary;
@@ -39,23 +40,32 @@ public class Community extends BaseTimeEntity {
     @NotEmpty(message = "크루명은 필수 입력값이에요")
     private String title;
 
-    @OneToMany(mappedBy = "community", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(
+            mappedBy = "community"
+            , fetch = FetchType.LAZY
+            , cascade = CascadeType.PERSIST
+            , orphanRemoval = true
+    )
     private List<CommunityImage> images;
 
     @NotEmpty(message = "모임 위치는 필수 입력값이에요")
     private String location;
 
     @Column
+    @Setter
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organizer")
+    @NotNull(message = "유저는 필수 입력값이에요")
+    @Setter
     private User organizer;
 
     @Column(columnDefinition = "INT DEFAULT 100")
     private int maxParticipants;
 
     @Column(columnDefinition = "INT DEFAULT 0")
+    @Setter
     private int currentParticipants;
 
     @Enumerated(EnumType.STRING)
@@ -69,6 +79,7 @@ public class Community extends BaseTimeEntity {
     private FestivalPeriod eventPeriod;
 
     @Column
+    @Setter
     private String link;
 
     public CommunitySummaryResponse toSummaryResponse() {
@@ -96,6 +107,10 @@ public class Community extends BaseTimeEntity {
                 .organizer(new UserSimpleDto(organizer.getId(), organizer.getNickname(), organizer.getProfileImage()))
                 .location(setAddressForSummary(location))
                 .content(description)
+                .link(link)
+                .beginEvent(eventPeriod.getBeginEvent())
+                .finishEvent(eventPeriod.getFinishEvent())
+                .dueDate(recruitPeriod.getFinishRecruit())
                 .numOfPeople(currentParticipants + "/" + maxParticipants + "명")
                 .build();
     }

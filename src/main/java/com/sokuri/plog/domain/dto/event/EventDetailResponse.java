@@ -1,5 +1,6 @@
-package com.sokuri.plog.domain.dto;
+package com.sokuri.plog.domain.dto.event;
 
+import com.sokuri.plog.domain.dto.CoordinateDto;
 import lombok.Builder;
 import lombok.Data;
 

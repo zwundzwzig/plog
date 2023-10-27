@@ -1,5 +1,6 @@
 package com.sokuri.plog.cofig;
 
+import com.ulisesbocchio.jasyptspringboot.properties.JasyptEncryptorConfigurationProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
@@ -13,17 +14,17 @@ public class JasyptConfig {
 
     @Bean("jasyptStringEncryptor")
     public StringEncryptor stringEncryptor() {
-
+        JasyptEncryptorConfigurationProperties properties = new JasyptEncryptorConfigurationProperties();
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();
 
         config.setPassword(System.getenv("JASYPT_PASSWORD"));
-        config.setAlgorithm("PBEWithMD5AndDES");
-        config.setKeyObtentionIterations("1000");
-        config.setPoolSize("1");
-        config.setProviderName("SunJCE");
-        config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
-        config.setStringOutputType("base64");
+        config.setAlgorithm(properties.getAlgorithm());
+        config.setKeyObtentionIterations(properties.getKeyObtentionIterations());
+        config.setPoolSize(properties.getPoolSize());
+        config.setProviderName(properties.getProviderName());
+        config.setSaltGeneratorClassName(properties.getSaltGeneratorClassname());
+        config.setStringOutputType(properties.getStringOutputType());
 
         encryptor.setConfig(config);
 

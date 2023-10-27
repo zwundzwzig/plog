@@ -17,12 +17,4 @@ public enum AccessStatus implements BaseEnumCode<String> {
   public String getValue() {
     return this.status;
   }
-
-  public static AccessStatus setDefaultValue(String value) {
-    try {
-      return AccessStatus.valueOf(value);
-    } catch (IllegalArgumentException e) {
-      return DEFAULT;
-    }
-  }
 }

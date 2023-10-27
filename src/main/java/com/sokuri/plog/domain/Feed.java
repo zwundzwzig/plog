@@ -1,14 +1,14 @@
 package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.converter.DateToStringConverter;
-import com.sokuri.plog.domain.dto.FeedDetailResponse;
-import com.sokuri.plog.domain.dto.FeedSummaryResponse;
+import com.sokuri.plog.domain.dto.feed.FeedDetailResponse;
+import com.sokuri.plog.domain.dto.feed.FeedSummaryResponse;
 import com.sokuri.plog.domain.eums.AccessStatus;
 import com.sokuri.plog.domain.relations.hashtag.FeedHashtag;
 import com.sokuri.plog.domain.relations.image.FeedImage;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -18,7 +18,9 @@ import java.util.*;
 @Entity
 @Table(name = "feeds")
 @Getter
+@SuperBuilder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Feed extends BaseTimeEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -26,17 +28,29 @@ public class Feed extends BaseTimeEntity {
     @Column(name = "feed_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @Setter
     private User user;
 
-    @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(
+            mappedBy = "feed",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.PERSIST,
+            orphanRemoval = true
+    )
     private List<FeedImage> images;
 
     @Column
+    @Setter
     private String description;
 
-    @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(
+            mappedBy = "feed",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.PERSIST,
+            orphanRemoval = true
+    )
     private Set<FeedHashtag> hashtags = new HashSet<>();
 
     @Enumerated(EnumType.STRING)

@@ -4,6 +4,7 @@ import com.sokuri.plog.domain.relations.hashtag.FeedHashtag;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -23,8 +24,14 @@ public class Hashtag extends BaseTimeEntity {
     private UUID id;
 
     @Column
+    @Setter
     private String name;
 
-    @OneToMany(mappedBy = "hashtag", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(
+            mappedBy = "hashtag"
+            , fetch = FetchType.LAZY
+            , cascade = CascadeType.PERSIST
+            , orphanRemoval = true
+    )
     private Set<FeedHashtag> feeds = new HashSet<>();
 }

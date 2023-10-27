@@ -1,4 +1,4 @@
-package com.sokuri.plog.domain.dto;
+package com.sokuri.plog.domain.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,5 +11,5 @@ import java.util.UUID;
 public class UserSimpleDto {
   private UUID id;
   private String nickname;
-  private String email;
+  private String avatar;
 }

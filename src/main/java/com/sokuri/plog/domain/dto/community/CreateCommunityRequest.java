@@ -1,6 +1,7 @@
-package com.sokuri.plog.domain.dto;
+package com.sokuri.plog.domain.dto.community;
 
 import com.sokuri.plog.domain.Community;
+import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.domain.utils.FestivalPeriod;
 import com.sokuri.plog.domain.utils.RecruitPeriod;
 import lombok.Builder;
@@ -23,6 +24,7 @@ public class CreateCommunityRequest {
   private LocalDateTime beginEvent;
   private LocalDateTime finishEvent;
   private String description;
+  private String user;
 
   public Community toEntity() {
     return Community.builder()
@@ -30,6 +32,7 @@ public class CreateCommunityRequest {
             .link(link)
             .recruitPeriod(new RecruitPeriod(beginRecruit, finishRecruit))
             .location(location)
+            .status(RecruitStatus.DEFAULT)
             .maxParticipants(maxParticipants)
             .eventPeriod(new FestivalPeriod(beginEvent, finishRecruit))
             .description(description)
