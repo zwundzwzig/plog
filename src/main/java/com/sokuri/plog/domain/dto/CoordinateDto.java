@@ -9,7 +9,7 @@ import lombok.*;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ToString
 public class CoordinateDto {
-  private final double lat;
-  private final double lng;
+  private final Double lat;
+  private final Double lng;
   private String buildingName;
 }

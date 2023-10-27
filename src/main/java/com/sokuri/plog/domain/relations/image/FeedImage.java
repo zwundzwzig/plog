@@ -3,7 +3,7 @@ package com.sokuri.plog.domain.relations.image;
 import com.sokuri.plog.domain.Feed;
 import com.sokuri.plog.domain.Image;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
-import lombok.Getter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -13,6 +13,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "feed_images")
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FeedImage {
   @Id
   @GeneratedValue(generator = "uuid2")

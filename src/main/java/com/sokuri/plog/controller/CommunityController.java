@@ -1,7 +1,7 @@
 package com.sokuri.plog.controller;
 
-import com.sokuri.plog.domain.dto.CommunitySummaryResponse;
-import com.sokuri.plog.domain.dto.CreateCommunityRequest;
+import com.sokuri.plog.domain.dto.community.CommunitySummaryResponse;
+import com.sokuri.plog.domain.dto.community.CreateCommunityRequest;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.service.CommunityService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class CommunityController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<?> getEventDetail(@PathVariable String id) {
+  public ResponseEntity<?> getCommunityDetail(@PathVariable String id) {
     return ResponseEntity.ok().body(communityService.getCommunityDetail(id));
   }
 
@@ -38,7 +38,22 @@ public class CommunityController {
                                          @RequestPart("request") CreateCommunityRequest request
   ) {
     request.setImages(files);
-    Map<String, String> response = communityService.create(request);
-    return ResponseEntity.ok().body(response);
+    return ResponseEntity.ok().body(communityService.create(request));
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<?> update(
+          @PathVariable String id,
+          @RequestPart(value = "files", required = false) List<MultipartFile> file,
+          @RequestPart("request") CreateCommunityRequest request
+  ) {
+    request.setImages(file);
+    return ResponseEntity.ok().body(communityService.update(request, id));
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> delete(@PathVariable String id) {
+    communityService.delete(id);
+    return ResponseEntity.noContent().build();
   }
 }

@@ -2,15 +2,16 @@ package com.sokuri.plog.service;
 
 import com.sokuri.plog.domain.Community;
 import com.sokuri.plog.domain.converter.RoadNameAddressToCoordinateConverter;
-import com.sokuri.plog.domain.dto.CommunityDetailResponse;
-import com.sokuri.plog.domain.dto.CommunitySummaryResponse;
+import com.sokuri.plog.domain.dto.community.CommunityDetailResponse;
+import com.sokuri.plog.domain.dto.community.CommunitySummaryResponse;
 import com.sokuri.plog.domain.dto.CoordinateDto;
-import com.sokuri.plog.domain.dto.CreateCommunityRequest;
+import com.sokuri.plog.domain.dto.community.CreateCommunityRequest;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.repository.CommunityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
 import java.util.*;
@@ -21,12 +22,20 @@ import java.util.stream.Collectors;
 public class CommunityService {
   private final CommunityRepository communityRepository;
   private final ImageService imageService;
+  private final UserService userService;
   private final RoadNameAddressToCoordinateConverter roadNameAddressToCoordinateConverter;
 
+  @Transactional(readOnly = true)
   public void checkDuplicatedCommunity(String title) {
     communityRepository.findByTitle(title).ifPresent(name -> {
       throw new DataIntegrityViolationException("이미 존재하는 크루 이름이에요!");
     });
+  }
+
+  @Transactional(readOnly = true)
+  public Community findById(String id) {
+    return communityRepository.findById(UUID.fromString(id))
+            .orElseThrow(() -> new NoResultException("해당 ID 값을 가진 크루 모집은 존재하지 않아요."));
   }
 
   public List<CommunitySummaryResponse> getCommunityList(RecruitStatus status) {
@@ -44,8 +53,7 @@ public class CommunityService {
   }
 
   public CommunityDetailResponse getCommunityDetail(String id) {
-    Community community = communityRepository.findById(UUID.fromString(id))
-            .orElseThrow(() -> new NoResultException("해당 ID 값을 가진 크루 모집은 존재하지 않아요."));
+    Community community = findById(id);
 
     CommunityDetailResponse response = community.toDetailResponse();
     CoordinateDto coordinate = roadNameAddressToCoordinateConverter.convertAddressToCoordinate(community.getLocation())
@@ -60,9 +68,12 @@ public class CommunityService {
     return response;
   }
 
+  @Transactional
   public Map<String, String> create(CreateCommunityRequest request) {
+    checkDuplicatedCommunity(request.getTitle());
+
     Community community = request.toEntity();
-    checkDuplicatedCommunity(community.getTitle());
+    community.setOrganizer(userService.getUserInfo(request.getUser()));
 
     Community response = communityRepository.save(community);
 
@@ -72,5 +83,25 @@ public class CommunityService {
     return new HashMap<>() {{
       put("id", response.getId().toString());
     }};
+  }
+
+  @Transactional
+  public Map<String, String> update(CreateCommunityRequest request, String id) {
+    Community targetCommunity = findById(id);
+
+    Optional.ofNullable(request.getDescription()).ifPresent(targetCommunity::setDescription);
+    Optional.ofNullable(request.getLink()).ifPresent(targetCommunity::setLink);
+    Optional.ofNullable(request.getImages())
+            .ifPresent(files -> imageService.updateCommunityImage(files, targetCommunity));
+
+    return new HashMap<>() {{
+      put("id", id);
+    }};
+  }
+
+  @Transactional
+  public void delete(String id) {
+    Community targetCommunity = findById(id);
+    communityRepository.delete(targetCommunity);
   }
 }

@@ -1,4 +1,4 @@
-package com.sokuri.plog.domain.dto;
+package com.sokuri.plog.domain.dto.event;
 
 import lombok.Builder;
 import lombok.Data;

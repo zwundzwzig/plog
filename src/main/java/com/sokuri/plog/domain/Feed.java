@@ -1,14 +1,14 @@
 package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.converter.DateToStringConverter;
-import com.sokuri.plog.domain.dto.FeedDetailResponse;
-import com.sokuri.plog.domain.dto.FeedSummaryResponse;
+import com.sokuri.plog.domain.dto.feed.FeedDetailResponse;
+import com.sokuri.plog.domain.dto.feed.FeedSummaryResponse;
 import com.sokuri.plog.domain.eums.AccessStatus;
 import com.sokuri.plog.domain.relations.hashtag.FeedHashtag;
 import com.sokuri.plog.domain.relations.image.FeedImage;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -18,7 +18,9 @@ import java.util.*;
 @Entity
 @Table(name = "feeds")
 @Getter
+@SuperBuilder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Feed extends BaseTimeEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -28,6 +30,7 @@ public class Feed extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @Setter
     private User user;
 
     @OneToMany(
@@ -39,6 +42,7 @@ public class Feed extends BaseTimeEntity {
     private List<FeedImage> images;
 
     @Column
+    @Setter
     private String description;
 
     @OneToMany(

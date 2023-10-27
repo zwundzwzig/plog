@@ -1,7 +1,10 @@
 package com.sokuri.plog.domain;
 
+import com.sokuri.plog.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.validation.ConstraintViolation;
@@ -15,6 +18,9 @@ import java.util.UUID;
 @SpringBootTest
 public class UserTest {
   private Validator validator;
+  @Autowired
+  private UserRepository userRepository;
+
   private User rightUser = new User(UUID.randomUUID(), "nickname1", "email@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
   private User m2 = new User(UUID.randomUUID(), "", "email@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
   private User m3 = new User(UUID.randomUUID(), null, "email@emailcom", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
@@ -27,6 +33,13 @@ public class UserTest {
   void setUp() {
     this.validator = Validation.buildDefaultValidatorFactory().getValidator();
   }
+
+  @Test
+  @DisplayName("유저 시퀀스 아이디 추출")
+  void getId() {
+    System.out.println(userRepository.findByNickname("hihi1").get(0).getId());
+  }
+
   @Test
   void 유저_닉네임_유효성_검사() {
     List<User> users = List.of(rightUser, m2, m3);

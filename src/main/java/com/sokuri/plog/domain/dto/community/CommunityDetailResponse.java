@@ -1,24 +1,27 @@
-package com.sokuri.plog.domain.dto;
+package com.sokuri.plog.domain.dto.community;
 
+import com.sokuri.plog.domain.dto.CoordinateDto;
+import com.sokuri.plog.domain.dto.user.UserSimpleDto;
 import lombok.Builder;
 import lombok.Data;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @Builder
 public class CommunityDetailResponse {
   private String title;
-  private LocalDate beginEvent;
-  private LocalDate finishEvent;
+  private LocalDateTime beginEvent;
+  private LocalDateTime finishEvent;
   private UserSimpleDto organizer;
   private List<String> images;
   private String location;
   private String venue;
-  private Timestamp dueDate;
+  private LocalDateTime dueDate;
   private String numOfPeople;
   private String content;
+  private String link;
   private CoordinateDto position;
 }

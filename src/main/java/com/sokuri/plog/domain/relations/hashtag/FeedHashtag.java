@@ -3,8 +3,7 @@ package com.sokuri.plog.domain.relations.hashtag;
 import com.sokuri.plog.domain.Feed;
 import com.sokuri.plog.domain.Hashtag;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -24,9 +23,11 @@ public class FeedHashtag {
 
     @ManyToOne
     @JoinColumn(name = "feed_id")
+    @Setter
     private Feed feed;
 
     @ManyToOne
+    @Setter
     @JoinColumn(name = "hashtag_id")
     private Hashtag hashtag;
 }

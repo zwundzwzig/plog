@@ -1,4 +1,4 @@
-package com.sokuri.plog.domain.dto;
+package com.sokuri.plog.domain.dto.feed;
 
 import lombok.Builder;
 import lombok.Data;

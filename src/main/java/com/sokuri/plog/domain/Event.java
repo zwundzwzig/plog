@@ -1,7 +1,7 @@
 package com.sokuri.plog.domain;
 
-import com.sokuri.plog.domain.dto.EventDetailResponse;
-import com.sokuri.plog.domain.dto.EventSummaryResponse;
+import com.sokuri.plog.domain.dto.event.EventDetailResponse;
+import com.sokuri.plog.domain.dto.event.EventSummaryResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.domain.relations.image.EventImage;
 import com.sokuri.plog.domain.utils.BaseTimeEntity;
@@ -53,6 +53,7 @@ public class Event extends BaseTimeEntity {
     private String location;
 
     @Column
+    @Setter
     private String description;
 
     @Column
@@ -62,12 +63,14 @@ public class Event extends BaseTimeEntity {
     private int dues;
 
     @Column
+    @Setter
     private String website;
 
     @Column(columnDefinition = "INT DEFAULT 100")
     private int maxParticipants;
 
     @Column(columnDefinition = "INT DEFAULT 0")
+    @Setter
     private int currentParticipants;
 
     @Enumerated(EnumType.STRING)
