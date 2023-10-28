@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -40,8 +41,10 @@ public class BasicTest {
     List<User> result = userRepositorySupport.findByNickname(nickname);
 
     //then
-    assertEquals(result.size(), 1);
-    assertEquals(result.get(0).getNickname(), nickname);
+    assertAll(
+            () -> assertEquals(result.size(), 1),
+            () -> assertEquals(result.get(0).getNickname(), nickname)
+    );
   }
 
   @Test
@@ -59,8 +62,10 @@ public class BasicTest {
     List<User> result = userQueryRepository.findByNickname(nickname);
 
     //then
-    assertEquals(result.size(), 1);
-    assertEquals(result.get(0).getNickname(), nickname);
+    assertAll(
+            () -> assertEquals(result.size(), 1),
+            () -> assertEquals(result.get(0).getNickname(), nickname)
+    );
   }
 }
 
