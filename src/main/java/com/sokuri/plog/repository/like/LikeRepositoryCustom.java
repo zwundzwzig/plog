@@ -1,4 +1,4 @@
-package com.sokuri.plog.repository;
+package com.sokuri.plog.repository.like;
 
 import java.util.UUID;
 

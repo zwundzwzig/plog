@@ -1,7 +1,7 @@
 package com.sokuri.plog.service;
 
 import com.sokuri.plog.domain.User;
-import com.sokuri.plog.repository.UserRepository;
+import com.sokuri.plog.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

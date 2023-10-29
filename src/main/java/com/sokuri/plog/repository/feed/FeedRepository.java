@@ -1,4 +1,4 @@
-package com.sokuri.plog.repository;
+package com.sokuri.plog.repository.feed;
 
 import com.sokuri.plog.domain.Feed;
 import com.sokuri.plog.domain.eums.AccessStatus;

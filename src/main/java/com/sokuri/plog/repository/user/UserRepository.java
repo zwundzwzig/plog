@@ -1,4 +1,4 @@
-package com.sokuri.plog.repository;
+package com.sokuri.plog.repository.user;
 
 import com.sokuri.plog.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;

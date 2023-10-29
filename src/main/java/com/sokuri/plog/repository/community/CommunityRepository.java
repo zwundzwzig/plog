@@ -1,4 +1,4 @@
-package com.sokuri.plog.repository;
+package com.sokuri.plog.repository.community;
 
 import com.sokuri.plog.domain.Community;
 import com.sokuri.plog.domain.eums.RecruitStatus;

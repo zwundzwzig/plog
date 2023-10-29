@@ -1,4 +1,4 @@
-package com.sokuri.plog.repository;
+package com.sokuri.plog.repository.like;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sokuri.plog.domain.relations.user.Like;

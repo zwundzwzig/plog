@@ -1,4 +1,4 @@
-package com.sokuri.plog.repository;
+package com.sokuri.plog.repository.feed;
 
 import com.sokuri.plog.domain.Hashtag;
 import org.springframework.data.jpa.repository.JpaRepository;

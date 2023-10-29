@@ -1,6 +1,6 @@
 package com.sokuri.plog.domain;
 
-import com.sokuri.plog.repository.UserRepository;
+import com.sokuri.plog.repository.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

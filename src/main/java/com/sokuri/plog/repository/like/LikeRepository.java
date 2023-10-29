@@ -1,4 +1,4 @@
-package com.sokuri.plog.repository;
+package com.sokuri.plog.repository.like;
 
 import com.sokuri.plog.domain.relations.user.Like;
 import org.springframework.data.jpa.repository.JpaRepository;

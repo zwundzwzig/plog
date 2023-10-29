@@ -7,7 +7,7 @@ import com.sokuri.plog.domain.dto.community.CommunitySummaryResponse;
 import com.sokuri.plog.domain.dto.CoordinateDto;
 import com.sokuri.plog.domain.dto.community.CreateCommunityRequest;
 import com.sokuri.plog.domain.eums.RecruitStatus;
-import com.sokuri.plog.repository.CommunityRepository;
+import com.sokuri.plog.repository.community.CommunityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;

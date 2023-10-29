@@ -7,9 +7,9 @@ import com.sokuri.plog.domain.Image;
 import com.sokuri.plog.domain.relations.image.CommunityImage;
 import com.sokuri.plog.domain.relations.image.EventImage;
 import com.sokuri.plog.domain.relations.image.FeedImage;
-import com.sokuri.plog.repository.CommunityImageRepository;
-import com.sokuri.plog.repository.EventImageRepository;
-import com.sokuri.plog.repository.FeedImageRepository;
+import com.sokuri.plog.repository.community.CommunityImageRepository;
+import com.sokuri.plog.repository.event.EventImageRepository;
+import com.sokuri.plog.repository.feed.FeedImageRepository;
 import com.sokuri.plog.repository.ImageRepository;
 import com.sokuri.plog.utils.S3Upload;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

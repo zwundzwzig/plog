@@ -1,4 +1,4 @@
-package com.sokuri.plog.repository;
+package com.sokuri.plog.repository.event;
 
 import com.sokuri.plog.domain.Event;
 import com.sokuri.plog.domain.eums.RecruitStatus;

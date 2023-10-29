@@ -7,7 +7,7 @@ import com.sokuri.plog.domain.dto.event.CreateEventsRequest;
 import com.sokuri.plog.domain.dto.event.EventDetailResponse;
 import com.sokuri.plog.domain.dto.event.EventSummaryResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
-import com.sokuri.plog.repository.EventRepository;
+import com.sokuri.plog.repository.event.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
