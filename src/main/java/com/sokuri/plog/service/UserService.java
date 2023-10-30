@@ -11,7 +11,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Service
 public class UserService {
-
   private final UserRepository userRepository;
 
   public void setTempPassword(String to, String authNum) {
@@ -21,5 +20,4 @@ public class UserService {
     return userRepository.findById(UUID.fromString(id))
             .orElseThrow(() -> new NoResultException("존재하지 않는 회원이에요."));
   }
-
 }

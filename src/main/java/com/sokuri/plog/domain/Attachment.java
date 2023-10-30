@@ -11,7 +11,6 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 public class Attachment {
-
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "attachment_id")
@@ -25,5 +24,4 @@ public class Attachment {
 
   @Column(nullable = false)
   private String fileType;
-
 }

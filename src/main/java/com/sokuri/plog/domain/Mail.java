@@ -13,7 +13,6 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 public class Mail {
-
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "mail_id")
@@ -28,16 +27,6 @@ public class Mail {
   @Column(nullable = false)
   private LocalDateTime sendTime; // 보낸 시간
 
-//  @ManyToOne
-//  @Column(nullable = false)
-//  private User sender;
-
-//  @ManyToOne
-//  @Column(nullable = false)
-//  private User receiver;
-
-//  @OneToMany(mappedBy = "mail")
-//  private List<Attachment> attachments;
   @Column
   @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
   private LocalDateTime created; // 생성
@@ -45,6 +34,4 @@ public class Mail {
   @Column
   @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
   private LocalDateTime modified;
-
-
 }

@@ -7,7 +7,6 @@ import java.time.Period;
 import java.util.List;
 
 public class DateToStringConverter {
-
   public static String explainDate(LocalDateTime date) {
     Period period = Period.between(date.toLocalDate(), LocalDate.now());
     Duration duration = Duration.between(date, LocalDateTime.now());

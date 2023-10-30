@@ -28,7 +28,6 @@ import static com.sokuri.plog.domain.converter.RoadNameAddressToCoordinateConver
 @NoArgsConstructor
 @AllArgsConstructor
 public class Community extends BaseTimeEntity {
-
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")

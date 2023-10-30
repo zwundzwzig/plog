@@ -24,5 +24,4 @@ public class UserRepositorySupport extends QuerydslRepositorySupport {
             .where(user.nickname.eq(name))
             .fetch();
   }
-
 }

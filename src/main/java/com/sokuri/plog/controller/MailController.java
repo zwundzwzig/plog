@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class MailController {
-
 //    @Override
 //    public String index() {
 //        return "index";
@@ -48,5 +47,4 @@ public class MailController {
 //
 //        return ResponseEntity.ok(mailResponseDto);
 //    }
-
 }

@@ -6,7 +6,6 @@ import javax.persistence.Converter;
 
 @Converter
 public class StringToUuidConverter implements AttributeConverter<UUID, String> {
-
   @Override
   public String convertToDatabaseColumn(UUID uuid) {
     return uuid != null ? uuid.toString().replace("-", "") : null;

@@ -14,7 +14,6 @@ import java.util.List;
 @Converter
 @Slf4j
 public class StringListConverter implements AttributeConverter<List<String>, String> {
-
     private static final ObjectMapper mapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false)
             .configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);

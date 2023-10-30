@@ -5,7 +5,6 @@ import com.sokuri.plog.domain.dto.user.UserSimpleDto;
 import lombok.Builder;
 import lombok.Data;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
