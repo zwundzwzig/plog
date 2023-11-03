@@ -2,7 +2,6 @@ package com.sokuri.plog.service;
 
 import com.sokuri.plog.domain.TrashCan;
 import com.sokuri.plog.domain.dto.CoordinateDto;
-import com.sokuri.plog.domain.dto.trash.SheetTrashRequest;
 import com.sokuri.plog.domain.eums.TrashType;
 import com.sokuri.plog.repository.TrashRepository;
 import com.sokuri.plog.utils.GoogleApiUtil;
@@ -10,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,25 +24,51 @@ public class TrashService {
   @Async
   public List<CoordinateDto> setPublicTrashCan() {
     List<CoordinateDto> response = new ArrayList<>();
-    List<Map<String, Object>> list = googleApiUtil.getDataFromSheet().values().stream().toList();
-    List<TrashCan> dataList = list.stream()
-            .map(data -> TrashCan.builder()
-                    .gu(data.get("자치구명").toString())
-                    .roadName(data.get("도로명").toString())
-                    .detail(data.get("세부 위치(상세 주소)").toString())
-                    .spot(data.get("설치 지점").toString())
-                    .type(
-                            data.get("수거 쓰레기 종류(일반 쓰레기 / 재활용 쓰레기)").toString().contains("+") ? TrashType.MULTI
-                                    : data.get("수거 쓰레기 종류(일반 쓰레기 / 재활용 쓰레기)").toString().contains(TrashType.TRASH.getValue()) ? TrashType.TRASH
-                                    : data.get("수거 쓰레기 종류(일반 쓰레기 / 재활용 쓰레기)").toString().contains(TrashType.PUBLIC.getValue()) ? TrashType.PUBLIC
-                                    : data.get("수거 쓰레기 종류(일반 쓰레기 / 재활용 쓰레기)").toString().contains(TrashType.CIGARETTE.getValue()) ? TrashType.CIGARETTE
-                                    : data.get("수거 쓰레기 종류(일반 쓰레기 / 재활용 쓰레기)").toString().contains(TrashType.CROSSWALK.getValue()) ? TrashType.CROSSWALK
-                                    : data.get("수거 쓰레기 종류(일반 쓰레기 / 재활용 쓰레기)").toString().contains(TrashType.STATION.getValue()) ? TrashType.STATION
-                                    : data.get("수거 쓰레기 종류(일반 쓰레기 / 재활용 쓰레기)").toString().contains(TrashType.GARBAGE.getValue()) ? TrashType.GARBAGE
-                                    : TrashType.ETC
-                    ).build())
+    List<Map<String, Object>> sheetData = googleApiUtil.getDataFromSheet().values().stream().toList();
+    List<TrashCan> trashCans = sheetData.stream()
+            .map(this::mapToTrashCan)
             .toList();
-    trashRepository.saveAll(dataList);
+    trashRepository.saveAll(trashCans);
     return response;
+  }
+
+  private TrashCan mapToTrashCan(Map<String, Object> data) {
+    String gu = getStringValue(data, "자치구명");
+    String roadName = getStringValue(data, "도로명");
+    String detail = getStringValue(data, "세부 위치(상세 주소)");
+    String spot = getStringValue(data, "설치 지점");
+    TrashType type = getTrashType(data, "수거 쓰레기 종류(일반 쓰레기 / 재활용 쓰레기)");
+    return TrashCan.builder()
+            .gu(gu)
+            .roadName(roadName)
+            .detail(detail)
+            .spot(spot)
+            .type(type)
+            .build();
+  }
+
+  private String getStringValue(Map<String, Object> data, String key) {
+    return data.getOrDefault(key, "").toString();
+  }
+
+  private TrashType getTrashType(Map<String, Object> data, String key) {
+    String value = getStringValue(data, key);
+    if (value.contains("+")) {
+      return TrashType.MULTI;
+    } else if (value.contains(TrashType.TRASH.getValue())) {
+      return TrashType.TRASH;
+    } else if (value.contains(TrashType.PUBLIC.getValue())) {
+      return TrashType.PUBLIC;
+    } else if (value.contains(TrashType.CIGARETTE.getValue())) {
+      return TrashType.CIGARETTE;
+    } else if (value.contains(TrashType.CROSSWALK.getValue())) {
+      return TrashType.CROSSWALK;
+    } else if (value.contains(TrashType.STATION.getValue())) {
+      return TrashType.STATION;
+    } else if (value.contains(TrashType.GARBAGE.getValue())) {
+      return TrashType.GARBAGE;
+    } else {
+      return TrashType.ETC;
+    }
   }
 }
