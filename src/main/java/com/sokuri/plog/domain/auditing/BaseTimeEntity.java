@@ -1,4 +1,4 @@
-package com.sokuri.plog.domain.utils;
+package com.sokuri.plog.domain.auditing;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;

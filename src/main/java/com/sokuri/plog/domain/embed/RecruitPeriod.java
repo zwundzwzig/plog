@@ -1,4 +1,4 @@
-package com.sokuri.plog.domain.utils;
+package com.sokuri.plog.domain.embed;
 
 import lombok.*;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;

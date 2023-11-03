@@ -2,8 +2,8 @@ package com.sokuri.plog.domain.dto.event;
 
 import com.sokuri.plog.domain.Event;
 import com.sokuri.plog.domain.eums.RecruitStatus;
-import com.sokuri.plog.domain.utils.FestivalPeriod;
-import com.sokuri.plog.domain.utils.RecruitPeriod;
+import com.sokuri.plog.domain.embed.FestivalPeriod;
+import com.sokuri.plog.domain.embed.RecruitPeriod;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 

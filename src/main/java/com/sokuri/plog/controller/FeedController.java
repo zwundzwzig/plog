@@ -4,12 +4,15 @@ import com.sokuri.plog.domain.dto.feed.CreateFeedRequest;
 import com.sokuri.plog.domain.dto.feed.FeedSummaryResponse;
 import com.sokuri.plog.domain.eums.AccessStatus;
 import com.sokuri.plog.service.FeedService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -20,40 +23,58 @@ public class FeedController {
 
   private final FeedService feedService;
 
+  @Operation(summary = "전체 피드 목록 조회")
   @GetMapping("")
   public ResponseEntity<?> getFeedList(@RequestParam(value = "status", required = false) String status) {
     List<FeedSummaryResponse> response = EnumUtils.isValidEnumIgnoreCase(AccessStatus.class, status)
             ? feedService.getFeedList(AccessStatus.valueOf(status.toUpperCase()))
             : feedService.getAllFeedList();
-    return ResponseEntity.ok().body(response);
+    return ResponseEntity.ok(response);
   }
 
+  @Operation(summary = "피드 상세 조회")
   @GetMapping("/{id}")
   public ResponseEntity<?> getFeedDetail(@PathVariable String id) {
-    return ResponseEntity.ok().body(feedService.getFeedDetail(id));
+    return ResponseEntity.ok(feedService.getFeedDetail(id));
   }
 
+  @Operation(summary = "피드 생성")
   @PostMapping("")
-  public ResponseEntity<?> createFeed(@RequestPart(value = "files", required = false) List<MultipartFile> files,
+  public ResponseEntity<CreateFeedRequest> createFeed(@RequestPart(value = "files", required = false) List<MultipartFile> files,
                                       @RequestPart("request") CreateFeedRequest request
   ) {
     request.setImages(files);
     Map<String, String> response = feedService.create(request);
-    return ResponseEntity.ok().body(response);
+
+    URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(response.get("id"))
+            .toUri();
+
+    return ResponseEntity.created(location).build();
   }
 
+  @Operation(summary = "피드 수정")
   @PutMapping("/{id}")
-  public ResponseEntity<?> update(
+  public ResponseEntity<CreateFeedRequest> update(
           @PathVariable String id,
           @RequestPart(value = "files", required = false) List<MultipartFile> file,
           @RequestPart("request") CreateFeedRequest request
   ) {
     request.setImages(file);
-    return ResponseEntity.ok().body(feedService.update(request, id));
+    Map<String, String> response = feedService.update(request, id);
+
+    URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(response.get("id"))
+            .toUri();
+
+    return ResponseEntity.ok().location(location).build();
   }
 
+  @Operation(summary = "피드 삭제")
   @DeleteMapping("/{id}")
-  public ResponseEntity<?> delete(@PathVariable String id) {
+  public ResponseEntity<Void> delete(@PathVariable String id) {
     feedService.delete(id);
     return ResponseEntity.noContent().build();
   }

@@ -6,7 +6,7 @@ import com.sokuri.plog.domain.dto.feed.FeedSummaryResponse;
 import com.sokuri.plog.domain.eums.AccessStatus;
 import com.sokuri.plog.domain.relations.hashtag.FeedHashtag;
 import com.sokuri.plog.domain.relations.image.FeedImage;
-import com.sokuri.plog.domain.utils.BaseTimeEntity;
+import com.sokuri.plog.domain.auditing.BaseTimeEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
