@@ -46,9 +46,7 @@ out/
 
 src/main/resources/data.sql
 application.yml
-application-real.yml
-application-mail.yml
-application-oauth.yml
+application-*.yml
 src/main/resources/credentials.json
 src/main/java/com/sokuri/plog/mail/MailConfig.java
 *.json

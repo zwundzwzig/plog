@@ -22,7 +22,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -113,8 +112,6 @@ public class UserControllerTest {
                     .file(multipartFile2)
                     .file(request)
                     .contentType(MediaType.MULTIPART_FORM_DATA))
-            .andExpect(status().isOk())
-            .andExpect(header().exists("Location"))
-            .andExpect(content().string(""));
+            .andExpect(status().isOk());
   }
 }

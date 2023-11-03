@@ -1,39 +1,43 @@
 package com.sokuri.plog.domain;
 
-import com.sokuri.plog.domain.converter.CoordinateConverter;
-import com.sokuri.plog.domain.dto.CoordinateDto;
 import com.sokuri.plog.domain.eums.TrashType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
-import java.util.UUID;
+
+import org.locationtech.jts.geom.Point;
 
 @Entity
 @Table(name = "trash")
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TrashCan {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
-    private UUID id;
+    @Column(name = "trash_id")
+    private Long id;
 
     @NotBlank
     private String gu;
 
-    @NotBlank
+    @Column
     private String roadName;
 
-    @NotBlank
-    private String detailAddress;
+    @Column
+    private String detail;
 
-    @Column(columnDefinition = "TEXT")
-    @Convert(converter = CoordinateConverter.class)
-    private List<CoordinateDto> arrayOfPos;
+    @Column
+    private String spot;
+
+    @Column
+    private Point geolocation;
 
     @Enumerated(EnumType.STRING)
     @Column
