@@ -34,11 +34,11 @@ public class UserTest {
     this.validator = Validation.buildDefaultValidatorFactory().getValidator();
   }
 
-  @Test
-  @DisplayName("유저 시퀀스 아이디 추출")
-  void getId() {
-    System.out.println(userRepository.findByNickname("hihi1").get(0).getId());
-  }
+//  @Test
+//  @DisplayName("유저 시퀀스 아이디 추출")
+//  void getId() {
+//    System.out.println(userRepository.findByNickname("hihi1").get(0).getId());
+//  }
 
   @Test
   void 유저_닉네임_유효성_검사() {

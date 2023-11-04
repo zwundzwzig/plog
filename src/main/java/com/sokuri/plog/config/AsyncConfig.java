@@ -1,4 +1,4 @@
-package com.sokuri.plog.cofig;
+package com.sokuri.plog.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;

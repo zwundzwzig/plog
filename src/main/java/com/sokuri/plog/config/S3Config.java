@@ -1,4 +1,4 @@
-package com.sokuri.plog.cofig;
+package com.sokuri.plog.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
