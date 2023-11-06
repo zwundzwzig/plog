@@ -1,9 +1,11 @@
 package com.sokuri.plog.service;
 
 import com.sokuri.plog.domain.TrashCan;
+import com.sokuri.plog.domain.converter.RoadNameAddressToCoordinateConverter;
 import com.sokuri.plog.domain.dto.CoordinateDto;
 import com.sokuri.plog.domain.eums.TrashType;
 import com.sokuri.plog.repository.TrashRepository;
+import com.sokuri.plog.utils.GeometryUtils;
 import com.sokuri.plog.utils.GoogleApiUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -19,6 +21,8 @@ import java.util.Map;
 public class TrashService {
   private final TrashRepository trashRepository;
   private final GoogleApiUtil googleApiUtil;
+  private final GeometryUtils geometryUtils;
+  private final RoadNameAddressToCoordinateConverter roadNameAddressToCoordinateConverter;
 
   @SneakyThrows
   @Async
@@ -36,13 +40,22 @@ public class TrashService {
     String gu = getStringValue(data, "자치구명");
     String roadName = getStringValue(data, "도로명");
     String detail = getStringValue(data, "세부 위치(상세 주소)");
+    String address = getStringValue(data, "소쿠리 도로명 주소");
+    String detailSokuri = getStringValue(data, "소쿠리 상세 주소");
     String spot = getStringValue(data, "설치 지점");
     TrashType type = getTrashType(data, "수거 쓰레기 종류(일반 쓰레기 / 재활용 쓰레기)");
+
+    CoordinateDto coordinate = roadNameAddressToCoordinateConverter.convertAddressToCoordinate(address)
+            .block();
+
     return TrashCan.builder()
             .gu(gu)
-            .roadName(roadName)
-            .detail(detail)
+            .roadName(address)
+            .detail(detailSokuri)
             .spot(spot)
+            .geolocation(coordinate != null
+                    ? geometryUtils.createPoint(coordinate.getLat(), coordinate.getLng())
+                    : null)
             .type(type)
             .build();
   }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.annotations.Type;
 import org.locationtech.jts.geom.Point;
 
 @Entity
@@ -20,7 +21,7 @@ import org.locationtech.jts.geom.Point;
 public class TrashCan {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "trash_id")
     private Long id;
 
@@ -36,7 +37,7 @@ public class TrashCan {
     @Column
     private String spot;
 
-    @Column
+    @Column(columnDefinition = "GEOMETRY")
     private Point geolocation;
 
     @Enumerated(EnumType.STRING)
