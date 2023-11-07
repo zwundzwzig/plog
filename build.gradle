@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.13-SNAPSHOT'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
 group = 'com.sokuri'
@@ -36,10 +37,10 @@ dependencies {
     implementation 'com.h2database:h2:1.4.200'
     implementation 'com.theokanning.openai-gpt3-java:client:0.9.0'
     implementation 'com.google.api-client:google-api-client:1.23.0'
-    implementation 'com.querydsl:querydsl-jpa'
-    implementation 'com.querydsl:querydsl-apt'
+    implementation 'com.querydsl:querydsl-jpa:5.0.0'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0'
 
-    implementation 'org.hibernate:hibernate-spatial'
+    implementation 'org.hibernate:hibernate-spatial:5.6.15.Final'
 
     // 구글 시트
     implementation 'com.google.guava:guava'

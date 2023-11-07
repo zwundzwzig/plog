@@ -58,7 +58,8 @@ public class RoadNameAddressToCoordinateConverter {
                         )
                 );
               } else {
-                return Mono.error(new RuntimeException("주소를 찾을 수 없습니다."));
+                return Mono.empty();
+//                return Mono.error(new RuntimeException("주소를 찾을 수 없습니다."));
               }
             });
   }
