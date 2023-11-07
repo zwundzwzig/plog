@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 
@@ -99,9 +99,7 @@ public class UserControllerTest {
 
   @Test
   @DisplayName("회원 가입")
-  void signInTest() throws Exception{
-
-    String requestJson = mapper.writeValueAsString(signInRequest);
+  void signInTest() throws Exception {
     MockMultipartFile multipartFile1 = new MockMultipartFile("files", "test.jpeg", "multipart/form-data", "test file".getBytes(StandardCharsets.UTF_8) );
     MockMultipartFile multipartFile2 = new MockMultipartFile("files", "test2.jpeg", "multipart/form-data", "test file2".getBytes(StandardCharsets.UTF_8) );
     MockMultipartFile request = new MockMultipartFile("request", "request", "application/json", mapper.writeValueAsString(signInRequest).getBytes(StandardCharsets.UTF_8));
@@ -112,6 +110,6 @@ public class UserControllerTest {
                     .file(multipartFile2)
                     .file(request)
                     .contentType(MediaType.MULTIPART_FORM_DATA))
-            .andExpect(status().isOk());
+            .andExpect(status().is2xxSuccessful());
   }
 }

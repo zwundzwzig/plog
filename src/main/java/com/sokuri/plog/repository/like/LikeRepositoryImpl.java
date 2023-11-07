@@ -26,9 +26,9 @@ public class LikeRepositoryImpl implements LikeRepositoryCustom {
 
   @Override
   public int findLikeCountByFeedId(UUID feedId) {
-    return (int) jpaQueryFactory
+    return jpaQueryFactory
             .selectFrom(like)
             .where(like.feed.id.eq(feedId))
-            .fetchCount();
+            .fetch().size();
   }
 }

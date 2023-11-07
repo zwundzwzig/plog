@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class GeometryUtils {
   public Point createPoint(Double latitude, Double longitude) {
-//    GeometryFactory geometryFactory = new GeometryFactory();
-    GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+    GeometryFactory geometryFactory = new GeometryFactory();
+//    GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
     Coordinate coordinate = new Coordinate(longitude, latitude);
     return geometryFactory.createPoint(coordinate);
   }

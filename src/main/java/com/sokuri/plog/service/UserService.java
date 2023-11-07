@@ -10,7 +10,7 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.NoResultException;
+import jakarta.persistence.NoResultException;
 import java.util.UUID;
 
 @RequiredArgsConstructor

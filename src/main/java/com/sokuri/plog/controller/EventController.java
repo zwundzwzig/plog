@@ -5,6 +5,7 @@ import com.sokuri.plog.domain.dto.event.CreateEventsRequest;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.service.EventService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1.0/event")
+@Tag(name = "행사 정보", description = "행사 API")
 public class EventController {
     private final EventService eventService;
 

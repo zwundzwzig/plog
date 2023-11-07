@@ -3,12 +3,14 @@ package com.sokuri.plog.service;
 import com.sokuri.plog.domain.TrashCan;
 import com.sokuri.plog.domain.converter.RoadNameAddressToCoordinateConverter;
 import com.sokuri.plog.domain.dto.CoordinateDto;
+import com.sokuri.plog.domain.dto.trash.SearchNearbyTrashCanResponse;
 import com.sokuri.plog.domain.eums.TrashType;
 import com.sokuri.plog.repository.TrashRepository;
 import com.sokuri.plog.utils.GeometryUtils;
 import com.sokuri.plog.utils.GoogleApiUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.locationtech.jts.geom.Point;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +28,13 @@ public class TrashService {
 
   @SneakyThrows
   @Async
-  public List<CoordinateDto> setPublicTrashCan() {
+  public void setPublicTrashCan() {
     List<CoordinateDto> response = new ArrayList<>();
     List<Map<String, Object>> sheetData = googleApiUtil.getDataFromSheet().values().stream().toList();
     List<TrashCan> trashCans = sheetData.stream()
             .map(this::mapToTrashCan)
             .toList();
     trashRepository.saveAll(trashCans);
-    return response;
   }
 
   private TrashCan mapToTrashCan(Map<String, Object> data) {
@@ -83,5 +84,10 @@ public class TrashService {
     } else {
       return TrashType.ETC;
     }
+  }
+
+  public List<SearchNearbyTrashCanResponse> getNearbyTrashCanList(Double longitude, Double latitude, int range) {
+    Point point = geometryUtils.createPoint(latitude, longitude);
+    return trashRepository.findNearbyTrashCanList(point, range);
   }
 }

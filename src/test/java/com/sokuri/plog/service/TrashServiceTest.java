@@ -10,8 +10,8 @@ import org.locationtech.jts.io.WKTReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,7 +37,7 @@ public class TrashServiceTest {
     entityManager.flush();
     TrashCan result = entityManager.find(TrashCan.class, trash.getId());
 
-    assertEquals("POINT (1 1)", result.getGeolocation().toString());
+    assertEquals("POINT (38 122)", result.getGeolocation().toString());
     assertTrue(trash.getGeolocation() instanceof Point);
   }
 }

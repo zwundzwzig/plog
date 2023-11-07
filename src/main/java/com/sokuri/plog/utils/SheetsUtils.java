@@ -2,7 +2,7 @@ package com.sokuri.plog.utils;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.auth.http.HttpCredentialsAdapter;
@@ -22,7 +22,7 @@ public class SheetsUtils {
     @Value("${api.google.service-account-file-path}")
     private String SERVICE_ACCOUNT_FILE_PATH;
 
-    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+    private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
     public Sheets getSheetsFromServiceAccount() throws GeneralSecurityException, IOException {
         ServiceAccountCredentials serviceCredentials = ServiceAccountCredentials.fromStream(new FileInputStream("src/main/resources/" + SERVICE_ACCOUNT_FILE_PATH));

@@ -1,21 +1,22 @@
 package com.sokuri.plog.controller;
 
 import com.sokuri.plog.domain.dto.user.SignInRequest;
-import com.sokuri.plog.domain.dto.user.SignInResponse;
 import com.sokuri.plog.domain.dto.user.UserCheckResponse;
 import com.sokuri.plog.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/v1.0/user")
 @RequiredArgsConstructor
+@Tag(name = "유저 정보", description = "회원 API")
 public class UserController {
   private final UserService userService;
 
@@ -36,13 +37,13 @@ public class UserController {
   @Operation(summary = "회원가입")
   @ApiResponse(responseCode = "201", description = "Created")
   @PostMapping("/signIn")
-  public ResponseEntity<SignInResponse> postUserSignIn(
+  public ResponseEntity<Void> postUserSignIn(
           @RequestPart(value = "image", required = false) MultipartFile file,
           @RequestPart("request") SignInRequest request
   ) {
     request.setProfileImage(file);
-    SignInResponse response = userService.signIn(request);
+    userService.signIn(request);
 
-    return ResponseEntity.ok(response);
+    return ResponseEntity.noContent().build();
   }
 }

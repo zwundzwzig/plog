@@ -4,8 +4,8 @@ import com.sokuri.plog.domain.converter.StringToUuidConverter;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.annotation.Nullable;
-import javax.persistence.*;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
 import java.util.*;
 
 @Entity

@@ -18,7 +18,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
-@Tag(name = "community", description = "크루 API")
+@Tag(name = "크루 정보", description = "크루 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1.0/community")

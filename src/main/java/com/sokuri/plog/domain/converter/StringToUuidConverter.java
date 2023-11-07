@@ -1,8 +1,8 @@
 package com.sokuri.plog.domain.converter;
 
 import java.util.UUID;
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 @Converter
 public class StringToUuidConverter implements AttributeConverter<UUID, String> {

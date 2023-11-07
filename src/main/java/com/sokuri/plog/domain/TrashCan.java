@@ -6,10 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
-import org.hibernate.annotations.Type;
 import org.locationtech.jts.geom.Point;
 
 @Entity
@@ -19,7 +18,6 @@ import org.locationtech.jts.geom.Point;
 @AllArgsConstructor
 @Builder
 public class TrashCan {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "trash_id")
@@ -43,5 +41,4 @@ public class TrashCan {
     @Enumerated(EnumType.STRING)
     @Column
     private TrashType type;
-
 }
