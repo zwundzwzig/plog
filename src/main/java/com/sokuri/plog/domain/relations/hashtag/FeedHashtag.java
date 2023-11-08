@@ -12,7 +12,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "feed_hashtags")
 @Getter
-@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FeedHashtag {
     @Id
     @GeneratedValue(generator = "uuid2")

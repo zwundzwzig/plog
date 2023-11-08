@@ -19,7 +19,7 @@ import java.util.*;
 @Table(name = "feeds")
 @Getter
 @SuperBuilder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Feed extends BaseTimeEntity {
     @Id

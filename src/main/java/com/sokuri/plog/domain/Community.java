@@ -25,7 +25,7 @@ import static com.sokuri.plog.domain.converter.RoadNameAddressToCoordinateConver
 @Getter
 @ToString
 @SuperBuilder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Community extends BaseTimeEntity {
     @Id

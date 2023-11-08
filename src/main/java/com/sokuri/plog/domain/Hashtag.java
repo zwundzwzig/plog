@@ -2,9 +2,7 @@ package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.relations.hashtag.FeedHashtag;
 import com.sokuri.plog.domain.auditing.BaseTimeEntity;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
@@ -15,7 +13,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "hashtags")
 @Getter
-@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Hashtag extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid")
@@ -24,7 +24,6 @@ public class Hashtag extends BaseTimeEntity {
     private UUID id;
 
     @Column
-    @Setter
     private String name;
 
     @OneToMany(

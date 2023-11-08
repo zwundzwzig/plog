@@ -26,7 +26,7 @@ import static com.sokuri.plog.domain.converter.RoadNameAddressToCoordinateConver
 @Getter
 @ToString
 @SuperBuilder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Event extends BaseTimeEntity {
 

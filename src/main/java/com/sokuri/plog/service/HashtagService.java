@@ -30,8 +30,9 @@ public class HashtagService {
       if (existingHashtag.isPresent()) {
         hashtags.add(existingHashtag.get());
       } else {
-        Hashtag newHashtag = new Hashtag();
-        newHashtag.setName(hashtagName);
+//        Hashtag newHashtag = new Hashtag();
+//        newHashtag.setName(hashtagName);
+        Hashtag newHashtag = Hashtag.builder().name(hashtagName).build();
         hashtags.add(hashtagRepository.save(newHashtag));
       }
     }
@@ -44,10 +45,14 @@ public class HashtagService {
 
     Set<FeedHashtag> feedHashtags = hashtagSet.stream()
             .map(hashtag -> {
-              FeedHashtag feedHashtag = new FeedHashtag();
-              feedHashtag.setFeed(feed);
-              feedHashtag.setHashtag(hashtag);
-              return feedHashtag;
+              return FeedHashtag.builder()
+                      .feed(feed)
+                      .hashtag(hashtag)
+                      .build();
+//              FeedHashtag feedHashtag = new FeedHashtag();
+//              feedHashtag.setFeed(feed);
+//              feedHashtag.setHashtag(hashtag);
+//              return feedHashtag;
             })
             .collect(Collectors.toSet());
 

@@ -2,10 +2,7 @@ package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.auditing.BaseTimeEntity;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
@@ -18,7 +15,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "users")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class User extends BaseTimeEntity {

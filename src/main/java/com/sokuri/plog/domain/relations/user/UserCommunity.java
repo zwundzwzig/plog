@@ -3,6 +3,7 @@ package com.sokuri.plog.domain.relations.user;
 import com.sokuri.plog.domain.Community;
 import com.sokuri.plog.domain.User;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "user_communities")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserCommunity {
     @Id
     @GeneratedValue(generator = "uuid2")

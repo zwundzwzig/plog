@@ -1,10 +1,7 @@
 package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.eums.TrashType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -14,7 +11,7 @@ import org.locationtech.jts.geom.Point;
 @Entity
 @Table(name = "trash")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class TrashCan {
