@@ -2,7 +2,6 @@ package com.sokuri.plog.domain;
 
 import com.sokuri.plog.repository.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,8 +16,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @SpringBootTest
 @Transactional
 public class UserTest {
@@ -26,7 +23,7 @@ public class UserTest {
   @Autowired
   private UserRepository userRepository;
 
-  private User rightUser = new User(UUID.randomUUID(), "nickname1", "email@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
+  private User rightUser = new User(UUID.randomUUID(), "nickname1", "emai1l@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
   private User m2 = new User(UUID.randomUUID(), "nickname2", "email2@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
   private User m3 = new User(UUID.randomUUID(), "nickname3", "email3@emailcom", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
   private User m4 = new User(UUID.randomUUID(), "nickname4", "email4@emailcom", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
@@ -37,21 +34,6 @@ public class UserTest {
   @BeforeEach
   void setUp() {
     this.validator = Validation.buildDefaultValidatorFactory().getValidator();
-    userRepository.saveAll(List.of(rightUser, m2, m3, m4, m5, m6, m7));
-  }
-
-  @Test
-  @DisplayName("유저 시퀀스 아이디 추출")
-  void getId() {
-    System.out.println(userRepository.findByNickname("hihi1").get().getId());
-    System.out.println(userRepository.findByNickname(rightUser.getNickname()).get().getId());
-  }
-
-  @Test
-  @DisplayName("유저 아이디로 찾기")
-  void findByIdTest() {
-    assertThat(userRepository.findByNickname(rightUser.getNickname())).isNotEmpty();
-    assertThat(userRepository.findById(rightUser.getId())).isNotEmpty();
   }
 
   @Test

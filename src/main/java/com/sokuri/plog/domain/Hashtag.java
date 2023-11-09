@@ -32,5 +32,6 @@ public class Hashtag extends BaseTimeEntity {
             , cascade = CascadeType.PERSIST
             , orphanRemoval = true
     )
+    @Builder.Default
     private Set<FeedHashtag> feeds = new HashSet<>();
 }

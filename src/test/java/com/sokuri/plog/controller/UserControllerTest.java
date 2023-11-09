@@ -108,6 +108,6 @@ public class UserControllerTest {
                     .file(multipartFile1)
                     .file(request)
                     .contentType(MediaType.MULTIPART_FORM_DATA))
-            .andExpect(status().is2xxSuccessful());
+            .andExpect(status().isNoContent());
   }
 }

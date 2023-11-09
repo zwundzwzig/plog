@@ -1,16 +1,13 @@
 package com.sokuri.plog.controller;
 
-import com.sokuri.plog.domain.dto.feed.FeedSummaryResponse;
 import com.sokuri.plog.domain.dto.user.SignInRequest;
 import com.sokuri.plog.domain.dto.user.SignInResponse;
 import com.sokuri.plog.domain.dto.user.UserCheckResponse;
-import com.sokuri.plog.domain.eums.AccessStatus;
 import com.sokuri.plog.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.EnumUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

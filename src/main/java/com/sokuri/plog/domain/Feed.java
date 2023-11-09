@@ -56,6 +56,7 @@ public class Feed extends BaseTimeEntity {
             , cascade = CascadeType.PERSIST
             , orphanRemoval = true
     )
+    @Builder.Default
     private List<Like> likeCount = new ArrayList<>();
 
     @OneToMany(

@@ -24,7 +24,7 @@ public class LikeService {
     Optional<Like> checkLike = likeRepository.exist(UUID.fromString(userId), UUID.fromString(feedId));
     if (!checkLike.isPresent()) {
       Feed feed = feedService.findById(feedId);
-      User user = userService.findById(feedId);
+      User user = userService.findById(userId);
       like.setFeed(feed);
       like.setUser(user);
       likeRepository.save(like);

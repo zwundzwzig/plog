@@ -67,6 +67,6 @@ public class LikeTest {
   void pushLikeButtonForDeleteTest() {
     likeService.pushLikeButton(user.getId().toString(), feed.getId().toString());
     likeService.pushLikeButton(user.getId().toString(), feed.getId().toString());
-    assertThat(likeRepository.exist(user.getId(), feed.getId())).isNull();
+    assertThat(likeRepository.exist(user.getId(), feed.getId())).isEmpty();
   }
 }
