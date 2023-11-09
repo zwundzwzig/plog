@@ -14,6 +14,8 @@ public class FeedSummaryResponse {
   private String nickname;
   private String avatar;
   private List<String> images;
+  private int viewCount;
+  private Integer likeCount;
   private LocalDate createdAt;
   private String timeSinceUpload;
 }

@@ -10,35 +10,49 @@ import org.springframework.boot.test.context.SpringBootTest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest
+@Transactional
 public class UserTest {
   private Validator validator;
   @Autowired
   private UserRepository userRepository;
 
   private User rightUser = new User(UUID.randomUUID(), "nickname1", "email@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
-  private User m2 = new User(UUID.randomUUID(), "", "email@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
-  private User m3 = new User(UUID.randomUUID(), null, "email@emailcom", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
-  private User m4 = new User(UUID.randomUUID(), "nickname3", "email@emailcom", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
-  private User m5 = new User(UUID.randomUUID(), "nickname3", "emailemail.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
-  private User m6 = new User(UUID.randomUUID(), "nickname3", "", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
-  private User m7 = new User(UUID.randomUUID(), "nickname3", null, "", LocalDate.of(1994, 8, 2), "image.com", List.of());
+  private User m2 = new User(UUID.randomUUID(), "nickname2", "email2@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
+  private User m3 = new User(UUID.randomUUID(), "nickname3", "email3@emailcom", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
+  private User m4 = new User(UUID.randomUUID(), "nickname4", "email4@emailcom", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
+  private User m5 = new User(UUID.randomUUID(), "nickname5", "email5@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
+  private User m6 = new User(UUID.randomUUID(), "nickname6", "email6@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
+  private User m7 = new User(UUID.randomUUID(), "nickname7", "email7@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
 
   @BeforeEach
   void setUp() {
     this.validator = Validation.buildDefaultValidatorFactory().getValidator();
+    userRepository.saveAll(List.of(rightUser, m2, m3, m4, m5, m6, m7));
   }
 
-//  @Test
-//  @DisplayName("유저 시퀀스 아이디 추출")
-//  void getId() {
-//    System.out.println(userRepository.findByNickname("hihi1").get(0).getId());
-//  }
+  @Test
+  @DisplayName("유저 시퀀스 아이디 추출")
+  void getId() {
+    System.out.println(userRepository.findByNickname("hihi1").get().getId());
+    System.out.println(userRepository.findByNickname(rightUser.getNickname()).get().getId());
+  }
+
+  @Test
+  @DisplayName("유저 아이디로 찾기")
+  void findByIdTest() {
+    assertThat(userRepository.findByNickname(rightUser.getNickname())).isNotEmpty();
+    assertThat(userRepository.findById(rightUser.getId())).isNotEmpty();
+  }
 
   @Test
   void 유저_닉네임_유효성_검사() {

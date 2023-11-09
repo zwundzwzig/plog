@@ -1,6 +1,7 @@
 package com.sokuri.plog.controller;
 
 import com.sokuri.plog.domain.dto.feed.CreateFeedRequest;
+import com.sokuri.plog.domain.dto.feed.FeedDetailResponse;
 import com.sokuri.plog.domain.dto.feed.FeedSummaryResponse;
 import com.sokuri.plog.domain.eums.AccessStatus;
 import com.sokuri.plog.service.FeedService;
@@ -36,7 +37,7 @@ public class FeedController {
 
   @Operation(summary = "피드 상세 조회")
   @GetMapping("/{id}")
-  public ResponseEntity<?> getFeedDetail(@PathVariable String id) {
+  public ResponseEntity<FeedDetailResponse> getFeedDetail(@PathVariable(value = "id") String id) {
     return ResponseEntity.ok(feedService.getFeedDetail(id));
   }
 
@@ -76,7 +77,7 @@ public class FeedController {
 
   @Operation(summary = "피드 삭제")
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable String id) {
+  public ResponseEntity<Void> delete(@PathVariable(value = "id") String id) {
     feedService.delete(id);
     return ResponseEntity.noContent().build();
   }

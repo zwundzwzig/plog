@@ -35,7 +35,7 @@ public class EventController {
 
     @Operation(summary = "행사 상세 조회")
     @GetMapping("/{id}")
-    public ResponseEntity<?> getEventDetail(@PathVariable String id) {
+    public ResponseEntity<?> getEventDetail(@PathVariable(value = "id") String id) {
         return ResponseEntity.ok(eventService.getEventDetail(id));
     }
 
@@ -76,7 +76,7 @@ public class EventController {
 
     @Operation(summary = "행사 삭제")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
+    public ResponseEntity<Void> delete(@PathVariable(value = "id") String id) {
         eventService.delete(id);
         return ResponseEntity.noContent().build();
     }

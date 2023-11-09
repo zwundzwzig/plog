@@ -2,6 +2,7 @@ package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.auditing.BaseTimeEntity;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
+import com.sokuri.plog.domain.dto.user.SignInResponse;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -21,7 +22,7 @@ import java.util.UUID;
 public class User extends BaseTimeEntity {
   @Id
   @GeneratedValue(generator = "uuid2")
-  @GenericGenerator(name="uuid2", strategy = "uuid2")
+  @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
   @Column(name = "user_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
   @Convert(converter = StringToUuidConverter.class)
   private UUID id;
@@ -47,4 +48,13 @@ public class User extends BaseTimeEntity {
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private List<Feed> feeds;
+
+  public SignInResponse toSummaryResponse() {
+    return SignInResponse.builder()
+            .id(id)
+            .nickname(nickname)
+            .email(email)
+            .profileImage(profileImage)
+            .build();
+  }
 }

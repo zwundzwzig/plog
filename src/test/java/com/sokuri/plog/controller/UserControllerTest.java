@@ -101,13 +101,11 @@ public class UserControllerTest {
   @DisplayName("회원 가입")
   void signInTest() throws Exception {
     MockMultipartFile multipartFile1 = new MockMultipartFile("files", "test.jpeg", "multipart/form-data", "test file".getBytes(StandardCharsets.UTF_8) );
-    MockMultipartFile multipartFile2 = new MockMultipartFile("files", "test2.jpeg", "multipart/form-data", "test file2".getBytes(StandardCharsets.UTF_8) );
     MockMultipartFile request = new MockMultipartFile("request", "request", "application/json", mapper.writeValueAsString(signInRequest).getBytes(StandardCharsets.UTF_8));
 
 
     mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + "/signIn")
                     .file(multipartFile1)
-                    .file(multipartFile2)
                     .file(request)
                     .contentType(MediaType.MULTIPART_FORM_DATA))
             .andExpect(status().is2xxSuccessful());

@@ -6,7 +6,6 @@ import com.sokuri.plog.domain.dto.feed.FeedDetailResponse;
 import com.sokuri.plog.domain.dto.feed.FeedSummaryResponse;
 import com.sokuri.plog.domain.eums.AccessStatus;
 import com.sokuri.plog.repository.feed.FeedRepository;
-import com.sokuri.plog.repository.like.LikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +18,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FeedService {
   private final FeedRepository feedRepository;
-  private final LikeRepository likeRepository;
   private final UserService userService;
   private final ImageService imageService;
   private final HashtagService hashtagService;
+
+  private void isValidUUID(String id) {
+    try {
+      UUID.fromString(id);
+    } catch (IllegalArgumentException e) {
+      throw new IllegalArgumentException("유효하지 않은 UUID입니다: " + id);
+    }
+  }
 
   @Transactional(readOnly = true)
   public Feed findById(String id) {
@@ -45,19 +51,18 @@ public class FeedService {
   }
 
   public FeedDetailResponse getFeedDetail(String id) {
-    UUID uuid = UUID.fromString(id);
-    Feed feed = feedRepository.findById(uuid)
+    isValidUUID(id);
+    Feed feed = feedRepository.findById(UUID.fromString(id))
             .orElseThrow(() -> new NoResultException("해당 ID 값을 가진 피드는 존재하지 않아요."));
 
     FeedDetailResponse response = feed.toDetailResponse();
-    response.setLikes(likeRepository.findLikeCountByFeedId(uuid));
     return response;
   }
 
   @Transactional
   public Map<String, String> create(CreateFeedRequest request) {
     Feed feed = request.toEntity();
-    feed.setUser(userService.getUserInfo(request.getUser()));
+    feed.setUser(userService.findById(request.getUser()));
 
     Feed response = feedRepository.save(feed);
 

@@ -37,7 +37,7 @@ public class CommunityController {
 
   @Operation(summary = "크루 모집 상세 조회")
   @GetMapping("/{id}")
-  public ResponseEntity<?> getCommunityDetail(@PathVariable String id) {
+  public ResponseEntity<?> getCommunityDetail(@PathVariable(value = "id") String id) {
     return ResponseEntity.ok(communityService.getCommunityDetail(id));
   }
 
@@ -61,7 +61,7 @@ public class CommunityController {
   @Operation(summary = "크루 모집 수정")
   @PutMapping("/{id}")
   public ResponseEntity<CreateCommunityRequest> update(
-          @PathVariable String id,
+          @PathVariable(value = "id") String id,
           @RequestPart(value = "files", required = false) List<MultipartFile> file,
           @RequestPart("request") CreateCommunityRequest request
   ) {
@@ -78,7 +78,7 @@ public class CommunityController {
 
   @Operation(summary = "크루 모집 삭제")
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable String id) {
+  public ResponseEntity<Void> delete(@PathVariable(value = "id") String id) {
     communityService.delete(id);
     return ResponseEntity.noContent().build();
   }

@@ -13,7 +13,8 @@ public class FeedDetailResponse {
   private String avatar;
   private String description;
   private List<String> hashtags;
-  private int likes;
+  private int viewCount;
+  private Integer likeCount;
   private List<String> images;
   private LocalDateTime createdAt;
   private String timeSinceUpload;

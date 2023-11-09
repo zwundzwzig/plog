@@ -14,14 +14,13 @@ public class LikeRepositoryImpl implements LikeRepositoryCustom {
 
   private final JPAQueryFactory jpaQueryFactory;
 
+  @Override
   public Optional<Like> exist(UUID userId, UUID feedId) {
-    Like pLike = jpaQueryFactory
+    return Optional.ofNullable(jpaQueryFactory
             .selectFrom(like)
             .where(like.user.id.eq(userId),
                     like.feed.id.eq(feedId))
-            .fetchFirst();
-
-    return Optional.ofNullable(pLike);
+            .fetchOne());
   }
 
   @Override

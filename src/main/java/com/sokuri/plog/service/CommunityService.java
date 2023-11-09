@@ -73,7 +73,7 @@ public class CommunityService {
     checkDuplicatedCommunity(request.getTitle());
 
     Community community = request.toEntity();
-    community.setOrganizer(userService.getUserInfo(request.getUser()));
+    community.setOrganizer(userService.findById(request.getUser()));
 
     Community response = communityRepository.save(community);
 

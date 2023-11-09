@@ -4,7 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sokuri.plog.domain.User;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
+import java.util.Optional;
 
 import static com.sokuri.plog.domain.QUser.user;
 
@@ -13,9 +13,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
   private final JPAQueryFactory queryFactory;
 
   @Override
-  public List<User> findByNickname(String nickname) {
-    return queryFactory.selectFrom(user)
+  public Optional<User> findByNickname(String nickname) {
+    return Optional.ofNullable(queryFactory.selectFrom(user)
             .where(user.nickname.eq(nickname))
-            .fetch();
+            .fetchOne());
   }
 }
