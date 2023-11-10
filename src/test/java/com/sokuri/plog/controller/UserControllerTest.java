@@ -103,7 +103,6 @@ public class UserControllerTest {
     MockMultipartFile multipartFile1 = new MockMultipartFile("files", "test.jpeg", "multipart/form-data", "test file".getBytes(StandardCharsets.UTF_8) );
     MockMultipartFile request = new MockMultipartFile("request", "request", "application/json", mapper.writeValueAsString(signInRequest).getBytes(StandardCharsets.UTF_8));
 
-
     mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + "/signIn")
                     .file(multipartFile1)
                     .file(request)

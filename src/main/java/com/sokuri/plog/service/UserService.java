@@ -66,7 +66,7 @@ public class UserService {
   @SneakyThrows
   @Transactional
   public SignInResponse signIn(SignInRequest request) {
-    request.setImageUrl(imageService.uploadS3Image(request.getProfileImage(), "user"));
+    request.setImageUrl(imageService.uploadS3Image(request.getProfileImage(), "user").toString());
     User user = createUser(request);
 
     return SignInResponse.builder()

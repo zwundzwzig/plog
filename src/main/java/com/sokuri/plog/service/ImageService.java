@@ -22,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,9 +40,9 @@ public class ImageService {
   private final String EVENT_DIRECTORY = "event";
   @Async
   @Transactional
-  public String uploadS3Image(MultipartFile file, String directory) throws IOException {
-    if (file.isEmpty()) return new String();
-    return s3Upload.uploadToAws(file, directory);
+  public Future<String> uploadS3Image(MultipartFile file, String directory) throws IOException {
+    if (file.isEmpty()) return CompletableFuture.completedFuture("");
+    return CompletableFuture.completedFuture(s3Upload.uploadToAws(file, directory));
   }
 
   @Transactional
@@ -60,7 +62,7 @@ public class ImageService {
 
   private CommunityImage setCommunityImageEntity(MultipartFile file, Community community) {
     try {
-      String url = uploadS3Image(file, COMMUNITY_DIRECTORY);
+      String url = uploadS3Image(file, COMMUNITY_DIRECTORY).toString();
       if (url.isEmpty()) return null;
       Image image = saveImage(url);
 
@@ -85,7 +87,7 @@ public class ImageService {
 
   private FeedImage setFeedImageEntity(MultipartFile file, Feed feed) {
     try {
-      String url = uploadS3Image(file, FEED_DIRECTORY);
+      String url = uploadS3Image(file, FEED_DIRECTORY).toString();
       if (url.isEmpty()) return null;
       Image image = saveImage(url);
 
@@ -110,7 +112,7 @@ public class ImageService {
 
   private EventImage setEventImageEntity(MultipartFile file, Event event) {
     try {
-      String url = uploadS3Image(file, EVENT_DIRECTORY);
+      String url = uploadS3Image(file, EVENT_DIRECTORY).toString();
       if (url.isEmpty()) return null;
       Image image = saveImage(url);
 
