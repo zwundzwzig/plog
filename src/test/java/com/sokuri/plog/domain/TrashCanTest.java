@@ -17,6 +17,7 @@ import java.util.List;
 
 @SpringBootTest
 @Transactional
+@SuppressWarnings("unchecked")
 class TrashCanTest {
   @Autowired
   TrashRepository trashRepository;

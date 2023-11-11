@@ -16,8 +16,8 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Follow {
   @Id
-  @GeneratedValue(generator = "uuid2")
-  @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+  @GeneratedValue(generator = "follow")
+  @GenericGenerator(name = "follow", strategy = "org.hibernate.id.UUIDGenerator")
   @Column(name = "follow_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
   @Convert(converter = StringToUuidConverter.class)
   private UUID id;

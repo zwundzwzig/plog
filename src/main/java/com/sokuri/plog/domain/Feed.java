@@ -26,8 +26,8 @@ import java.util.*;
 @AllArgsConstructor
 public class Feed extends BaseTimeEntity {
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(generator = "feed")
+    @GenericGenerator(name = "feed", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "feed_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
     @Convert(converter = StringToUuidConverter.class)
     private UUID id;

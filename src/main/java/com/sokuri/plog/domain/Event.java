@@ -31,8 +31,8 @@ import static com.sokuri.plog.domain.converter.RoadNameAddressToCoordinateConver
 public class Event extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(generator = "event")
+    @GenericGenerator(name = "event", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "event_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
     @Convert(converter = StringToUuidConverter.class)
     private UUID id;

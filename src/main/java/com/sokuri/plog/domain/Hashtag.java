@@ -18,8 +18,8 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Hashtag extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid")
-    @GenericGenerator(name="uuid2", strategy = "uuid2")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "hashtag")
+    @GenericGenerator(name="hashtag", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "hashtag_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
     private UUID id;
 

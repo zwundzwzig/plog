@@ -21,8 +21,8 @@ import java.util.UUID;
 @Builder
 public class User extends BaseTimeEntity {
   @Id
-  @GeneratedValue(generator = "uuid2")
-  @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+  @GeneratedValue(generator = "user")
+  @GenericGenerator(name = "user", strategy = "org.hibernate.id.UUIDGenerator")
   @Column(name = "user_id", columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
   @Convert(converter = StringToUuidConverter.class)
   private UUID id;

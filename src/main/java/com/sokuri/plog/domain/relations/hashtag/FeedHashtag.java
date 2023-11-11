@@ -17,8 +17,8 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FeedHashtag {
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(generator = "feed")
+    @GenericGenerator(name = "feed", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(columnDefinition = "BINARY(16) DEFAULT (UNHEX(REPLACE(UUID(), \"-\", \"\")))")
     @Convert(converter = StringToUuidConverter.class)
     private UUID id;
