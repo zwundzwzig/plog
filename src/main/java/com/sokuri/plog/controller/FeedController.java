@@ -28,7 +28,7 @@ public class FeedController {
 
   @Operation(summary = "전체 피드 목록 조회")
   @GetMapping("")
-  public ResponseEntity<?> getFeedList(@RequestParam(value = "status", required = false) String status) {
+  public ResponseEntity<List<FeedSummaryResponse>> getFeedList(@RequestParam(value = "status", required = false) String status) {
     List<FeedSummaryResponse> response = EnumUtils.isValidEnumIgnoreCase(AccessStatus.class, status)
             ? feedService.getFeedList(AccessStatus.valueOf(status.toUpperCase()))
             : feedService.getAllFeedList();

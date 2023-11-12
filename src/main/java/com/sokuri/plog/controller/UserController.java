@@ -25,9 +25,8 @@ public class UserController {
 
   @Operation(description = "임시적으로 필요", summary = "전체 유저 목록 조회")
   @GetMapping("")
-  public ResponseEntity<?> getUserList() {
-    List<SignInResponse> response = userService.getAllUserList();
-    return ResponseEntity.ok(response);
+  public ResponseEntity<List<SignInResponse>> getUserList() {
+    return ResponseEntity.ok(userService.getAllUserList());
   }
 
   @Operation(summary = "유저 이메일 중복  체크")

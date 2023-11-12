@@ -22,7 +22,7 @@ public class TrashController {
 
   @Operation(summary = "쓰레기통 세팅")
   @GetMapping("")
-  public ResponseEntity<?> setPublicTrashCan() {
+  public ResponseEntity<Void> setPublicTrashCan() {
     trashService.setPublicTrashCan();
     return ResponseEntity.ok().build();
   }

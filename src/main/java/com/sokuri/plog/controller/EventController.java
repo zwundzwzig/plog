@@ -1,5 +1,6 @@
 package com.sokuri.plog.controller;
 
+import com.sokuri.plog.domain.dto.event.EventDetailResponse;
 import com.sokuri.plog.domain.dto.event.EventSummaryResponse;
 import com.sokuri.plog.domain.dto.event.CreateEventsRequest;
 import com.sokuri.plog.domain.eums.RecruitStatus;
@@ -26,7 +27,7 @@ public class EventController {
 
     @Operation(summary = "전체 행사 목록 조회")
     @GetMapping("")
-    public ResponseEntity<?> getEventList(@RequestParam(value = "status", required = false) String status) {
+    public ResponseEntity<List<EventSummaryResponse>> getEventList(@RequestParam(value = "status", required = false) String status) {
         List<EventSummaryResponse> response = EnumUtils.isValidEnumIgnoreCase(RecruitStatus.class, status)
                 ? eventService.getEventList(RecruitStatus.valueOf(status.toUpperCase()))
                 : eventService.getAllEventList();
@@ -35,7 +36,7 @@ public class EventController {
 
     @Operation(summary = "행사 상세 조회")
     @GetMapping("/{id}")
-    public ResponseEntity<?> getEventDetail(@PathVariable(value = "id") String id) {
+    public ResponseEntity<EventDetailResponse> getEventDetail(@PathVariable(value = "id") String id) {
         return ResponseEntity.ok(eventService.getEventDetail(id));
     }
 

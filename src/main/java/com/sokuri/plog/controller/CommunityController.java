@@ -1,5 +1,6 @@
 package com.sokuri.plog.controller;
 
+import com.sokuri.plog.domain.dto.community.CommunityDetailResponse;
 import com.sokuri.plog.domain.dto.community.CommunitySummaryResponse;
 import com.sokuri.plog.domain.dto.community.CreateCommunityRequest;
 import com.sokuri.plog.domain.eums.RecruitStatus;
@@ -28,7 +29,7 @@ public class CommunityController {
 
   @Operation(summary = "전체 크루 모집 목록 조회")
   @GetMapping("")
-  public ResponseEntity<?> getCommunityList(@RequestParam(value = "status", required = false) String status) {
+  public ResponseEntity<List<CommunitySummaryResponse>> getCommunityList(@RequestParam(value = "status", required = false) String status) {
     List<CommunitySummaryResponse> response = EnumUtils.isValidEnumIgnoreCase(RecruitStatus.class, status)
             ? communityService.getCommunityList(RecruitStatus.valueOf(status.toUpperCase()))
             : communityService.getAllCommunityList();
@@ -37,7 +38,7 @@ public class CommunityController {
 
   @Operation(summary = "크루 모집 상세 조회")
   @GetMapping("/{id}")
-  public ResponseEntity<?> getCommunityDetail(@PathVariable(value = "id") String id) {
+  public ResponseEntity<CommunityDetailResponse> getCommunityDetail(@PathVariable(value = "id") String id) {
     return ResponseEntity.ok(communityService.getCommunityDetail(id));
   }
 
