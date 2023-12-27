@@ -90,7 +90,7 @@ public class Community extends BaseTimeEntity {
                         .map(image -> image.getImage().getUrl())
                         .toList() : null)
                 .maxParticipants(maxParticipants)
-                .createdAt(getCreateDate())
+                .createdAt(getCreatedDate())
                 .currentParticipants(currentParticipants)
                 .location(location)
                 .build();

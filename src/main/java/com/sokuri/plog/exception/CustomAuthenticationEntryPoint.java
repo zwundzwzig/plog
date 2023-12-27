@@ -1,6 +1,5 @@
 package com.sokuri.plog.exception;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
@@ -36,7 +35,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
       setResponse(response, CustomErrorCode.UNSUPPORTED_TOKEN);
     }
     else {
-      setResponse(response, CustomErrorCode.ACCESS_DENIED);
+      setResponse(response, CustomErrorCode.UNKNOWN_ERROR);
     }
   }
 

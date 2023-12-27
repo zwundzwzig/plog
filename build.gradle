@@ -73,6 +73,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.findify:s3mock_2.13:0.2.6'
     testImplementation 'com.jayway.jsonpath:json-path'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'it.ozimov:embedded-redis:0.7.2'
 
 //    developmentOnly("org.springframework.boot:spring-boot-devtools")
 }

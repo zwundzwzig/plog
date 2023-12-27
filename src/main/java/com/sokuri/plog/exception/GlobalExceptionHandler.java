@@ -57,4 +57,10 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(ex.getMessage());
   }
+
+  @ExceptionHandler(BaseException.class)
+  public ResponseEntity<?> baseException(BaseException ex) {
+    return ResponseEntity.status(ex.getStatus().getCode())
+            .body(ex.getMessage());
+  }
 }

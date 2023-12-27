@@ -89,7 +89,7 @@ public class Event extends BaseTimeEntity {
                 .title(title)
                 .beginEvent(eventPeriod != null ? eventPeriod.getBeginEvent() : null)
                 .finishEvent(eventPeriod != null ? eventPeriod.getFinishEvent() : null)
-                .createdAt(getCreateDate())
+                .createdAt(getCreatedDate())
                 .images(!images.isEmpty()
                         ? images.stream()
                         .map(image -> image.getImage().getUrl())
