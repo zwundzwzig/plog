@@ -17,8 +17,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
-import java.io.IOException;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -34,7 +32,7 @@ public class SecurityConfig {
           "/swagger-ui/**",
           "/webjars/**",
           "/h2-console/**",
-          "/v1.0/user/sign-*",
+          "/v1.0/user/sign-**",
           "/v1.0/auth/**",
           "/v3/api-docs/**"
   };
