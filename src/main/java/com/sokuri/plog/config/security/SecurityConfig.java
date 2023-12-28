@@ -71,6 +71,7 @@ public class SecurityConfig {
   public LogoutHandler logoutHandler() {
     return (request, response, authentication) -> {
       String token = jwtProvider.resolveToken(request);
+      jwtProvider.validateToken(token);
       Authentication auth = jwtProvider.getAuthenticationByToken(token);
       redisTemplate.delete(auth.getName());
     };

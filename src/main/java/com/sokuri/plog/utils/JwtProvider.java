@@ -132,9 +132,8 @@ public class JwtProvider {
     public String resolveToken(HttpServletRequest req) {
         try {
             String bearerToken = req.getHeader(accessHeader);
-            if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(prefix)) {
+            if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(prefix))
                 return bearerToken.substring(7);
-            }
         } catch (ExpiredJwtException e) {
             log.error(NOT_EXIST_REFRESH_TOKEN.getMessage());
             throw new BaseException(NOT_EXIST_REFRESH_TOKEN);
@@ -145,8 +144,8 @@ public class JwtProvider {
     public void validateToken(String token) {
         try{
             Claims claims = parseClaims(token);
-            System.out.println("token :: " + token);
-            System.out.println(claims);
+            log.info("token :: " + token);
+            log.info(claims.toString());
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
         } catch(ExpiredJwtException e) {
             log.error(EXPIRED_TOKEN.getMessage());
