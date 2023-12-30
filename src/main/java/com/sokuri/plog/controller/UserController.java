@@ -49,7 +49,7 @@ public class UserController {
   @PostMapping("/sign-up")
   public ResponseEntity<SignInResponse> signUp(
           @RequestPart(value = "image", required = false) MultipartFile file,
-          @RequestPart("request") SignUpRequest request
+          @Valid @RequestPart("request") SignUpRequest request
   ) {
     request.setProfileImage(file);
     SignInResponse response = userService.signUp(request);

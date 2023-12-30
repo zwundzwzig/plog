@@ -17,6 +17,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
+import java.util.Set;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -73,7 +75,9 @@ public class SecurityConfig {
       String token = jwtProvider.resolveToken(request);
       jwtProvider.validateToken(token);
       Authentication auth = jwtProvider.getAuthenticationByToken(token);
-      redisTemplate.delete(auth.getName());
+
+      Set<String> keysToDelete = redisTemplate.keys(auth.getName() + "*");
+      redisTemplate.delete(keysToDelete);
     };
   }
 
