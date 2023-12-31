@@ -1,8 +1,6 @@
 package com.sokuri.plog.utils;
 
 import com.sokuri.plog.domain.dto.user.TokenResponse;
-import com.sokuri.plog.domain.eums.Role;
-import com.sokuri.plog.exception.BaseException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,11 +54,12 @@ public class JwtProvider {
 
     private Date now = new Date();
 
-    public TokenResponse generateToken(String id) {
+    public TokenResponse generateToken(String id, String role) {
         Claims claims = Jwts.claims().setId(id);
+        claims.put("role", role);
 
-        String accessToken = generateAccessToken(claims);
-        String refreshToken = generateRefreshToken(claims);
+        String accessToken = generateAccessToken(claims, role);
+        String refreshToken = generateRefreshToken(claims, role);
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
@@ -68,19 +67,18 @@ public class JwtProvider {
                 .build();
     }
 
-    public String generateAccessToken(Claims claims){
+    public String generateAccessToken(Claims claims, String role) {
         Date expireDate = new Date(now.getTime() + accessExpirationTime);
 
         String accessToken = Jwts.builder()
                 .setClaims(claims)
-                .claim("role", Role.USER)
                 .setIssuedAt(now)
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS512, secretKey)
                 .compact();
 
         redisTemplate.opsForValue().set(
-                claims.getId() + "_access",
+                claims.getId(),
                 accessToken,
                 accessExpirationTime,
                 TimeUnit.MILLISECONDS
@@ -89,7 +87,7 @@ public class JwtProvider {
         return accessToken;
     }
 
-    public String generateRefreshToken(Claims claims){
+    public String generateRefreshToken(Claims claims, String role) {
         Date expireDate = new Date(now.getTime() + refreshExpirationTime);
 
         String refreshToken = Jwts.builder()
@@ -100,7 +98,7 @@ public class JwtProvider {
                 .compact();
 
         redisTemplate.opsForValue().set(
-                claims.getId() + "_refresh",
+                claims.getId() + refresh,
                 refreshToken,
                 refreshExpirationTime,
                 TimeUnit.MILLISECONDS
@@ -127,14 +125,10 @@ public class JwtProvider {
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
-    public String resolveToken(HttpServletRequest req) {
-        try {
-            String bearerToken = req.getHeader(accessHeader);
-            if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(prefix))
-                return bearerToken.substring(7);
-        } catch (ExpiredJwtException e) {
-            log.error(NOT_EXIST_REFRESH_TOKEN.getMessage());
-            throw new BaseException(NOT_EXIST_REFRESH_TOKEN);
+    public String resolveToken(HttpServletRequest request) {
+        String accessToken = request.getHeader(accessHeader);
+        if (StringUtils.hasText(accessToken) && accessToken.startsWith(prefix)) {
+            return accessToken.substring(7);
         }
         return null;
     }
@@ -148,9 +142,6 @@ public class JwtProvider {
         } catch(ExpiredJwtException e) {
             log.error(EXPIRED_TOKEN.getMessage());
             throw new AccessDeniedException("토큰이 만료되었습니다. 다시 로그인해 주세요.");
-        } catch(MalformedJwtException e) {
-            log.error(WRONG_TYPE_TOKEN.getMessage());
-            throw new BaseException(WRONG_TYPE_TOKEN);
         } catch(JwtException e) {
             log.error(UNSUPPORTED_TOKEN.getMessage());
             throw new SignatureException(e.getMessage());
@@ -171,8 +162,8 @@ public class JwtProvider {
                     .build()
                     .parseClaimsJws(accessToken)
                     .getBody();
-        } catch (JwtException e) {
-            throw new JwtException(e.getMessage());
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
         }
     }
 }

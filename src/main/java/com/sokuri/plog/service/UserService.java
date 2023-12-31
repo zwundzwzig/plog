@@ -93,7 +93,7 @@ public class UserService {
   @Transactional
   public HttpHeaders signIn(SignInRequest request) {
     User targetUser = findByEmail(request.getEmail());
-    TokenResponse token = jwtProvider.generateToken(targetUser.getId().toString());
+    TokenResponse token = jwtProvider.generateToken(targetUser.getId().toString(), targetUser.getRole().getKey());
     return jwtProvider.setTokenHeaders(token);
   }
 

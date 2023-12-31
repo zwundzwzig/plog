@@ -12,17 +12,12 @@ public class CorsConfig {
   public CorsFilter corsFilter() {
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowCredentials(true);
-    config.addAllowedOrigin("*");
+    config.addAllowedOriginPattern("*");
     config.addAllowedHeader("*");
     config.addAllowedMethod("*");
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/v1.0/feed/**", config);
-    source.registerCorsConfiguration("/v1.0/event/**", config);
-    source.registerCorsConfiguration("/v1.0/community/**", config);
-    source.registerCorsConfiguration("/v1.0/user/**", config);
-    source.registerCorsConfiguration("/v1.0/trash/**", config);
-
+    source.registerCorsConfiguration("/**", config); // 모든 경로에 대해 CORS 구성 적용
     return new CorsFilter(source);
   }
 }

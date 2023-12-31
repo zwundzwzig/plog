@@ -35,7 +35,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
       setResponse(response, CustomErrorCode.UNSUPPORTED_TOKEN);
     }
     else {
-      setResponse(response, CustomErrorCode.UNKNOWN_ERROR);
+      setResponse(response, CustomErrorCode.ACCESS_DENIED);
     }
   }
 
@@ -49,4 +49,3 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     response.getWriter().print(json.toString().getBytes(StandardCharsets.UTF_8));
   }
 }
-

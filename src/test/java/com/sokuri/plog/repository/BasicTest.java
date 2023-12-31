@@ -2,6 +2,8 @@ package com.sokuri.plog.repository;
 
 import com.sokuri.plog.domain.Feed;
 import com.sokuri.plog.domain.User;
+import com.sokuri.plog.domain.eums.Role;
+import com.sokuri.plog.domain.eums.SocialProvider;
 import com.sokuri.plog.repository.user.UserQueryRepository;
 import com.sokuri.plog.repository.user.UserRepository;
 import com.sokuri.plog.repository.user.UserRepositorySupport;
@@ -38,7 +40,7 @@ public class BasicTest {
     LocalDate birthday = LocalDate.of(2023, 01, 01);
     String profileImage = "http://123.123.123.com";
     List<Feed> feeds = new ArrayList<>();
-    userRepository.save(new User(UUID.randomUUID(), nickname, address, password, birthday, profileImage, feeds));
+    userRepository.save(new User(UUID.randomUUID(), nickname, address, password, birthday, profileImage, feeds, Role.USER, SocialProvider.KAKAO));
 
     //when
     List<User> result = userRepositorySupport.findByNickname(nickname);
@@ -59,7 +61,7 @@ public class BasicTest {
     LocalDate birthday = LocalDate.of(2023, 01, 01);
     String profileImage = "http://123.123.123.com";
     List<Feed> feeds = new ArrayList<>();
-    userRepository.save(new User(UUID.randomUUID(), nickname, address, password, birthday, profileImage, feeds));
+    userRepository.save(new User(UUID.randomUUID(), nickname, address, password, birthday, profileImage, feeds, Role.USER, SocialProvider.KAKAO));
 
     //when
     List<User> result = userQueryRepository.findByNickname(nickname);
