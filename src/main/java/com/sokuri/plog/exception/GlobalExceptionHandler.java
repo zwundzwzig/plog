@@ -1,5 +1,6 @@
 package com.sokuri.plog.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import jakarta.persistence.NoResultException;
 import jakarta.validation.ConstraintViolationException;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -58,9 +60,17 @@ public class GlobalExceptionHandler {
             .body(ex.getMessage());
   }
 
-  @ExceptionHandler(BaseException.class)
-  public ResponseEntity<?> baseException(BaseException ex) {
-    return ResponseEntity.status(ex.getStatus().getCode())
-            .body(ex.getMessage());
+  @ExceptionHandler({Exception.class, RuntimeException.class})
+  protected ResponseEntity<StatusResponse> catchException(RuntimeException ex) {
+    log.error("예외 핸들링",ex);
+    return ResponseEntity.internalServerError().body(StatusResponse.addStatus(500));
+  }
+
+  @ExceptionHandler(value = BaseException.class)
+  protected ResponseEntity<ErrorResponse> handleCustomException(BaseException ex) {
+    log.error("--- CustomException ---",ex);
+    CustomErrorCode errorCode = ex.getStatus();
+    return ResponseEntity.status(errorCode.getCode())
+            .body(ErrorResponse.toErrorResponse(errorCode));
   }
 }

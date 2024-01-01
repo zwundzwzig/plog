@@ -113,7 +113,7 @@ public class JwtProvider {
     public Authentication getAuthenticationByToken(String accessToken) {
         Claims claims = parseClaims(accessToken);
 
-        if(claims.get("role") == null) throw new RuntimeException("권한 정보가 없는 토큰 입니다.");
+        if(claims.get("role") == null) throw new AccessDeniedException(ACCESS_DENIED.getMessage());
 
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get("role").toString().split(","))

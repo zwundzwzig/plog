@@ -1,6 +1,5 @@
 package com.sokuri.plog.utils;
 
-import com.sokuri.plog.exception.CustomErrorCode;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
@@ -17,6 +16,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
+
+import static com.sokuri.plog.exception.CustomErrorCode.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -37,12 +38,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Authentication authentication = jwtProvider.getAuthenticationByToken(accessToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
       } catch (ExpiredJwtException e){
-        request.setAttribute("exception", CustomErrorCode.EXPIRED_TOKEN.getCode());
+        request.setAttribute("exception", EXPIRED_TOKEN.getCode());
       } catch (MalformedJwtException e){
-        request.setAttribute("exception", CustomErrorCode.WRONG_TYPE_TOKEN.getCode());
+        request.setAttribute("exception", WRONG_TYPE_TOKEN.getCode());
       } catch (RedisConnectionFailureException e) {
         SecurityContextHolder.clearContext();
-        request.setAttribute("exception", CustomErrorCode.REDIS_ERROR.getCode());
+        request.setAttribute("exception", REDIS_ERROR.getCode());
       }
     }
 

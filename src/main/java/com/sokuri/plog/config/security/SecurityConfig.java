@@ -1,9 +1,9 @@
 package com.sokuri.plog.config.security;
 
 import com.sokuri.plog.config.CorsConfig;
+import com.sokuri.plog.exception.BaseException;
 import com.sokuri.plog.exception.CustomAccessDeniedHandler;
 import com.sokuri.plog.exception.CustomAuthenticationEntryPoint;
-import com.sokuri.plog.exception.CustomErrorCode;
 import com.sokuri.plog.utils.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +20,8 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.util.StringUtils;
 
 import java.util.Set;
+
+import static com.sokuri.plog.exception.CustomErrorCode.TOKEN_NOT_FOUND;
 
 @Configuration
 @EnableWebSecurity
@@ -55,11 +57,13 @@ public class SecurityConfig {
                     authorizeRequest
                             .requestMatchers(AUTH_WHITELIST).permitAll()
                             .anyRequest().authenticated())
+
             .logout(logoutConfigurer -> logoutConfigurer
                     .logoutUrl("/v1.0/auth/sign-out")
                     .addLogoutHandler(logoutHandler())
                     .logoutSuccessUrl("/")
                     .deleteCookies("remember_me"))
+
             .exceptionHandling(exceptionHandlingConfigurer ->
                     exceptionHandlingConfigurer
                             .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
@@ -75,14 +79,16 @@ public class SecurityConfig {
   public LogoutHandler logoutHandler() {
     return (request, response, authentication) -> {
       String token = jwtProvider.resolveToken(request);
-      if (StringUtils.hasText(token)) {
-        jwtProvider.validateToken(token);
-        Authentication auth = jwtProvider.getAuthenticationByToken(token);
-
-        Set<String> keysToDelete = redisTemplate.keys(auth.getName() + "*");
-        redisTemplate.delete(keysToDelete);
+      if (!StringUtils.hasText(token)) {
+        log.error(TOKEN_NOT_FOUND.getMessage());
+        request.setAttribute("exception", TOKEN_NOT_FOUND);
       }
-      else request.setAttribute("exception", CustomErrorCode.TOKEN_NOT_FOUND.getCode());
+
+      jwtProvider.validateToken(token);
+      Authentication auth = jwtProvider.getAuthenticationByToken(token);
+
+      Set<String> keysToDelete = redisTemplate.keys(auth.getName() + "*");
+      redisTemplate.delete(keysToDelete);
     };
   }
 

@@ -19,7 +19,7 @@ public enum CustomErrorCode {
   EXPIRED_TOKEN(2006,"만료된 Access 토큰입니다. Refresh 토큰을 이용해서 새로운 Access 토큰을 발급 받으세요."),
   INDEX_NOT_FOUND( 2007, "인덱스가 존재하지 않습니다."),
   TOKEN_NOT_FOUND( 2008, "토큰이 존재하지 않습니다."),
-  ACCESS_DENIED(1009, "권한이 없습니다."),
+  ACCESS_DENIED(2009, "권한이 없습니다."),
 
   // users
   INVALID_USER_UUID(2101, "유저 정보를 불러오는데 실패했습니다"),
@@ -42,6 +42,6 @@ public enum CustomErrorCode {
    */
   UNKNOWN_ERROR(5002, "알 수 없는 에러가 발생했습니다.");
 
-  private final int code;
+  private final Integer code;
   private final String message;
 }
