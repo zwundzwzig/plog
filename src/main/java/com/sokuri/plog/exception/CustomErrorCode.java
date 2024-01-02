@@ -15,11 +15,10 @@ public enum CustomErrorCode {
   EMPTY_REFRESH_JWT( 2002, "Refresh 토큰을 입력해주세요."),
   WRONG_TYPE_TOKEN( 2003, "잘못된 토큰 입니다."),
   UNSUPPORTED_TOKEN( 2004, "지원되지 않는 토큰 입니다."),
-  NOT_EXIST_REFRESH_TOKEN(2005,"존재하지 않거나 만료된 Refresh 토큰입니다. 다시 로그인해주세요."),
+  NOT_EXIST_TOKEN(2005,"존재하지 않거나 만료된 토큰입니다. 다시 로그인해주세요."),
   EXPIRED_TOKEN(2006,"만료된 Access 토큰입니다. Refresh 토큰을 이용해서 새로운 Access 토큰을 발급 받으세요."),
-  INDEX_NOT_FOUND( 2007, "인덱스가 존재하지 않습니다."),
-  TOKEN_NOT_FOUND( 2008, "토큰이 존재하지 않습니다."),
-  ACCESS_DENIED(2009, "권한이 없습니다."),
+  TOKEN_NOT_FOUND( 2007, "토큰이 존재하지 않습니다."),
+  ACCESS_DENIED(2008, "권한이 없습니다."),
 
   // users
   INVALID_USER_UUID(2101, "유저 정보를 불러오는데 실패했습니다"),

@@ -21,7 +21,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Set;
 
-import static com.sokuri.plog.exception.CustomErrorCode.TOKEN_NOT_FOUND;
+import static com.sokuri.plog.exception.CustomErrorCode.*;
 
 @Configuration
 @EnableWebSecurity
@@ -84,7 +84,7 @@ public class SecurityConfig {
         request.setAttribute("exception", TOKEN_NOT_FOUND);
       }
 
-      jwtProvider.validateToken(token);
+      if (!jwtProvider.validateToken(token)) request.setAttribute("exception", NOT_EXIST_TOKEN);;
       Authentication auth = jwtProvider.getAuthenticationByToken(token);
 
       Set<String> keysToDelete = redisTemplate.keys(auth.getName() + "*");

@@ -2,7 +2,6 @@ package com.sokuri.plog.utils;
 
 import com.sokuri.plog.domain.dto.user.TokenResponse;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -133,18 +132,18 @@ public class JwtProvider {
         return null;
     }
 
-    public void validateToken(String token) {
-        try{
-            Claims claims = parseClaims(token);
-            log.info("token :: " + token);
-            log.info(claims.toString());
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-        } catch(ExpiredJwtException e) {
-            log.error(EXPIRED_TOKEN.getMessage());
-            throw new AccessDeniedException("토큰이 만료되었습니다. 다시 로그인해 주세요.");
-        } catch(JwtException e) {
-            log.error(UNSUPPORTED_TOKEN.getMessage());
-            throw new SignatureException(e.getMessage());
+    public boolean validateToken(String token) {
+        try {
+            Jws<Claims> claims = Jwts.parser()
+                    .setSigningKey(secretKey) // 비밀키를 설정하여 파싱한다.
+                    .parseClaimsJws(token);  // 주어진 토큰을 파싱하여 Claims 객체를 얻는다.
+            // 토큰의 만료 시간과 현재 시간비교
+            return claims.getBody()
+                    .getExpiration()
+                    .after(new Date());  // 만료 시간이 현재 시간 이후인지 확인하여 유효성 검사 결과를 반환
+        } catch (JwtException e) {
+            log.info("토큰 이슈 = {}", token);
+            return false;
         }
     }
 

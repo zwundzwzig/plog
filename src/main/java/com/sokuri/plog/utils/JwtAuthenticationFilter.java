@@ -34,7 +34,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     if (StringUtils.hasText(accessToken) && Arrays.stream(AUTH_LIST).noneMatch(requestURI::contains)) {
       try{
-        jwtProvider.validateToken(accessToken);
+        if (!jwtProvider.validateToken(accessToken))
+          request.setAttribute("exception", NOT_EXIST_TOKEN);
+
         Authentication authentication = jwtProvider.getAuthenticationByToken(accessToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
       } catch (ExpiredJwtException e){
