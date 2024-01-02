@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import jakarta.persistence.NoResultException;
 import jakarta.validation.ConstraintViolationException;
 
+import java.util.NoSuchElementException;
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -60,17 +62,17 @@ public class GlobalExceptionHandler {
             .body(ex.getMessage());
   }
 
-  @ExceptionHandler({Exception.class, RuntimeException.class})
-  protected ResponseEntity<StatusResponse> catchException(RuntimeException ex) {
-    log.error("예외 핸들링",ex);
-    return ResponseEntity.internalServerError().body(StatusResponse.addStatus(500));
+  @ExceptionHandler(NoSuchElementException.class)
+  protected ResponseEntity<String> handleNoSuchElementException(NoSuchElementException ex) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(ex.getMessage());
   }
 
-  @ExceptionHandler(value = BaseException.class)
-  protected ResponseEntity<ErrorResponse> handleCustomException(BaseException ex) {
-    log.error("--- CustomException ---",ex);
-    CustomErrorCode errorCode = ex.getStatus();
-    return ResponseEntity.status(errorCode.getCode())
-            .body(ErrorResponse.toErrorResponse(errorCode));
+  @ExceptionHandler(BaseException.class)
+  protected ResponseEntity<ErrorResponse> handleBaseException(BaseException ex) {
+    log.error("--- CustomException ---", ex);
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(ErrorResponse.toErrorResponse(ex.getStatus()));
   }
+
 }
