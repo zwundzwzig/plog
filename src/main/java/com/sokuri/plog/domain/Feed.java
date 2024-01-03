@@ -2,8 +2,8 @@ package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.converter.DateToStringConverter;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
-import com.sokuri.plog.domain.dto.feed.FeedDetailResponse;
-import com.sokuri.plog.domain.dto.feed.FeedSummaryResponse;
+import com.sokuri.plog.global.dto.feed.FeedDetailResponse;
+import com.sokuri.plog.global.dto.feed.FeedSummaryResponse;
 import com.sokuri.plog.domain.eums.AccessStatus;
 import com.sokuri.plog.domain.relations.hashtag.FeedHashtag;
 import com.sokuri.plog.domain.relations.image.FeedImage;

@@ -11,7 +11,7 @@ import com.sokuri.plog.repository.community.CommunityImageRepository;
 import com.sokuri.plog.repository.event.EventImageRepository;
 import com.sokuri.plog.repository.feed.FeedImageRepository;
 import com.sokuri.plog.repository.ImageRepository;
-import com.sokuri.plog.utils.S3Upload;
+import com.sokuri.plog.global.utils.S3Upload;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;

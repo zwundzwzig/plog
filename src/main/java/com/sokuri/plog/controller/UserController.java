@@ -1,6 +1,6 @@
 package com.sokuri.plog.controller;
 
-import com.sokuri.plog.domain.dto.user.*;
+import com.sokuri.plog.global.dto.user.*;
 import com.sokuri.plog.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

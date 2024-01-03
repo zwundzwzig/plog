@@ -3,7 +3,7 @@ package com.sokuri.plog.domain.converter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sokuri.plog.domain.dto.CoordinateDto;
+import com.sokuri.plog.global.dto.CoordinateDto;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import lombok.extern.slf4j.Slf4j;

@@ -1,8 +1,8 @@
 package com.sokuri.plog.controller;
 
-import com.sokuri.plog.domain.dto.event.EventDetailResponse;
-import com.sokuri.plog.domain.dto.event.EventSummaryResponse;
-import com.sokuri.plog.domain.dto.event.CreateEventsRequest;
+import com.sokuri.plog.global.dto.event.EventDetailResponse;
+import com.sokuri.plog.global.dto.event.EventSummaryResponse;
+import com.sokuri.plog.global.dto.event.CreateEventsRequest;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.service.EventService;
 import io.swagger.v3.oas.annotations.Operation;

@@ -2,12 +2,12 @@ package com.sokuri.plog.service;
 
 import com.sokuri.plog.domain.TrashCan;
 import com.sokuri.plog.domain.converter.RoadNameAddressToCoordinateConverter;
-import com.sokuri.plog.domain.dto.CoordinateDto;
-import com.sokuri.plog.domain.dto.trash.SearchNearbyTrashCanResponse;
+import com.sokuri.plog.global.dto.CoordinateDto;
+import com.sokuri.plog.global.dto.trash.SearchNearbyTrashCanResponse;
 import com.sokuri.plog.domain.eums.TrashType;
 import com.sokuri.plog.repository.TrashRepository;
-import com.sokuri.plog.utils.GeometryUtils;
-import com.sokuri.plog.utils.GoogleApiUtil;
+import com.sokuri.plog.global.utils.GeometryUtils;
+import com.sokuri.plog.global.utils.GoogleApiUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.locationtech.jts.geom.Point;

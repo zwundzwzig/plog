@@ -1,7 +1,7 @@
 package com.sokuri.plog.domain.converter;
 
-import com.sokuri.plog.domain.dto.CoordinateDto;
-import com.sokuri.plog.domain.dto.MapResponseDto;
+import com.sokuri.plog.global.dto.CoordinateDto;
+import com.sokuri.plog.global.dto.MapResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

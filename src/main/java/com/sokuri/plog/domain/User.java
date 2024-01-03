@@ -2,7 +2,7 @@ package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.auditing.BaseTimeEntity;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
-import com.sokuri.plog.domain.dto.user.SignInResponse;
+import com.sokuri.plog.global.dto.user.SignInResponse;
 import com.sokuri.plog.domain.eums.Role;
 import com.sokuri.plog.domain.eums.SocialProvider;
 import lombok.*;

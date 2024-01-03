@@ -1,9 +1,8 @@
 package com.sokuri.plog.service;
 
-import com.sokuri.plog.domain.dto.user.TokenResponse;
-import com.sokuri.plog.exception.BaseException;
-import com.sokuri.plog.exception.CustomErrorCode;
-import com.sokuri.plog.utils.JwtProvider;
+import com.sokuri.plog.global.dto.user.TokenResponse;
+import com.sokuri.plog.global.exception.BaseException;
+import com.sokuri.plog.global.utils.JwtProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.NoSuchElementException;
-
-import static com.sokuri.plog.exception.CustomErrorCode.NOT_EXIST_TOKEN;
+import static com.sokuri.plog.global.exception.CustomErrorCode.NOT_EXIST_TOKEN;
 
 @Service
 @Slf4j

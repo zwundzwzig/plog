@@ -1,8 +1,8 @@
 package com.sokuri.plog.controller;
 
-import com.sokuri.plog.domain.dto.community.CommunityDetailResponse;
-import com.sokuri.plog.domain.dto.community.CommunitySummaryResponse;
-import com.sokuri.plog.domain.dto.community.CreateCommunityRequest;
+import com.sokuri.plog.global.dto.community.CommunityDetailResponse;
+import com.sokuri.plog.global.dto.community.CommunitySummaryResponse;
+import com.sokuri.plog.global.dto.community.CreateCommunityRequest;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.service.CommunityService;
 import io.swagger.v3.oas.annotations.Operation;

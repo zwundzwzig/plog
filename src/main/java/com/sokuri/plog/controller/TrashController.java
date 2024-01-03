@@ -1,6 +1,6 @@
 package com.sokuri.plog.controller;
 
-import com.sokuri.plog.domain.dto.trash.SearchNearbyTrashCanResponse;
+import com.sokuri.plog.global.dto.trash.SearchNearbyTrashCanResponse;
 import com.sokuri.plog.service.TrashService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

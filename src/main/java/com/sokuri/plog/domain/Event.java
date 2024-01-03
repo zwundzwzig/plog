@@ -1,7 +1,7 @@
 package com.sokuri.plog.domain;
 
-import com.sokuri.plog.domain.dto.event.EventDetailResponse;
-import com.sokuri.plog.domain.dto.event.EventSummaryResponse;
+import com.sokuri.plog.global.dto.event.EventDetailResponse;
+import com.sokuri.plog.global.dto.event.EventSummaryResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.domain.relations.image.EventImage;
 import com.sokuri.plog.domain.auditing.BaseTimeEntity;

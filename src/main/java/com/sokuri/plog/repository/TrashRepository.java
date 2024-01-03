@@ -1,8 +1,8 @@
 package com.sokuri.plog.repository;
 
 import com.sokuri.plog.domain.TrashCan;
-import com.sokuri.plog.domain.dto.CoordinateDto;
-import com.sokuri.plog.domain.dto.trash.SearchNearbyTrashCanResponse;
+import com.sokuri.plog.global.dto.CoordinateDto;
+import com.sokuri.plog.global.dto.trash.SearchNearbyTrashCanResponse;
 import org.locationtech.jts.geom.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
