@@ -1,12 +1,12 @@
 package com.sokuri.plog.repository;
 
-import com.sokuri.plog.domain.Feed;
-import com.sokuri.plog.domain.User;
+import com.sokuri.plog.domain.entity.Feed;
+import com.sokuri.plog.domain.entity.User;
 import com.sokuri.plog.domain.eums.Role;
 import com.sokuri.plog.domain.eums.SocialProvider;
-import com.sokuri.plog.repository.user.UserQueryRepository;
-import com.sokuri.plog.repository.user.UserRepository;
-import com.sokuri.plog.repository.user.UserRepositorySupport;
+import com.sokuri.plog.domain.repository.user.UserQueryRepository;
+import com.sokuri.plog.domain.repository.user.UserRepository;
+import com.sokuri.plog.domain.repository.user.UserRepositorySupport;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

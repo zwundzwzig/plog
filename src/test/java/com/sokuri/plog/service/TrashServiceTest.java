@@ -1,6 +1,6 @@
 package com.sokuri.plog.service;
 
-import com.sokuri.plog.domain.TrashCan;
+import com.sokuri.plog.domain.entity.TrashCan;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Geometry;

@@ -1,13 +1,13 @@
 package com.sokuri.plog.service;
 
-import com.sokuri.plog.domain.Event;
+import com.sokuri.plog.domain.entity.Event;
 import com.sokuri.plog.domain.converter.RoadNameAddressToCoordinateConverter;
 import com.sokuri.plog.global.dto.CoordinateDto;
 import com.sokuri.plog.global.dto.event.CreateEventsRequest;
 import com.sokuri.plog.global.dto.event.EventDetailResponse;
 import com.sokuri.plog.global.dto.event.EventSummaryResponse;
 import com.sokuri.plog.domain.eums.RecruitStatus;
-import com.sokuri.plog.repository.event.EventRepository;
+import com.sokuri.plog.domain.repository.event.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;

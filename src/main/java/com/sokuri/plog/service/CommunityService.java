@@ -1,13 +1,13 @@
 package com.sokuri.plog.service;
 
-import com.sokuri.plog.domain.Community;
+import com.sokuri.plog.domain.entity.Community;
 import com.sokuri.plog.domain.converter.RoadNameAddressToCoordinateConverter;
 import com.sokuri.plog.global.dto.community.CommunityDetailResponse;
 import com.sokuri.plog.global.dto.community.CommunitySummaryResponse;
 import com.sokuri.plog.global.dto.CoordinateDto;
 import com.sokuri.plog.global.dto.community.CreateCommunityRequest;
 import com.sokuri.plog.domain.eums.RecruitStatus;
-import com.sokuri.plog.repository.community.CommunityRepository;
+import com.sokuri.plog.domain.repository.community.CommunityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,9 @@
 package com.sokuri.plog.service;
 
-import com.sokuri.plog.domain.User;
+import com.sokuri.plog.domain.entity.User;
 import com.sokuri.plog.domain.eums.Role;
 import com.sokuri.plog.global.dto.user.*;
-import com.sokuri.plog.repository.user.UserRepository;
+import com.sokuri.plog.domain.repository.user.UserRepository;
 import com.sokuri.plog.global.utils.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

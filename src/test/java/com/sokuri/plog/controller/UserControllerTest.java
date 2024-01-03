@@ -1,7 +1,7 @@
 package com.sokuri.plog.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sokuri.plog.domain.User;
+import com.sokuri.plog.domain.entity.User;
 import com.sokuri.plog.global.dto.user.SignUpRequest;
 import com.sokuri.plog.global.dto.user.UserCheckRequest;
 import com.sokuri.plog.service.UserService;

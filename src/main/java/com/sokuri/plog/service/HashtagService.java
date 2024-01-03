@@ -1,10 +1,10 @@
 package com.sokuri.plog.service;
 
-import com.sokuri.plog.domain.Feed;
-import com.sokuri.plog.domain.Hashtag;
+import com.sokuri.plog.domain.entity.Feed;
+import com.sokuri.plog.domain.entity.Hashtag;
 import com.sokuri.plog.domain.relations.hashtag.FeedHashtag;
-import com.sokuri.plog.repository.feed.FeedHashtagRepository;
-import com.sokuri.plog.repository.feed.HashtagRepository;
+import com.sokuri.plog.domain.repository.feed.FeedHashtagRepository;
+import com.sokuri.plog.domain.repository.feed.HashtagRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

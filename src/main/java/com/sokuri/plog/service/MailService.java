@@ -1,17 +1,8 @@
 package com.sokuri.plog.service;
 
-import com.sokuri.plog.domain.MailMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.spring6.SpringTemplateEngine;
-
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import java.util.Random;
 
 @Service
 @Slf4j

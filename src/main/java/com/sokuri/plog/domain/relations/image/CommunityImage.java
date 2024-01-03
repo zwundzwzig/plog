@@ -1,7 +1,7 @@
 package com.sokuri.plog.domain.relations.image;
 
-import com.sokuri.plog.domain.Community;
-import com.sokuri.plog.domain.Image;
+import com.sokuri.plog.domain.entity.Community;
+import com.sokuri.plog.domain.entity.Image;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;

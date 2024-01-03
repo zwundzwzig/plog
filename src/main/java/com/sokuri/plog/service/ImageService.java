@@ -1,16 +1,16 @@
 package com.sokuri.plog.service;
 
-import com.sokuri.plog.domain.Community;
-import com.sokuri.plog.domain.Event;
-import com.sokuri.plog.domain.Feed;
-import com.sokuri.plog.domain.Image;
+import com.sokuri.plog.domain.entity.Community;
+import com.sokuri.plog.domain.entity.Event;
+import com.sokuri.plog.domain.entity.Feed;
+import com.sokuri.plog.domain.entity.Image;
 import com.sokuri.plog.domain.relations.image.CommunityImage;
 import com.sokuri.plog.domain.relations.image.EventImage;
 import com.sokuri.plog.domain.relations.image.FeedImage;
-import com.sokuri.plog.repository.community.CommunityImageRepository;
-import com.sokuri.plog.repository.event.EventImageRepository;
-import com.sokuri.plog.repository.feed.FeedImageRepository;
-import com.sokuri.plog.repository.ImageRepository;
+import com.sokuri.plog.domain.repository.community.CommunityImageRepository;
+import com.sokuri.plog.domain.repository.event.EventImageRepository;
+import com.sokuri.plog.domain.repository.feed.FeedImageRepository;
+import com.sokuri.plog.domain.repository.ImageRepository;
 import com.sokuri.plog.global.utils.S3Upload;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

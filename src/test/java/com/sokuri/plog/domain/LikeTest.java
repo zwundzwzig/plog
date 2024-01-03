@@ -1,7 +1,9 @@
 package com.sokuri.plog.domain;
 
+import com.sokuri.plog.domain.entity.Feed;
+import com.sokuri.plog.domain.entity.User;
 import com.sokuri.plog.domain.relations.user.Like;
-import com.sokuri.plog.repository.like.LikeRepository;
+import com.sokuri.plog.domain.repository.like.LikeRepository;
 import com.sokuri.plog.service.LikeService;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;

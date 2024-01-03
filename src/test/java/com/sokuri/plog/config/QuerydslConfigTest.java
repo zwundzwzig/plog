@@ -1,7 +1,7 @@
 package com.sokuri.plog.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.sokuri.plog.domain.User;
+import com.sokuri.plog.domain.entity.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
-import static com.sokuri.plog.domain.QUser.user;
+import static com.sokuri.plog.domain.entity.QUser.user;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest

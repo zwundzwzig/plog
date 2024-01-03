@@ -1,11 +1,9 @@
 package com.sokuri.plog.domain.relations.user;
 
-import com.sokuri.plog.domain.Feed;
-import com.sokuri.plog.domain.User;
+import com.sokuri.plog.domain.entity.Feed;
+import com.sokuri.plog.domain.entity.User;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 

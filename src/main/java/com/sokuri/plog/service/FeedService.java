@@ -1,11 +1,11 @@
 package com.sokuri.plog.service;
 
-import com.sokuri.plog.domain.Feed;
+import com.sokuri.plog.domain.entity.Feed;
 import com.sokuri.plog.global.dto.feed.CreateFeedRequest;
 import com.sokuri.plog.global.dto.feed.FeedDetailResponse;
 import com.sokuri.plog.global.dto.feed.FeedSummaryResponse;
 import com.sokuri.plog.domain.eums.AccessStatus;
-import com.sokuri.plog.repository.feed.FeedRepository;
+import com.sokuri.plog.domain.repository.feed.FeedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

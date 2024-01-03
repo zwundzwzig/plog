@@ -1,7 +1,7 @@
 package com.sokuri.plog.domain.relations.hashtag;
 
-import com.sokuri.plog.domain.Feed;
-import com.sokuri.plog.domain.Hashtag;
+import com.sokuri.plog.domain.entity.Feed;
+import com.sokuri.plog.domain.entity.Hashtag;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;

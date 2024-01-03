@@ -1,8 +1,9 @@
 package com.sokuri.plog.domain;
 
+import com.sokuri.plog.domain.entity.User;
 import com.sokuri.plog.domain.eums.Role;
 import com.sokuri.plog.domain.eums.SocialProvider;
-import com.sokuri.plog.repository.user.UserRepository;
+import com.sokuri.plog.domain.repository.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

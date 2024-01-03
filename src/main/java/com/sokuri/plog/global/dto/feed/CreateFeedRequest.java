@@ -1,6 +1,6 @@
 package com.sokuri.plog.global.dto.feed;
 
-import com.sokuri.plog.domain.Feed;
+import com.sokuri.plog.domain.entity.Feed;
 import com.sokuri.plog.domain.eums.AccessStatus;
 import lombok.Builder;
 import lombok.Data;

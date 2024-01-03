@@ -1,6 +1,6 @@
 package com.sokuri.plog.global.dto.event;
 
-import com.sokuri.plog.domain.Event;
+import com.sokuri.plog.domain.entity.Event;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.domain.embed.FestivalPeriod;
 import com.sokuri.plog.domain.embed.RecruitPeriod;

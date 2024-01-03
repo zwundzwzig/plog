@@ -1,6 +1,7 @@
 package com.sokuri.plog.domain;
 
-import com.sokuri.plog.repository.TrashRepository;
+import com.sokuri.plog.domain.entity.TrashCan;
+import com.sokuri.plog.domain.repository.TrashRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

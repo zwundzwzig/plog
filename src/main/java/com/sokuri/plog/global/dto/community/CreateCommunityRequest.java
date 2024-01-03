@@ -1,6 +1,6 @@
 package com.sokuri.plog.global.dto.community;
 
-import com.sokuri.plog.domain.Community;
+import com.sokuri.plog.domain.entity.Community;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.domain.embed.FestivalPeriod;
 import com.sokuri.plog.domain.embed.RecruitPeriod;

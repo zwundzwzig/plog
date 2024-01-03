@@ -1,11 +1,11 @@
 package com.sokuri.plog.service;
 
-import com.sokuri.plog.domain.Feed;
-import com.sokuri.plog.domain.User;
+import com.sokuri.plog.domain.entity.Feed;
+import com.sokuri.plog.domain.entity.User;
 import com.sokuri.plog.domain.relations.user.Like;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.sokuri.plog.repository.like.LikeRepository;
+import com.sokuri.plog.domain.repository.like.LikeRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
