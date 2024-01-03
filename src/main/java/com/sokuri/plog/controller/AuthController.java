@@ -2,7 +2,6 @@ package com.sokuri.plog.controller;
 
 import com.sokuri.plog.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +15,8 @@ public class AuthController {
 
     @Operation(summary = "엑세스 토큰 갱신")
     @PostMapping("/refresh")
-    public ResponseEntity<Void> refresh(HttpServletRequest req) {
-        HttpHeaders headers = authService.refresh(req);
+    public ResponseEntity<Void> refresh(@RequestHeader("Authorization") String token) {
+        HttpHeaders headers = authService.refresh(token);
         return ResponseEntity.ok().headers(headers).build();
     }
 }

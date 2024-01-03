@@ -1,7 +1,7 @@
 package com.sokuri.plog.global.security.filter;
 
 import com.sokuri.plog.global.utils.JwtProvider;
-import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,7 +25,7 @@ import static com.sokuri.plog.global.exception.CustomErrorCode.*;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private final JwtProvider jwtProvider;
 
-  private static final String[] AUTH_LIST = { "/v1.0/user/sign-**", "/v1.0/auth/**" };
+  private static final String[] AUTH_LIST = { "/v1.0/user/sign-up", "/v1.0/user/sign-in" };
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -40,13 +40,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         Authentication authentication = jwtProvider.getAuthenticationByToken(accessToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-      } catch (ExpiredJwtException e){
-        request.setAttribute("exception", EXPIRED_TOKEN.getCode());
       } catch (MalformedJwtException e){
-        request.setAttribute("exception", WRONG_TYPE_TOKEN.getCode());
+        request.setAttribute("exception", WRONG_TYPE_TOKEN);
+      } catch (JwtException e){
+        request.setAttribute("exception", EXPIRED_TOKEN);
       } catch (RedisConnectionFailureException e) {
         SecurityContextHolder.clearContext();
-        request.setAttribute("exception", REDIS_ERROR.getCode());
+        request.setAttribute("exception", REDIS_ERROR);
       }
     }
 

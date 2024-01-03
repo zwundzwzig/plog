@@ -143,7 +143,7 @@ public class JwtProvider {
                     .after(new Date());  // 만료 시간이 현재 시간 이후인지 확인하여 유효성 검사 결과를 반환
         } catch (JwtException e) {
             log.info("토큰 이슈 = {}", token);
-            return false;
+            throw new JwtException(EXPIRED_TOKEN.getMessage());
         }
     }
 
