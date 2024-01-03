@@ -57,8 +57,8 @@ public class JwtProvider {
         Claims claims = Jwts.claims().setId(id);
         claims.put("role", role);
 
-        String accessToken = generateAccessToken(claims, role);
-        String refreshToken = generateRefreshToken(claims, role);
+        String accessToken = generateAccessToken(claims);
+        String refreshToken = generateRefreshToken(claims);
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
@@ -66,7 +66,7 @@ public class JwtProvider {
                 .build();
     }
 
-    public String generateAccessToken(Claims claims, String role) {
+    public String generateAccessToken(Claims claims) {
         Date expireDate = new Date(now.getTime() + accessExpirationTime);
 
         String accessToken = Jwts.builder()
@@ -86,7 +86,7 @@ public class JwtProvider {
         return accessToken;
     }
 
-    public String generateRefreshToken(Claims claims, String role) {
+    public String generateRefreshToken(Claims claims) {
         Date expireDate = new Date(now.getTime() + refreshExpirationTime);
 
         String refreshToken = Jwts.builder()
@@ -137,6 +137,7 @@ public class JwtProvider {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(secretKey) // 비밀키를 설정하여 파싱한다.
                     .parseClaimsJws(token);  // 주어진 토큰을 파싱하여 Claims 객체를 얻는다.
+            log.info("claims.getBody().toString() :: {}", claims.getBody().toString());
             // 토큰의 만료 시간과 현재 시간비교
             return claims.getBody()
                     .getExpiration()
