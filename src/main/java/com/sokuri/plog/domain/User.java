@@ -2,7 +2,9 @@ package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.auditing.BaseTimeEntity;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
-import com.sokuri.plog.domain.dto.user.SignInResponse;
+import com.sokuri.plog.global.dto.user.SignInResponse;
+import com.sokuri.plog.domain.eums.Role;
+import com.sokuri.plog.domain.eums.SocialProvider;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -48,6 +50,12 @@ public class User extends BaseTimeEntity {
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private List<Feed> feeds;
+
+  @Enumerated(EnumType.STRING)
+  private Role role;
+
+  @Enumerated(EnumType.STRING)
+  private SocialProvider socialProvider;
 
   public SignInResponse toSummaryResponse() {
     return SignInResponse.builder()

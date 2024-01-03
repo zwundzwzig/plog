@@ -17,17 +17,15 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BaseTimeEntity {
-
   @CreatedDate
   @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
   @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-  private LocalDateTime createDate;
+  private LocalDateTime createdDate;
 
   @LastModifiedDate
   @Column(columnDefinition = "TIMESTAMP")
   @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime modifiedDate;
-
 }

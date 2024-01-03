@@ -1,8 +1,8 @@
 package com.sokuri.plog.domain;
 
-import com.sokuri.plog.domain.dto.community.CommunityDetailResponse;
-import com.sokuri.plog.domain.dto.community.CommunitySummaryResponse;
-import com.sokuri.plog.domain.dto.user.UserSimpleDto;
+import com.sokuri.plog.global.dto.community.CommunityDetailResponse;
+import com.sokuri.plog.global.dto.community.CommunitySummaryResponse;
+import com.sokuri.plog.global.dto.user.UserSimpleDto;
 import com.sokuri.plog.domain.eums.RecruitStatus;
 import com.sokuri.plog.domain.relations.image.CommunityImage;
 import com.sokuri.plog.domain.auditing.BaseTimeEntity;
@@ -90,7 +90,7 @@ public class Community extends BaseTimeEntity {
                         .map(image -> image.getImage().getUrl())
                         .toList() : null)
                 .maxParticipants(maxParticipants)
-                .createdAt(getCreateDate())
+                .createdAt(getCreatedDate())
                 .currentParticipants(currentParticipants)
                 .location(location)
                 .build();

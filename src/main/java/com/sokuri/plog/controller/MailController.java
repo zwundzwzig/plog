@@ -1,13 +1,7 @@
 package com.sokuri.plog.controller;
 
-import com.sokuri.plog.domain.MailMessage;
-import com.sokuri.plog.domain.dto.MailRequestDto;
-import com.sokuri.plog.domain.dto.MailResponseDto;
-import com.sokuri.plog.service.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

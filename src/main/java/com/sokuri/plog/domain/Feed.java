@@ -2,15 +2,14 @@ package com.sokuri.plog.domain;
 
 import com.sokuri.plog.domain.converter.DateToStringConverter;
 import com.sokuri.plog.domain.converter.StringToUuidConverter;
-import com.sokuri.plog.domain.dto.feed.FeedDetailResponse;
-import com.sokuri.plog.domain.dto.feed.FeedSummaryResponse;
+import com.sokuri.plog.global.dto.feed.FeedDetailResponse;
+import com.sokuri.plog.global.dto.feed.FeedSummaryResponse;
 import com.sokuri.plog.domain.eums.AccessStatus;
 import com.sokuri.plog.domain.relations.hashtag.FeedHashtag;
 import com.sokuri.plog.domain.relations.image.FeedImage;
 import com.sokuri.plog.domain.auditing.BaseTimeEntity;
 import com.sokuri.plog.domain.relations.user.Like;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
@@ -20,7 +19,6 @@ import java.util.*;
 @Entity
 @Table(name = "feeds")
 @Getter
-//@SuperBuilder
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -76,14 +74,14 @@ public class Feed extends BaseTimeEntity {
                 .id(id)
                 .nickname(user.getNickname())
                 .avatar(user.getProfileImage())
-                .createdAt(LocalDate.from(getCreateDate()))
+                .createdAt(LocalDate.from(getCreatedDate()))
                 .images(!images.isEmpty()
                         ? images.stream()
                         .map(image -> image.getImage().getUrl())
                         .toList() : null)
                 .viewCount(viewCount)
                 .likeCount(likeCount.size())
-                .timeSinceUpload(DateToStringConverter.explainDate(getCreateDate()))
+                .timeSinceUpload(DateToStringConverter.explainDate(getCreatedDate()))
                 .build();
     }
 
@@ -91,13 +89,13 @@ public class Feed extends BaseTimeEntity {
         return FeedDetailResponse.builder()
                 .nickname(user.getNickname())
                 .avatar(user.getProfileImage())
-                .createdAt(getCreateDate())
+                .createdAt(getCreatedDate())
                 .description(description)
                 .images(!images.isEmpty()
                         ? images.stream()
                         .map(image -> image.getImage().getUrl())
                         .toList() : null)
-                .timeSinceUpload(DateToStringConverter.explainDate(getCreateDate()))
+                .timeSinceUpload(DateToStringConverter.explainDate(getCreatedDate()))
                 .viewCount(viewCount)
                 .likeCount(likeCount.size())
                 .hashtags(!hashtags.isEmpty()

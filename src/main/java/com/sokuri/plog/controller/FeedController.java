@@ -1,8 +1,8 @@
 package com.sokuri.plog.controller;
 
-import com.sokuri.plog.domain.dto.feed.CreateFeedRequest;
-import com.sokuri.plog.domain.dto.feed.FeedDetailResponse;
-import com.sokuri.plog.domain.dto.feed.FeedSummaryResponse;
+import com.sokuri.plog.global.dto.feed.CreateFeedRequest;
+import com.sokuri.plog.global.dto.feed.FeedDetailResponse;
+import com.sokuri.plog.global.dto.feed.FeedSummaryResponse;
 import com.sokuri.plog.domain.eums.AccessStatus;
 import com.sokuri.plog.service.FeedService;
 import io.swagger.v3.oas.annotations.Operation;

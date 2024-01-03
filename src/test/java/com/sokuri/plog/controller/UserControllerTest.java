@@ -2,8 +2,8 @@ package com.sokuri.plog.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sokuri.plog.domain.User;
-import com.sokuri.plog.domain.dto.user.SignInRequest;
-import com.sokuri.plog.domain.dto.user.UserCheckRequest;
+import com.sokuri.plog.global.dto.user.SignUpRequest;
+import com.sokuri.plog.global.dto.user.UserCheckRequest;
 import com.sokuri.plog.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -46,7 +47,7 @@ public class UserControllerTest {
   private User saveUser;
   private User savedSignInUser;
 
-  private SignInRequest signInRequest;
+  private SignUpRequest signUpRequest;
   private UserCheckRequest userInfoRequest;
 
   @BeforeEach
@@ -54,7 +55,7 @@ public class UserControllerTest {
     userInfoRequest = new UserCheckRequest(USER_EMAIL, USER_NICKNAME);
 //    saveUser = userService.createUser(userInfoRequest);
 
-    signInRequest = SignInRequest.builder()
+    signUpRequest = SignUpRequest.builder()
             .email(USER_EMAIL)
             .nickname(USER_NICKNAME)
             .birthday(LocalDate.parse(USER_BIRTHDAY))
@@ -62,11 +63,12 @@ public class UserControllerTest {
             .imageUrl(USER_PROFILEIMAGE)
             .build();
 
-    savedSignInUser = userService.createUser(signInRequest);
+    savedSignInUser = userService.createUser(signUpRequest);
   }
 
   @Test
   @DisplayName("이메일 존재여부 확인")
+  @WithMockUser
   void isExistUserIdTest() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders
                     .get(BASE_URL+"/checkMail/{email}", NOT_EXIST)
@@ -83,6 +85,7 @@ public class UserControllerTest {
 
   @Test
   @DisplayName("닉네임 존재여부 확인")
+  @WithMockUser
   void isExistNicknameTest() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders
                     .get(BASE_URL+"/checkNickname/{nickname}", NOT_EXIST)
@@ -101,9 +104,9 @@ public class UserControllerTest {
   @DisplayName("회원 가입")
   void signInTest() throws Exception {
     MockMultipartFile multipartFile1 = new MockMultipartFile("files", "test.jpeg", "multipart/form-data", "test file".getBytes(StandardCharsets.UTF_8) );
-    MockMultipartFile request = new MockMultipartFile("request", "request", "application/json", mapper.writeValueAsString(signInRequest).getBytes(StandardCharsets.UTF_8));
+    MockMultipartFile request = new MockMultipartFile("request", "request", "application/json", mapper.writeValueAsString(signUpRequest).getBytes(StandardCharsets.UTF_8));
 
-    mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + "/signIn")
+    mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + "/signUp")
                     .file(multipartFile1)
                     .file(request)
                     .contentType(MediaType.MULTIPART_FORM_DATA))

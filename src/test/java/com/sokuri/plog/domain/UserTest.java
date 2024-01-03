@@ -1,5 +1,7 @@
 package com.sokuri.plog.domain;
 
+import com.sokuri.plog.domain.eums.Role;
+import com.sokuri.plog.domain.eums.SocialProvider;
 import com.sokuri.plog.repository.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,13 +25,13 @@ public class UserTest {
   @Autowired
   private UserRepository userRepository;
 
-  private User rightUser = new User(UUID.randomUUID(), "nickname1", "emai1l@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
-  private User m2 = new User(UUID.randomUUID(), "nickname2", "email2@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
-  private User m3 = new User(UUID.randomUUID(), "nickname3", "email3@emailcom", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
-  private User m4 = new User(UUID.randomUUID(), "nickname4", "email4@emailcom", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
-  private User m5 = new User(UUID.randomUUID(), "nickname5", "email5@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
-  private User m6 = new User(UUID.randomUUID(), "nickname6", "email6@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
-  private User m7 = new User(UUID.randomUUID(), "nickname7", "email7@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of());
+  private User rightUser = new User(UUID.randomUUID(), "nickname1", "emai1l@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of(), Role.USER, SocialProvider.KAKAO);
+  private User m2 = new User(UUID.randomUUID(), "nickname2", "email2@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of(), Role.USER, SocialProvider.KAKAO);
+  private User m3 = new User(UUID.randomUUID(), "nickname3", "email3@emailcom", "", LocalDate.of(1994, 8, 2), "image.com", List.of(), Role.USER, SocialProvider.KAKAO);
+  private User m4 = new User(UUID.randomUUID(), "nickname4", "email4@emailcom", "", LocalDate.of(1994, 8, 2), "image.com", List.of(), Role.USER, SocialProvider.KAKAO);
+  private User m5 = new User(UUID.randomUUID(), "nickname5", "email5@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of(), Role.USER, SocialProvider.KAKAO);
+  private User m6 = new User(UUID.randomUUID(), "nickname6", "email6@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of(), Role.USER, SocialProvider.KAKAO);
+  private User m7 = new User(UUID.randomUUID(), "nickname7", "email7@email.com", "", LocalDate.of(1994, 8, 2), "image.com", List.of(), Role.USER, SocialProvider.KAKAO);
 
   @BeforeEach
   void setUp() {
