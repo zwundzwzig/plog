@@ -16,20 +16,22 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
   public void commence(HttpServletRequest request,
                        HttpServletResponse response,
                        AuthenticationException authException) throws IOException {
-
     CustomErrorCode exception = request.getAttribute("exception") == null
             ? CustomErrorCode.UNKNOWN_ERROR
             : (CustomErrorCode) request.getAttribute("exception");
-    setResponse(response, exception);
+    setResponse(request, response, exception, authException);
   }
 
-  private void setResponse(HttpServletResponse response, CustomErrorCode errorCode) throws IOException {
+  private void setResponse(HttpServletRequest request, HttpServletResponse response, CustomErrorCode errorCode, AuthenticationException authException) throws IOException {
     response.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     response.setContentType("application/json;charset=UTF-8");
+
     JSONObject responseJson = new JSONObject();
     responseJson.put("message", errorCode.getMessage());
     responseJson.put("code", errorCode.getCode());
+    responseJson.put("path", request.getContextPath() + request.getServletPath());
+    responseJson.put("auth_message", authException.getMessage());
 
     response.getWriter().print(responseJson);
   }

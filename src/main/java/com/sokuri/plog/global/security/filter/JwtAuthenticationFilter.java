@@ -33,7 +33,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     String requestURI = request.getRequestURI();
     String accessToken = jwtProvider.resolveToken(request);
 
-    if (StringUtils.hasText(accessToken) && Arrays.stream(AUTH_LIST).noneMatch(requestURI::contains)) {
+    if (!StringUtils.hasText(accessToken) && Arrays.stream(AUTH_LIST).noneMatch(requestURI::contains)) {
+      request.setAttribute("exception", NOT_EXIST_TOKEN);
+    }
+
+    else if (StringUtils.hasText(accessToken) && Arrays.stream(AUTH_LIST).noneMatch(requestURI::contains)) {
       try{
         if (!jwtProvider.validateToken(accessToken))
           request.setAttribute("exception", NOT_EXIST_TOKEN);
