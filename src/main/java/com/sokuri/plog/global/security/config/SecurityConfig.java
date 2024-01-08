@@ -1,8 +1,12 @@
 package com.sokuri.plog.global.security.config;
 
 import com.sokuri.plog.global.config.CorsConfig;
+import com.sokuri.plog.global.security.oauth.CustomOAuth2UserService;
+import com.sokuri.plog.global.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.sokuri.plog.global.security.handler.CustomAccessDeniedHandler;
 import com.sokuri.plog.global.security.handler.CustomAuthenticationEntryPoint;
+import com.sokuri.plog.global.security.handler.CustomAuthenticationFailureHandler;
+import com.sokuri.plog.global.security.handler.CustomAuthenticationSuccessHandler;
 import com.sokuri.plog.global.utils.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,14 +17,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.util.StringUtils;
-
-import java.util.Set;
-
-import static com.sokuri.plog.global.exception.CustomErrorCode.*;
 
 @Configuration
 @EnableWebSecurity
@@ -29,8 +28,16 @@ import static com.sokuri.plog.global.exception.CustomErrorCode.*;
 public class SecurityConfig {
   private final CorsConfig corsConfig;
   private final JwtProvider jwtProvider;
+//  private final CustomAuthenticationSuccessHandler oAuth2LoginSuccessHandler;
+//  private final CustomAuthenticationFailureHandler oAuth2LoginFailureHandler;
+  private final CustomOAuth2UserService customOAuth2UserService;
   private final RedisTemplate<String, String> redisTemplate;
   private static final String[] AUTH_WHITELIST = {
+          "/error",
+          "/*/auth2/code/*",
+          "/oauth2/**",
+          "/login/oauth2/**",
+          "/favicon.ico",
           "/swagger-resources/**",
           "/configuration/ui",
           "/configuration/security",
@@ -42,10 +49,23 @@ public class SecurityConfig {
           "/v3/api-docs/**"
   };
 
+  /*
+   * By default, Spring OAuth2 uses
+   * HttpSessionOAuth2AuthorizationRequestRepository to save
+   * the authorization request. But, since our service is stateless, we can't save
+   * it in
+   * the session. We'll save the request in a Base64 encoded cookie instead.
+   */
+  @Bean
+  public HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository() {
+    return new HttpCookieOAuth2AuthorizationRequestRepository();
+  }
+
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
             .csrf(CsrfConfigurer::disable)
+            .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
             .sessionManagement(sessionManagement ->
                     sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .formLogin(FormLoginConfigurer::disable)
@@ -57,38 +77,73 @@ public class SecurityConfig {
                             .requestMatchers(AUTH_WHITELIST).permitAll()
                             .anyRequest().authenticated())
 
+            .oauth2Login(oauth ->
+                    oauth
+                            .authorizationEndpoint(endpoint ->
+                                    endpoint.baseUri("/oauth2/authorize")
+                                            .authorizationRequestRepository(authorizationRequestRepository()))
+                            .userInfoEndpoint(user -> user.userService(customOAuth2UserService))
+                            .redirectionEndpoint(red -> red.baseUri("/*/oauth2/code/*"))
+                            .successHandler(oAuth2AuthenticationSuccessHandler())
+                            .failureHandler(oAuth2AuthenticationFailureHandler()))
+
             .logout(logoutConfigurer -> logoutConfigurer
                     .logoutUrl("/v1.0/auth/sign-out")
-                    .addLogoutHandler(logoutHandler())
+//                    .addLogoutHandler(logoutHandler())
                     .logoutSuccessUrl("/")
                     .deleteCookies("remember_me"))
 
             .exceptionHandling(exceptionHandlingConfigurer ->
                     exceptionHandlingConfigurer
                             .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-                            .accessDeniedHandler(new CustomAccessDeniedHandler()))
-            .addFilter(corsConfig.corsFilter());
+//                            .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/"))
+                            .accessDeniedHandler(new CustomAccessDeniedHandler()));
 
     http.apply(new JwtSecurityConfig(jwtProvider));
 
     return http.build();
   }
 
+//  @Bean
+//  public LogoutHandler logoutHandler() {
+//    return (request, response, authentication) -> {
+//      String token = jwtProvider.resolveToken(request);
+//      if (!StringUtils.hasText(token)) {
+//        log.error(TOKEN_NOT_FOUND.getMessage());
+//        request.setAttribute("exception", TOKEN_NOT_FOUND);
+//      }
+//
+//      if (!jwtProvider.validateToken(token)) request.setAttribute("exception", NOT_EXIST_TOKEN);;
+//      Authentication auth = jwtProvider.getAuthenticationByToken(token);
+//
+//      Set<String> keysToDelete = redisTemplate.keys(auth.getName() + "*");
+//      redisTemplate.delete(keysToDelete);
+//    };
+//  }
+
+  // 암호화에 필요한 PasswordEncoder Bean 등록
   @Bean
-  public LogoutHandler logoutHandler() {
-    return (request, response, authentication) -> {
-      String token = jwtProvider.resolveToken(request);
-      if (!StringUtils.hasText(token)) {
-        log.error(TOKEN_NOT_FOUND.getMessage());
-        request.setAttribute("exception", TOKEN_NOT_FOUND);
-      }
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-      if (!jwtProvider.validateToken(token)) request.setAttribute("exception", NOT_EXIST_TOKEN);;
-      Authentication auth = jwtProvider.getAuthenticationByToken(token);
+  /*
+   * Oauth 인증 성공 핸들러
+   * */
+  @Bean
+  public CustomAuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
+    return new CustomAuthenticationSuccessHandler(
+            jwtProvider,
+            authorizationRequestRepository(),
+            redisTemplate);
+  }
 
-      Set<String> keysToDelete = redisTemplate.keys(auth.getName() + "*");
-      redisTemplate.delete(keysToDelete);
-    };
+  /*
+   * Oauth 인증 실패 핸들러
+   * */
+  @Bean
+  public CustomAuthenticationFailureHandler oAuth2AuthenticationFailureHandler() {
+    return new CustomAuthenticationFailureHandler(authorizationRequestRepository());
   }
 
 }

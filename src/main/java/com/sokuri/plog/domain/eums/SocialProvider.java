@@ -6,12 +6,12 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum SocialProvider implements BaseEnumCode<String> {
-  GOOGLE( "구글"), NAVER("네이버"), KAKAO( "카카오톡");
+  GOOGLE( "구글"), NAVER("네이버"), KAKAO( "카카오톡"), LOCAL("로컬");
 
   private final String value;
 
   @Override
   public String getValue() {
-    return this.value;
+    return this.name();
   }
 }

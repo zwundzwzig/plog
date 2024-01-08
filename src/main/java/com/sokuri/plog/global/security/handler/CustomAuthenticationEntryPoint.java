@@ -12,6 +12,9 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import java.io.IOException;
 
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
+  private JSONObject responseJson = new JSONObject();
+
   @Override
   public void commence(HttpServletRequest request,
                        HttpServletResponse response,
@@ -27,12 +30,13 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     response.setContentType("application/json;charset=UTF-8");
 
-    JSONObject responseJson = new JSONObject();
     responseJson.put("message", errorCode.getMessage());
     responseJson.put("code", errorCode.getCode());
     responseJson.put("path", request.getContextPath() + request.getServletPath());
     responseJson.put("auth_message", authException.getMessage());
+    responseJson.put("error_name", errorCode);
 
     response.getWriter().print(responseJson);
   }
+
 }
