@@ -35,9 +35,9 @@ public class ImageService {
   private final CommunityImageRepository communityImageRepository;
   private final FeedImageRepository feedImageRepository;
   private final EventImageRepository eventImageRepository;
-  private final String COMMUNITY_DIRECTORY = "community";
-  private final String FEED_DIRECTORY = "feed";
-  private final String EVENT_DIRECTORY = "event";
+  private final static String COMMUNITY_DIRECTORY = "community";
+  private final static String FEED_DIRECTORY = "feed";
+  private final static String EVENT_DIRECTORY = "event";
   @Async
   @Transactional
   public Future<String> uploadS3Image(MultipartFile file, String directory) throws IOException {

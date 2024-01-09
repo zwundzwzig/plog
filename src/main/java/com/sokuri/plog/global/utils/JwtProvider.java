@@ -2,6 +2,9 @@ package com.sokuri.plog.global.utils;
 
 import com.sokuri.plog.global.dto.user.TokenResponse;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -35,7 +39,7 @@ public class JwtProvider {
     private final RedisTemplate<String, String> redisTemplate;
 
     @Value("${spring.jwt.secret}")
-    private String secretKey;
+    private String key;
 
     @Value("${spring.jwt.token.access-expiration-time}")
     private long accessExpirationTime;
@@ -51,7 +55,15 @@ public class JwtProvider {
 
     private final String refresh = "_REFRESH";
 
-    private Date now = new Date();
+    private final Date now = new Date();
+
+    private Key secretKey;
+
+    @PostConstruct
+    public void init() {
+        byte[] keyBytes = Decoders.BASE64.decode(key);
+        this.secretKey = Keys.hmacShaKeyFor(keyBytes);
+    }
 
     public TokenResponse generateToken(String id, String role) {
         Claims claims = Jwts.claims().setId(id);
@@ -73,7 +85,7 @@ public class JwtProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expireDate)
-                .signWith(SignatureAlgorithm.HS512, secretKey)
+                .signWith(secretKey, SignatureAlgorithm.HS512)
                 .compact();
 
         redisTemplate.opsForValue().set(
@@ -93,7 +105,7 @@ public class JwtProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expireDate)
-                .signWith(SignatureAlgorithm.HS512, secretKey)
+                .signWith(secretKey, SignatureAlgorithm.HS512)
                 .compact();
 
         redisTemplate.opsForValue().set(
@@ -134,10 +146,11 @@ public class JwtProvider {
 
     public boolean validateToken(String token) {
         try {
-            Jws<Claims> claims = Jwts.parser()
+            Jws<Claims> claims = Jwts.parserBuilder()
                     .setSigningKey(secretKey) // 비밀키를 설정하여 파싱한다.
+                    .build()
                     .parseClaimsJws(token);  // 주어진 토큰을 파싱하여 Claims 객체를 얻는다.
-            log.info("claims.getBody().toString() :: {}", claims.getBody().toString());
+
             // 토큰의 만료 시간과 현재 시간비교
             return claims.getBody()
                     .getExpiration()

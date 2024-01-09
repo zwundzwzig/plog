@@ -8,6 +8,11 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
 		super(attributes);
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> Map<String, T> getProperties(Map<String, Object> attributes) {
+		return (Map<String, T>) attributes.get("properties");
+	}
+
 	@Override
 	public String getId() {
 		return attributes.get("id").toString();
@@ -15,7 +20,7 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
 
 	@Override
 	public String getName() {
-		Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
+		Map<String, Object> properties = getProperties(attributes);
 
 		if (properties == null) return null;
 
@@ -23,18 +28,24 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
 	}
 
 	@Override
-	public String getEmail() {
-		Map<String, Object> account = (Map<String, Object>) attributes.get("kakao_account");
-
-		return (String) account.get("email");
-	}
-
-	@Override
 	public String getImageUrl() {
-		Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
+		Map<String, Object> properties = getProperties(attributes);
 
 		if (properties == null) return null;
 
 		return (String) properties.get("profile_image");
 	}
+
+	@SuppressWarnings("unchecked")
+	private <T> Map<String, T> getAccounts(Map<String, Object> attributes) {
+		return (Map<String, T>) attributes.get("kakao_account");
+	}
+
+	@Override
+	public String getEmail() {
+		Map<String, Object> account = getAccounts(attributes);
+
+		return (String) account.get("email");
+	}
+
 }

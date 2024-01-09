@@ -17,9 +17,9 @@ public class CorsConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedHeaders(List.of("Authorization"));
-    configuration.addAllowedOrigin("http://localhost");
-    configuration.addAllowedOrigin("http://localhost:3000");
-    configuration.addAllowedOrigin("http://localhost:8080");
+    configuration.addAllowedOrigin("http://13.209.208.58:8080");
+    configuration.addAllowedOrigin("http://13.209.208.58:3000");
+    configuration.addAllowedOrigin("http://13.209.208.58:8080");
 
     configuration.setAllowCredentials(true);
     configuration.setAllowedHeaders(

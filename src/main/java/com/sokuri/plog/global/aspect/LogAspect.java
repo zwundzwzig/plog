@@ -60,6 +60,7 @@ public class LogAspect {
         log.error(method.getName() + "() 메서드 처리 중 예외 발생!!");
 
         log.error("예외 발생 시간 = {}", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        log.error("예외 메시지 = {}", exception.getMessage());
     }
 
 }

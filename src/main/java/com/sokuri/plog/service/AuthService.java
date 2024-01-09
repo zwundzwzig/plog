@@ -47,8 +47,9 @@ public class AuthService {
 
   private void verifyToken(String refreshToken) {
     try {
-      Jwts.parser()
+      Jwts.parserBuilder()
               .setSigningKey(jwtProvider.getSecretKey())
+              .build()
               .parseClaimsJws(refreshToken);
     } catch (DecodingException e) {
       throw new BaseException(UNSUPPORTED_TOKEN);

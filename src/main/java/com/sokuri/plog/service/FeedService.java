@@ -55,8 +55,7 @@ public class FeedService {
     Feed feed = feedRepository.findById(UUID.fromString(id))
             .orElseThrow(() -> new NoResultException("해당 ID 값을 가진 피드는 존재하지 않아요."));
 
-    FeedDetailResponse response = feed.toDetailResponse();
-    return response;
+    return feed.toDetailResponse();
   }
 
   @Transactional
