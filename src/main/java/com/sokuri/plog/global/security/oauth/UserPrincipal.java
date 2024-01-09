@@ -1,4 +1,4 @@
-package com.sokuri.plog.global.security.domain;
+package com.sokuri.plog.global.security.oauth;
 
 import com.sokuri.plog.domain.entity.User;
 import com.sokuri.plog.domain.eums.Role;

@@ -1,4 +1,4 @@
-package com.sokuri.plog.global.security.oauth;
+package com.sokuri.plog.global.security.exception;
 
 import lombok.extern.slf4j.Slf4j;
 

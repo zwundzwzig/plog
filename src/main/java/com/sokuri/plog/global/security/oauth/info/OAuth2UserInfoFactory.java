@@ -1,4 +1,4 @@
-package com.sokuri.plog.global.security.oauth;
+package com.sokuri.plog.global.security.oauth.info;
 
 import com.sokuri.plog.domain.eums.SocialProvider;
 

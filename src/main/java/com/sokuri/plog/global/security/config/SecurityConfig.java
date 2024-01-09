@@ -4,7 +4,7 @@ import com.sokuri.plog.global.config.CorsConfig;
 import com.sokuri.plog.global.security.oauth.CustomOAuth2UserService;
 import com.sokuri.plog.global.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.sokuri.plog.global.security.handler.CustomAccessDeniedHandler;
-import com.sokuri.plog.global.security.handler.CustomAuthenticationEntryPoint;
+import com.sokuri.plog.global.security.filter.CustomAuthenticationEntryPoint;
 import com.sokuri.plog.global.security.handler.CustomAuthenticationFailureHandler;
 import com.sokuri.plog.global.security.handler.CustomAuthenticationSuccessHandler;
 import com.sokuri.plog.global.utils.JwtProvider;

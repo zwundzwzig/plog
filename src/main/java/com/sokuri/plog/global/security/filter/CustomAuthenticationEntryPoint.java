@@ -1,4 +1,4 @@
-package com.sokuri.plog.global.security.handler;
+package com.sokuri.plog.global.security.filter;
 
 import com.sokuri.plog.global.exception.CustomErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
