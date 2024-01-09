@@ -25,7 +25,7 @@ public class AuthService {
 
   @Transactional
   public HttpHeaders refresh(String tokenInHeader) {
-    String refreshToken = resolveToken(tokenInHeader);
+    String refreshToken = resolveTokenInHeader(tokenInHeader);
     verifyToken(refreshToken);
 
     Authentication authentication = jwtProvider.getAuthenticationByToken(refreshToken);
@@ -57,7 +57,7 @@ public class AuthService {
     }
   }
 
-  private String resolveToken(String tokenInHeader) {
+  private String resolveTokenInHeader(String tokenInHeader) {
 
     if (StringUtils.hasText(tokenInHeader) && tokenInHeader.startsWith(jwtProvider.getPrefix())) {
       return tokenInHeader.substring(7);

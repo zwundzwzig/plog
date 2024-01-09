@@ -8,18 +8,29 @@ import com.sokuri.plog.global.security.handler.CustomAuthenticationEntryPoint;
 import com.sokuri.plog.global.security.handler.CustomAuthenticationFailureHandler;
 import com.sokuri.plog.global.security.handler.CustomAuthenticationSuccessHandler;
 import com.sokuri.plog.global.utils.JwtProvider;
+import com.sokuri.plog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.util.StringUtils;
+
+import java.util.Set;
+
+import static com.sokuri.plog.global.exception.CustomErrorCode.NOT_EXIST_TOKEN;
+import static com.sokuri.plog.global.exception.CustomErrorCode.TOKEN_NOT_FOUND;
 
 @Configuration
 @EnableWebSecurity
@@ -28,15 +39,12 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
   private final CorsConfig corsConfig;
   private final JwtProvider jwtProvider;
-//  private final CustomAuthenticationSuccessHandler oAuth2LoginSuccessHandler;
-//  private final CustomAuthenticationFailureHandler oAuth2LoginFailureHandler;
   private final CustomOAuth2UserService customOAuth2UserService;
+  private final UserService userService;
   private final RedisTemplate<String, String> redisTemplate;
   private static final String[] AUTH_WHITELIST = {
           "/error",
-          "/*/auth2/code/*",
-          "/oauth2/**",
-          "/login/oauth2/**",
+          "/*/oauth2/code/*",
           "/favicon.ico",
           "/swagger-resources/**",
           "/configuration/ui",
@@ -80,23 +88,24 @@ public class SecurityConfig {
             .oauth2Login(oauth ->
                     oauth
                             .authorizationEndpoint(endpoint ->
-                                    endpoint.baseUri("/oauth2/authorize")
+                                    endpoint//.baseUri("/oauth2/authorize/kakao")
                                             .authorizationRequestRepository(authorizationRequestRepository()))
                             .userInfoEndpoint(user -> user.userService(customOAuth2UserService))
                             .redirectionEndpoint(red -> red.baseUri("/*/oauth2/code/*"))
                             .successHandler(oAuth2AuthenticationSuccessHandler())
-                            .failureHandler(oAuth2AuthenticationFailureHandler()))
+                            .failureHandler(oAuth2AuthenticationFailureHandler())
+                            )
 
             .logout(logoutConfigurer -> logoutConfigurer
                     .logoutUrl("/v1.0/auth/sign-out")
-//                    .addLogoutHandler(logoutHandler())
+                    .addLogoutHandler(logoutHandler())
                     .logoutSuccessUrl("/")
-                    .deleteCookies("remember_me"))
+                    .deleteCookies(HttpHeaders.AUTHORIZATION))
 
             .exceptionHandling(exceptionHandlingConfigurer ->
                     exceptionHandlingConfigurer
                             .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-//                            .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/"))
+                            .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/"))
                             .accessDeniedHandler(new CustomAccessDeniedHandler()));
 
     http.apply(new JwtSecurityConfig(jwtProvider));
@@ -104,22 +113,26 @@ public class SecurityConfig {
     return http.build();
   }
 
-//  @Bean
-//  public LogoutHandler logoutHandler() {
-//    return (request, response, authentication) -> {
-//      String token = jwtProvider.resolveToken(request);
-//      if (!StringUtils.hasText(token)) {
-//        log.error(TOKEN_NOT_FOUND.getMessage());
-//        request.setAttribute("exception", TOKEN_NOT_FOUND);
-//      }
-//
-//      if (!jwtProvider.validateToken(token)) request.setAttribute("exception", NOT_EXIST_TOKEN);;
-//      Authentication auth = jwtProvider.getAuthenticationByToken(token);
-//
-//      Set<String> keysToDelete = redisTemplate.keys(auth.getName() + "*");
-//      redisTemplate.delete(keysToDelete);
-//    };
-//  }
+  @Bean
+  public LogoutHandler logoutHandler() {
+    return (request, response, authentication) -> {
+      try {
+          String token = jwtProvider.resolveToken(request);
+          if (!StringUtils.hasText(token))
+            request.setAttribute("exception", TOKEN_NOT_FOUND);
+
+          if (!jwtProvider.validateToken(token))
+            request.setAttribute("exception", NOT_EXIST_TOKEN);
+          Authentication auth = jwtProvider.getAuthenticationByToken(token);
+
+          Set<String> keysToDelete = redisTemplate.keys(auth.getName() + "*");
+          redisTemplate.delete(keysToDelete);
+      } catch (Exception e) {
+        request.setAttribute("exception", NOT_EXIST_TOKEN);
+        e.printStackTrace();
+      }
+    };
+  }
 
   // 암호화에 필요한 PasswordEncoder Bean 등록
   @Bean
@@ -132,10 +145,7 @@ public class SecurityConfig {
    * */
   @Bean
   public CustomAuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
-    return new CustomAuthenticationSuccessHandler(
-            jwtProvider,
-            authorizationRequestRepository(),
-            redisTemplate);
+    return new CustomAuthenticationSuccessHandler(userService, authorizationRequestRepository());
   }
 
   /*

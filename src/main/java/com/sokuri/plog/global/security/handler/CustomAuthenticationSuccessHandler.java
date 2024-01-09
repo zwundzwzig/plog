@@ -1,87 +1,102 @@
 package com.sokuri.plog.global.security.handler;
 
-import com.sokuri.plog.global.dto.user.TokenResponse;
+import com.sokuri.plog.domain.eums.SocialProvider;
+import com.sokuri.plog.global.dto.user.SignInRequest;
 import com.sokuri.plog.global.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.sokuri.plog.global.utils.JwtProvider;
-import jakarta.servlet.ServletException;
+import com.sokuri.plog.global.security.oauth.OAuth2UserInfo;
+import com.sokuri.plog.global.security.oauth.OAuth2UserInfoFactory;
+import com.sokuri.plog.global.security.util.CookieUtil;
+import com.sokuri.plog.service.UserService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
+
+import static com.sokuri.plog.global.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+import static com.sokuri.plog.global.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository.REFRESH_TOKEN;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-//  @Value("${app.oauth2.authorizedRedirectUris}")
-//  private String redirectUri;
-  private final JwtProvider jwtProvider;
+  @Value("${app.oauth2.authorizedRedirectUris}")
+  private String redirectUri;
+  @Value("${spring.jwt.token.refresh-expiration-time}")
+  private long refreshExpirationTime;
+  private final UserService userService;
   private final HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository;
-  private final RedisTemplate<String, String> redisTemplate;
 
   @Override
-  public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+  public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+    String targetUrl = determineTargetUrl(request, response, authentication);
 
-    log.info(request.getRequestURI());
-    log.info(authentication.getName());
-    // OAuth2User로 캐스팅하여 인증된 사용자 정보를 가져온다.
-    OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-    // 사용자 이메일을 가져온다.
-    String email = oAuth2User.getAttribute("email");
-    // 서비스 제공 플랫폼(GOOGLE, KAKAO, NAVER)이 어디인지 가져온다.
-    String provider = oAuth2User.getAttribute("provider");
-
-    // CustomOAuth2UserService에서 셋팅한 로그인한 회원 존재 여부를 가져온다.
-    boolean isExist = oAuth2User.getAttribute("exist");
-
-    // OAuth2User로 부터 Role을 얻어온다.
-    String role = oAuth2User.getAuthorities().stream().
-            findFirst() // 첫번째 Role을 찾아온다.
-            .orElseThrow(IllegalAccessError::new) // 존재하지 않을 시 예외를 던진다.
-            .getAuthority(); // Role을 가져온다.
-
-    // 회원이 존재할경우
-    if (isExist) {
-      // 회원이 존재하면 jwt token 발행을 시작한다.
-      TokenResponse token = jwtProvider.generateToken(email, role);
-
-      log.info("accessToken = {}", token.getAccessToken());
-
-      // accessToken을 쿼리스트링에 담는 url을 만들어준다.
-      String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/loginSuccess")
-              .queryParam("accessToken", token.getAccessToken())
-              .build()
-              .encode(StandardCharsets.UTF_8)
-              .toUriString();
-
-      // 로그인 확인 페이지로 리다이렉트 시킨다.
-      getRedirectStrategy().sendRedirect(request, response, targetUrl);
-
-
-    } else {
-
-      // 회원이 존재하지 않을경우, 서비스 제공자와 email을 쿼리스트링으로 전달하는 url을 만들어준다.
-      String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/loginSuccess")
-              .queryParam("email", (String) oAuth2User.getAttribute("email"))
-              .queryParam("provider", provider)
-              .build()
-              .encode(StandardCharsets.UTF_8)
-              .toUriString();
-
-      // 회원가입 페이지로 리다이렉트 시킨다.
-      getRedirectStrategy().sendRedirect(request, response, targetUrl);
+    if (response.isCommitted()) {
+      log.error("Response has already been committed. Unable to redirect to " + targetUrl);
+      return;
     }
+
+    clearAuthenticationAttributes(request, response);
+    getRedirectStrategy().sendRedirect(request, response, targetUrl);
+  }
+
+  protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+    Optional<String> redirectUri = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
+            .map(Cookie::getValue);
+
+    if (redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get()))
+      throw new IllegalArgumentException("리다이렉트 uri 에러 입니다. ::" + redirectUri);
+
+    String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
+
+    OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
+    SocialProvider providerType = SocialProvider.valueOf(authToken.getAuthorizedClientRegistrationId().toUpperCase());
+
+    OAuth2User user = ((OidcUser) authentication.getPrincipal());
+    OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, user.getAttributes());
+
+    SignInRequest req = SignInRequest.builder().email(userInfo.getEmail()).build();
+    HttpHeaders headers = userService.signIn(req);
+
+    CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+
+    CookieUtil.addCookie(response
+            , HttpHeaders.AUTHORIZATION
+            , userService.resolveToken(headers.get(HttpHeaders.AUTHORIZATION).get(0))
+            , (int) refreshExpirationTime);
+
+    return UriComponentsBuilder.fromUriString(targetUrl)
+            .build()
+            .encode(StandardCharsets.UTF_8)
+            .toUriString();
+  }
+
+  protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
+    super.clearAuthenticationAttributes(request);
+    authorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
+  }
+
+  private boolean isAuthorizedRedirectUri(String uri) {
+    URI clientRedirectUri = URI.create(uri);
+    URI authorizedUri = URI.create(redirectUri);
+
+    return authorizedUri.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
+            && authorizedUri.getPort() == clientRedirectUri.getPort();
   }
 
 }

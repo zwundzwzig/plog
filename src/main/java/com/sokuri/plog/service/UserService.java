@@ -4,6 +4,7 @@ import com.sokuri.plog.domain.entity.User;
 import com.sokuri.plog.domain.eums.Role;
 import com.sokuri.plog.global.dto.user.*;
 import com.sokuri.plog.domain.repository.user.UserRepository;
+import com.sokuri.plog.global.exception.BaseException;
 import com.sokuri.plog.global.utils.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -13,10 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.NoResultException;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.sokuri.plog.global.exception.CustomErrorCode.TOKEN_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Service
@@ -102,5 +106,13 @@ public class UserService {
             .stream()
             .map(User::toSummaryResponse)
             .collect(Collectors.toList());
+  }
+
+  public String resolveToken(String tokenInHeader) {
+
+    if (StringUtils.hasText(tokenInHeader) && tokenInHeader.startsWith(jwtProvider.getPrefix())) {
+      return tokenInHeader.substring(7);
+    }
+    else throw new BaseException(TOKEN_NOT_FOUND);
   }
 }

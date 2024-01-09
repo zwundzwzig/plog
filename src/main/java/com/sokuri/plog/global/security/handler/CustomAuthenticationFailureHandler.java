@@ -24,14 +24,10 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
   @Override
   public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-    log.error("OAuth2 에러 : {}", request.getRequestURI());
-    log.error("OAuth2 에러 : {}", request.getHeaderNames());
     String targetUrl = CookieUtil.getCookie(request, HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
             .map(Cookie::getValue)
             .orElse(("/"));
 
-    log.error("OAuth2 에러 : {}", exception.getMessage());
-    log.error("OAuth2 에러 : {}", exception.getStackTrace());
     exception.printStackTrace();
 
     targetUrl = UriComponentsBuilder.fromUriString(targetUrl)

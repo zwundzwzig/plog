@@ -5,6 +5,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.sokuri.plog.global.exception.CustomErrorCode.*;
 
@@ -30,17 +33,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
           throws ServletException, IOException {
-    String requestURI = request.getRequestURI();
-    String accessToken = jwtProvider.resolveToken(request);
+    Map<String, String> cookieAttribute = Arrays.stream(request.getCookies())
+            .collect(Collectors.toMap(Cookie::getName, Cookie::getValue));
 
-    if (!StringUtils.hasText(accessToken) && Arrays.stream(AUTH_LIST).noneMatch(requestURI::contains)) {
+    String requestURI = request.getRequestURI();
+    String accessToken = jwtProvider.resolveToken(request) != null ? jwtProvider.resolveToken(request)
+            : cookieAttribute.get("Authorization") != null ? cookieAttribute.get("Authorization")
+            : null;
+
+    if (!StringUtils.hasText(accessToken) && Arrays.stream(AUTH_LIST).noneMatch(requestURI::contains))
       request.setAttribute("exception", NOT_EXIST_TOKEN);
-    }
 
     else if (StringUtils.hasText(accessToken) && Arrays.stream(AUTH_LIST).noneMatch(requestURI::contains)) {
       try{
-        if (!jwtProvider.validateToken(accessToken))
+        if (!jwtProvider.validateToken(accessToken)) {
+          log.error("validateToken :: {} {} {}", NOT_EXIST_TOKEN.getMessage(), StringUtils.hasText(accessToken), requestURI);
           request.setAttribute("exception", NOT_EXIST_TOKEN);
+        }
 
         Authentication authentication = jwtProvider.getAuthenticationByToken(accessToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);

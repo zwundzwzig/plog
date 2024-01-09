@@ -5,7 +5,6 @@ import com.sokuri.plog.domain.eums.Role;
 import com.sokuri.plog.domain.eums.SocialProvider;
 import com.sokuri.plog.domain.repository.user.UserRepository;
 import com.sokuri.plog.global.security.domain.UserPrincipal;
-import com.sokuri.plog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -25,7 +24,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
   private static final String ALREADY_SIGNED_UP_LOCAL = "already_signed_up_local";
 
   private final UserRepository userRepository;
-  private final UserService userService;
 
   @Override
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -48,7 +46,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     SocialProvider providerType = SocialProvider.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
 
     OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, user.getAttributes());
-    User targetUser = userService.findByEmail(userInfo.getEmail());
+    User targetUser = userRepository.findUserByEmail(userInfo.getEmail());
 
     if (targetUser != null) {
       if (targetUser.getSocialProvider() == SocialProvider.LOCAL){
@@ -60,10 +58,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         log.error("CustomOAuth2UserService process Error: 다른 소셜에서 가입된 이메일 입니다. 해당 소셜 로그인을 이용해 주세요.");
         throw new OAuthProviderMissMatchException(ALREADY_SIGNED_UP_SOCIAL);
       }
-//      updateUser(targetUser, userInfo);
-    } else {
-      targetUser = createUser(userInfo, providerType);
     }
+    else targetUser = createUser(userInfo, providerType);
 
     return UserPrincipal.create(targetUser, user.getAttributes());
   }
@@ -71,6 +67,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
   private User createUser(OAuth2UserInfo userInfo, SocialProvider providerType) {
     User user = User.builder()
             .email(userInfo.getEmail())
+            .password("")
             .nickname(userInfo.getName())
             .socialProvider(providerType)
             .role(Role.USER)
@@ -79,11 +76,4 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     return userRepository.saveAndFlush(user);
   }
 
-//  private void updateUser(User user, OAuth2UserInfo userInfo) {
-//    if (userInfo.getName() != null && !user.getNickname().equals(userInfo.getName())) {
-//      user.setNickname(userInfo.getName());
-//    }
-//    user.setProfile(user.getProfile());
-//  }
 }
-
