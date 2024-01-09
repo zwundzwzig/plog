@@ -86,15 +86,12 @@ public class SecurityConfig {
                             .anyRequest().authenticated())
 
             .oauth2Login(oauth ->
-                    oauth
-                            .authorizationEndpoint(endpoint ->
-                                    endpoint//.baseUri("/oauth2/authorize/kakao")
-                                            .authorizationRequestRepository(authorizationRequestRepository()))
-                            .userInfoEndpoint(user -> user.userService(customOAuth2UserService))
-                            .redirectionEndpoint(red -> red.baseUri("/*/oauth2/code/*"))
-                            .successHandler(oAuth2AuthenticationSuccessHandler())
-                            .failureHandler(oAuth2AuthenticationFailureHandler())
-                            )
+                    oauth.authorizationEndpoint(endpoint ->
+                            endpoint.authorizationRequestRepository(authorizationRequestRepository()))
+                          .userInfoEndpoint(user -> user.userService(customOAuth2UserService))
+                          .redirectionEndpoint(red -> red.baseUri("/*/oauth2/code/*"))
+                          .successHandler(oAuth2AuthenticationSuccessHandler())
+                          .failureHandler(oAuth2AuthenticationFailureHandler()))
 
             .logout(logoutConfigurer -> logoutConfigurer
                     .logoutUrl("/v1.0/auth/sign-out")
