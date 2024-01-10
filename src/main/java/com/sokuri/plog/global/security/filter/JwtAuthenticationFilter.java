@@ -28,16 +28,18 @@ import static com.sokuri.plog.global.exception.CustomErrorCode.*;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private final JwtProvider jwtProvider;
 
-  private static final String[] AUTH_LIST = { "/v1.0/user/sign-up", "/v1.0/user/sign-in" };
+  private static final String[] AUTH_LIST = { "/api/v1/user/sign-up", "/api/v1/user/sign-in" };
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
           throws ServletException, IOException {
-    Map<String, String> cookieAttribute = Arrays.stream(request.getCookies())
-            .collect(Collectors.toMap(Cookie::getName, Cookie::getValue));
+    Map<String, String> cookieAttribute = request.getCookies() != null
+            ? Arrays.stream(request.getCookies()).collect(Collectors.toMap(Cookie::getName, Cookie::getValue))
+            : null;
 
     String requestURI = request.getRequestURI();
     String accessToken = jwtProvider.resolveToken(request) != null ? jwtProvider.resolveToken(request)
+            : cookieAttribute == null ? null
             : cookieAttribute.get("Authorization") != null ? cookieAttribute.get("Authorization")
             : null;
 
