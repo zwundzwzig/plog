@@ -15,7 +15,7 @@ import java.util.List;
 
 @Tag(name = "쓰레기통 정보", description = "서울시 공공 데이터 기반으로 쓰레기 위치 정보 제공")
 @RestController
-@RequestMapping("/v1.0/trash")
+@RequestMapping("/api/v1/trash")
 @RequiredArgsConstructor
 public class TrashController {
   private final TrashService trashService;

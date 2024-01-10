@@ -20,7 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1.0/event")
+@RequestMapping("/api/v1/event")
 @Tag(name = "행사 정보", description = "행사 API")
 public class EventController {
     private final EventService eventService;
@@ -28,6 +28,7 @@ public class EventController {
     @Operation(summary = "전체 행사 목록 조회")
     @GetMapping("")
     public ResponseEntity<List<EventSummaryResponse>> getEventList(@RequestParam(value = "status", required = false) String status) {
+        System.out.println("EventController.getEventList :: " + status);
         List<EventSummaryResponse> response = EnumUtils.isValidEnumIgnoreCase(RecruitStatus.class, status)
                 ? eventService.getEventList(RecruitStatus.valueOf(status.toUpperCase()))
                 : eventService.getAllEventList();

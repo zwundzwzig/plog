@@ -35,7 +35,7 @@ public class UserControllerTest {
   @Autowired
   UserService userService;
 
-  private static final String BASE_URL = "/v1.0/user";
+  private static final String BASE_URL = "/api/v1/user";
   private static final String USER_EMAIL = "email@email.com";
   private static final String USER_NICKNAME = "nickname";
   private static final String USER_BIRTHDAY = "2022-01-01";

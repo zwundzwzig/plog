@@ -17,7 +17,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1.0/user")
+@RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 @Tag(name = "유저 정보", description = "회원 API")
 @Slf4j

@@ -22,7 +22,7 @@ import java.util.Map;
 @Tag(name = "크루 정보", description = "크루 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1.0/community")
+@RequestMapping("/api/v1/community")
 public class CommunityController {
 
   private final CommunityService communityService;

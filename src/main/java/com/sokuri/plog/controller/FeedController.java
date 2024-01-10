@@ -20,7 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1.0/feed")
+@RequestMapping("/api/v1/feed")
 @Tag(name = "피드 정보", description = "피드 API")
 public class FeedController {
 
