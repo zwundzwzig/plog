@@ -38,15 +38,17 @@ public class EventService {
             .orElseThrow(() -> new NoResultException("해당 ID 값을 가진 행사는 존재하지 않아요."));
   }
 
-    public List<EventSummaryResponse> getEventList(RecruitStatus status) {
-      return eventRepository.findEventsByStatusIsAndRecruitPeriodBeginRecruitIsBeforeAndRecruitPeriodFinishRecruitIsAfter(
-                    status, LocalDateTime.now(), LocalDateTime.now()
-                )
-                .stream()
-                .map(Event::toSummaryResponse)
-                .collect(Collectors.toList());
-    }
+  @Transactional(readOnly = true)
+  public List<EventSummaryResponse> getEventList(RecruitStatus status) {
+    return eventRepository.findEventsByStatusIsAndRecruitPeriodBeginRecruitIsBeforeAndRecruitPeriodFinishRecruitIsAfter(
+                  status, LocalDateTime.now(), LocalDateTime.now()
+              )
+              .stream()
+              .map(Event::toSummaryResponse)
+              .collect(Collectors.toList());
+  }
 
+  @Transactional(readOnly = true)
   public List<EventSummaryResponse> getAllEventList() {
     return eventRepository.findEventsByRecruitPeriodBeginRecruitIsBeforeAndRecruitPeriodFinishRecruitIsAfter(
                     LocalDateTime.now(), LocalDateTime.now()
@@ -56,6 +58,7 @@ public class EventService {
             .collect(Collectors.toList());
   }
 
+  @Transactional(readOnly = true)
   public EventDetailResponse getEventDetail(String id) {
     Event event = findById(id);
 
