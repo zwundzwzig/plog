@@ -30,7 +30,7 @@ public class CommunityControllerTest {
     @Test
     @WithMockUser
     void 모집_중인_커뮤니티_테스트() throws Exception {
-      mvc.perform(MockMvcRequestBuilders.get("/v1.0/community")
+      mvc.perform(MockMvcRequestBuilders.get("/api/v1/community")
                       .contentType(MediaType.APPLICATION_JSON)
                       .accept(MediaType.APPLICATION_JSON))
               .andExpect(status().isOk())

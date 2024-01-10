@@ -31,7 +31,7 @@ public class FeedControllerTest {
   @Test
   @WithMockUser
   void 전체_피드_테스트() throws Exception {
-    mvc.perform(MockMvcRequestBuilders.get("/v1.0/feed")
+    mvc.perform(MockMvcRequestBuilders.get("/api/v1/feed")
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())

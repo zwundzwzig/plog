@@ -31,7 +31,7 @@ public class EventControllerTest {
     @Test
     @WithMockUser
     void 모집_중인_행사_테스트() throws Exception {
-      mvc.perform(MockMvcRequestBuilders.get("/v1.0/event")
+      mvc.perform(MockMvcRequestBuilders.get("/api/v1/event")
                       .contentType(MediaType.APPLICATION_JSON)
                       .accept(MediaType.APPLICATION_JSON))
               .andExpect(status().isOk())

@@ -23,7 +23,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.util.StringUtils;
 
@@ -52,8 +51,8 @@ public class SecurityConfig {
           "/swagger-ui/**",
           "/webjars/**",
           "/h2-console/**",
-          "/v1.0/user/sign-**",
-          "/v1.0/auth/**",
+          "/api/v1/user/sign-**",
+          "/api/v1/auth/**",
           "/v3/api-docs/**"
   };
 
@@ -94,7 +93,7 @@ public class SecurityConfig {
                           .failureHandler(oAuth2AuthenticationFailureHandler()))
 
             .logout(logoutConfigurer -> logoutConfigurer
-                    .logoutUrl("/v1.0/auth/sign-out")
+                    .logoutUrl("/api/v1/auth/sign-out")
                     .addLogoutHandler(logoutHandler())
                     .logoutSuccessUrl("/")
                     .deleteCookies(HttpHeaders.AUTHORIZATION))
@@ -102,7 +101,6 @@ public class SecurityConfig {
             .exceptionHandling(exceptionHandlingConfigurer ->
                     exceptionHandlingConfigurer
                             .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-                            .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/"))
                             .accessDeniedHandler(new CustomAccessDeniedHandler()));
 
     http.apply(new JwtSecurityConfig(jwtProvider));
