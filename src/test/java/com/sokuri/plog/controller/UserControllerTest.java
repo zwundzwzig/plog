@@ -11,10 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -100,19 +102,29 @@ public class UserControllerTest {
             .andExpect(jsonPath("$.isExists").value("true"));
   }
 
-//  @Test
-//  @DisplayName("회원 가입")
-//  void signInTest() throws Exception {
-//    signUpRequest.setEmail("ee" + USER_EMAIL);
-//    signUpRequest.setNickname(USER_NICKNAME + "ee");
-//
-//    MockMultipartFile multipartFile1 = new MockMultipartFile("files", "test.jpeg", "multipart/form-data", "test file".getBytes(StandardCharsets.UTF_8) );
-//    MockMultipartFile request = new MockMultipartFile("request", "request", "application/json", mapper.writeValueAsString(signUpRequest).getBytes(StandardCharsets.UTF_8));
-//
-//    mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + "/sign-up")
-//                    .file(multipartFile1)
-//                    .file(request)
-//                    .contentType(MediaType.MULTIPART_FORM_DATA))
-//            .andExpect(status().isOk());
-//  }
+  @Test
+  @DisplayName("회원 가입 후 로그인 후 바로 로그아웃")
+  void signInTest() throws Exception {
+    signUpRequest.setEmail("ee" + USER_EMAIL);
+    signUpRequest.setNickname(USER_NICKNAME + "ee");
+
+    MockMultipartFile multipartFile1 = new MockMultipartFile("files", "test.jpeg", "multipart/form-data", "test file".getBytes(StandardCharsets.UTF_8) );
+    MockMultipartFile request = new MockMultipartFile("request", "request", "application/json", mapper.writeValueAsString(signUpRequest).getBytes(StandardCharsets.UTF_8));
+
+    MvcResult result = mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + "/sign-up")
+                    .file(multipartFile1)
+                    .file(request)
+                    .contentType(MediaType.MULTIPART_FORM_DATA))
+            .andExpect(status().isOk())
+            .andExpect(header().exists(HttpHeaders.AUTHORIZATION))
+            .andReturn();
+
+    String token = result.getResponse().getHeader(HttpHeaders.AUTHORIZATION);
+
+    mockMvc.perform(MockMvcRequestBuilders.multipart("/api/v1/auth/sign-out")
+                    .header(HttpHeaders.AUTHORIZATION, token)
+                    .contentType(MediaType.MULTIPART_FORM_DATA))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(re -> "/".equals(re.getResponse().getRedirectedUrl()));
+  }
 }
