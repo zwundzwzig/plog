@@ -36,6 +36,7 @@ public class FeedService {
             .orElseThrow(() -> new NoResultException("해당 ID 값을 가진 피드는 존재하지 않아요."));
   }
 
+  @Transactional(readOnly = true)
   public List<FeedSummaryResponse> getFeedList(AccessStatus status) {
     return feedRepository.findAllByStatusIs(status)
             .stream()
@@ -43,6 +44,7 @@ public class FeedService {
             .collect(Collectors.toList());
   }
 
+  @Transactional(readOnly = true)
   public List<FeedSummaryResponse> getAllFeedList() {
     return feedRepository.findAll()
             .stream()
@@ -50,6 +52,7 @@ public class FeedService {
             .collect(Collectors.toList());
   }
 
+  @Transactional(readOnly = true)
   public FeedDetailResponse getFeedDetail(String id) {
     isValidUUID(id);
     Feed feed = feedRepository.findById(UUID.fromString(id))

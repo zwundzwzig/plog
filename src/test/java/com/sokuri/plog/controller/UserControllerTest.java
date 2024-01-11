@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -103,13 +104,16 @@ public class UserControllerTest {
   @Test
   @DisplayName("회원 가입")
   void signInTest() throws Exception {
+    signUpRequest.setEmail("ee" + USER_EMAIL);
+    signUpRequest.setNickname(USER_NICKNAME+ "ee");
+
     MockMultipartFile multipartFile1 = new MockMultipartFile("files", "test.jpeg", "multipart/form-data", "test file".getBytes(StandardCharsets.UTF_8) );
     MockMultipartFile request = new MockMultipartFile("request", "request", "application/json", mapper.writeValueAsString(signUpRequest).getBytes(StandardCharsets.UTF_8));
 
-    mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + "/signUp")
+    mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + "/sign-up")
                     .file(multipartFile1)
                     .file(request)
                     .contentType(MediaType.MULTIPART_FORM_DATA))
-            .andExpect(status().isNoContent());
+            .andExpect(status().isOk());
   }
 }

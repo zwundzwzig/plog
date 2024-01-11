@@ -38,6 +38,7 @@ public class CommunityService {
             .orElseThrow(() -> new NoResultException("해당 ID 값을 가진 크루 모집은 존재하지 않아요."));
   }
 
+  @Transactional(readOnly = true)
   public List<CommunitySummaryResponse> getCommunityList(RecruitStatus status) {
     return communityRepository.findCommunitiesByStatusIs(status)
             .stream()
@@ -45,6 +46,7 @@ public class CommunityService {
             .collect(Collectors.toList());
   }
 
+  @Transactional(readOnly = true)
   public List<CommunitySummaryResponse> getAllCommunityList() {
     return communityRepository.findAll()
             .stream()
@@ -52,6 +54,7 @@ public class CommunityService {
             .collect(Collectors.toList());
   }
 
+  @Transactional(readOnly = true)
   public CommunityDetailResponse getCommunityDetail(String id) {
     Community community = findById(id);
 
