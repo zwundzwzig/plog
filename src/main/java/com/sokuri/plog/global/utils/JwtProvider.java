@@ -55,8 +55,6 @@ public class JwtProvider {
 
     private final String refresh = "_REFRESH";
 
-    private final Date now = new Date();
-
     private Key secretKey;
 
     @PostConstruct
@@ -79,6 +77,7 @@ public class JwtProvider {
     }
 
     public String generateAccessToken(Claims claims) {
+        Date now = new Date();
         Date expireDate = new Date(now.getTime() + accessExpirationTime);
 
         String accessToken = Jwts.builder()
@@ -99,6 +98,7 @@ public class JwtProvider {
     }
 
     public String generateRefreshToken(Claims claims) {
+        Date now = new Date();
         Date expireDate = new Date(now.getTime() + refreshExpirationTime);
 
         String refreshToken = Jwts.builder()

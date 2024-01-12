@@ -37,8 +37,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
   @Value("${app.oauth2.authorizedRedirectUris}")
   private String redirectUri;
-  @Value("${spring.jwt.token.refresh-expiration-time}")
-  private long refreshExpirationTime;
+  private static final int COOKIE_EXPIRE_SECONDS = 60;
   private final UserService userService;
   private final HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository;
 
@@ -78,7 +77,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     CookieUtil.addCookie(response
             , HttpHeaders.AUTHORIZATION
             , userService.resolveToken(headers.get(HttpHeaders.AUTHORIZATION).get(0))
-            , (int) refreshExpirationTime);
+            , COOKIE_EXPIRE_SECONDS);
 
     return UriComponentsBuilder.fromUriString(targetUrl)
             .build()
