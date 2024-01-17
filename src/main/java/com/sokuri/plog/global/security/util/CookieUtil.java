@@ -5,6 +5,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.util.SerializationUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Base64;
 import java.util.Optional;
 
@@ -13,7 +16,7 @@ public class CookieUtil {
   public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
     Cookie[] cookies = request.getCookies();
 
-    if (cookies != null && cookies.length > 0) {
+    if (cookies != null) {
       for (Cookie cookie : cookies) {
         if (name.equals(cookie.getName()))
           return Optional.of(cookie);
@@ -34,7 +37,7 @@ public class CookieUtil {
   public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
     Cookie[] cookies = request.getCookies();
 
-    if (cookies != null && cookies.length > 0) {
+    if (cookies != null) {
       for (Cookie cookie : cookies) {
         if (name.equals(cookie.getName())) {
           cookie.setValue("");
@@ -51,12 +54,15 @@ public class CookieUtil {
             .encodeToString(SerializationUtils.serialize(obj));
   }
 
-  public static <T> T deserialize(Cookie cookie, Class<T> cls) {
-    return cls.cast(
-            SerializationUtils.deserialize(
-                    Base64.getUrlDecoder().decode(cookie.getValue())
-            )
-    );
+  public static <T> T deserialize(Cookie cookie, Class<T> cls) throws IOException, ClassNotFoundException {
+    return cls.cast(deserializeWithObjectInputStream(Base64.getUrlDecoder().decode(cookie.getValue())));
+  }
+
+  private static Object deserializeWithObjectInputStream(byte[] bytes) throws IOException, ClassNotFoundException {
+    try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+         ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream)) {
+      return objectInputStream.readObject();
+    }
   }
 
 }

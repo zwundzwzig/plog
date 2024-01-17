@@ -10,6 +10,8 @@ import org.springframework.security.oauth2.client.web.AuthorizationRequestReposi
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Slf4j
 @Component
 public class HttpCookieOAuth2AuthorizationRequestRepository
@@ -26,7 +28,7 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
             .map(cookie -> {
               try {
                 return CookieUtil.deserialize(cookie, OAuth2AuthorizationRequest.class);
-              } catch (IllegalArgumentException e) {
+              } catch (IllegalArgumentException | IOException | ClassNotFoundException e) {
                 e.printStackTrace();
                 return null;
               }
@@ -37,6 +39,7 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
   @Override
   public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request, HttpServletResponse response) {
     if (authorizationRequest == null) {
+      CookieUtil.deleteCookie(request, response, HttpHeaders.AUTHORIZATION);
       CookieUtil.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
       CookieUtil.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
       CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
