@@ -10,17 +10,32 @@ import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 
 @Aspect
 @Slf4j
 @Component
 public class LogAspect {
 
+    private static final String LOG_FORMAT = "METHOD : {}";
+
+    private void logging(final JoinPoint joinPoint, final BiConsumer<String, String> consumer) {
+        consumer.accept(LOG_FORMAT, joinPoint.getSignature().toShortString());
+    }
+
     @Pointcut("execution(* com.sokuri.plog.controller..*.*(..))")
     public void beforeExecute() {}
 
+    @Pointcut("execution(* com.sokuri.plog.controller..*.*(..))")
+    public void allController() {}
+
+    @Before("allController()")
+    public void controllerLog(final JoinPoint joinPoint) {
+        logging(joinPoint, log::info);
+    }
+
     @Before("beforeExecute()")
-    public void requestLogging(JoinPoint joinPoint) {
+    public void requestLogging(final JoinPoint joinPoint) {
 
         // 실행되는 메서드 이름을 가져오고 출력
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
