@@ -22,6 +22,7 @@ public class CorsConfig {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.addAllowedOrigin(address + ":" + port);
     configuration.addAllowedOrigin("http://localhost:3000");
+    configuration.addAllowedOrigin("https://sokuri.vercel.app");
 
     configuration.setAllowCredentials(true);
     configuration.setAllowedHeaders(
