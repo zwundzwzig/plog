@@ -1,8 +1,10 @@
 package com.sokuri.plog.global.utils;
 
 import com.sokuri.plog.global.dto.user.TokenResponse;
+import com.sokuri.plog.global.exception.BaseException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.io.DecodingException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
@@ -179,6 +181,19 @@ public class JwtProvider {
                     .getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
+        }
+    }
+
+    public void verifyRefreshToken(String refreshToken) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(refreshToken);
+        } catch (DecodingException e) {
+            throw new BaseException(UNSUPPORTED_TOKEN);
+        } catch (ExpiredJwtException e) {
+            throw new BaseException(EXPIRED_TOKEN);
         }
     }
 }

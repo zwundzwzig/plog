@@ -88,7 +88,6 @@ public class SecurityConfig {
                     oauth.authorizationEndpoint(endpoint ->
                             endpoint.authorizationRequestRepository(authorizationRequestRepository()))
                           .userInfoEndpoint(user -> user.userService(customOAuth2UserService))
-                          .redirectionEndpoint(red -> red.baseUri("/*/oauth2/code/*"))
                           .successHandler(oAuth2AuthenticationSuccessHandler())
                           .failureHandler(oAuth2AuthenticationFailureHandler()))
 
@@ -121,7 +120,9 @@ public class SecurityConfig {
           Authentication auth = jwtProvider.getAuthenticationByToken(token);
 
           Set<String> keysToDelete = redisTemplate.keys(auth.getName() + "*");
-          redisTemplate.delete(keysToDelete);
+
+          if (keysToDelete != null)
+            redisTemplate.delete(keysToDelete);
       } catch (Exception e) {
         request.setAttribute("exception", NOT_EXIST_TOKEN);
         e.printStackTrace();

@@ -20,7 +20,7 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
   public final static String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
   public final static String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
   public final static String REFRESH_TOKEN = HttpHeaders.AUTHORIZATION + "_REFRESH";
-  private static final int COOKIE_EXPIRE_SECONDS = 180;
+  public static final int COOKIE_EXPIRE_SECONDS = 180;
 
   @Override
   public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {

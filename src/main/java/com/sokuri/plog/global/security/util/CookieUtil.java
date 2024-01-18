@@ -3,6 +3,7 @@ package com.sokuri.plog.global.security.util;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseCookie;
 import org.springframework.util.SerializationUtils;
 
 import java.io.ByteArrayInputStream;
@@ -12,6 +13,7 @@ import java.util.Base64;
 import java.util.Optional;
 
 public class CookieUtil {
+  public static final String COOKIE_TOKEN_REFRESH = "refresh-token";
 
   public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
     Cookie[] cookies = request.getCookies();
@@ -32,6 +34,16 @@ public class CookieUtil {
     cookie.setMaxAge(maxAge);
 
     response.addCookie(cookie);
+  }
+
+  public static ResponseCookie addResponseCookie(String name, String value, int maxAge) {
+    return ResponseCookie.from(name, value)
+            .maxAge(maxAge)
+            .sameSite("None")
+            .secure(true)
+            .httpOnly(true)
+            .path("/")
+            .build();
   }
 
   public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {

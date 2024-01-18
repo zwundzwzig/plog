@@ -30,7 +30,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
   @Override
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
     OAuth2User user = super.loadUser(userRequest);
-    log.info("CustomOAuth2UserService loadUser : {} ", user.getName());
 
     try {
       return this.process(userRequest, user);
@@ -43,8 +42,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
   }
 
   private OAuth2User process(OAuth2UserRequest userRequest, OAuth2User user) {
-    log.info("CustomOAuth2UserService process : {} ", userRequest.getClientRegistration());
-    log.info("CustomOAuth2UserService process : {} ", userRequest.getClientRegistration().getRegistrationId());
     SocialProvider providerType = SocialProvider.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
 
     OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, user.getAttributes());

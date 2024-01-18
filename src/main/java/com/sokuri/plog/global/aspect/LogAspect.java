@@ -3,10 +3,8 @@ package com.sokuri.plog.global.aspect;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -17,65 +15,48 @@ import java.util.function.BiConsumer;
 @Component
 public class LogAspect {
 
-    private static final String LOG_FORMAT = "METHOD : {}";
+    private final String LOG_METHOD_NAME = "메서드 이름 :: {}";
+    private final String LOG_PARAMETER_TYPE = "파라미터 타입 :: {}";
+    private final String LOG_PARAMETER_VALUE = "파라미터 값 :: {}";
+    private final String LOG_TIME_FORMAT = "요청 시간 :: {}";
+    private final String LOG_ERROR_MESSAGE = "에러 메시지 :: {}";
+    private final String LOG_ERROR_CLASS = "에러 클래스 :: {}";
 
-    private void logging(final JoinPoint joinPoint, final BiConsumer<String, String> consumer) {
-        consumer.accept(LOG_FORMAT, joinPoint.getSignature().toShortString());
+    private void info(final JoinPoint joinPoint, final BiConsumer<String, String> consumer) {
+        consumer.accept(LOG_METHOD_NAME, joinPoint.getSignature().toShortString());
+        consumer.accept(LOG_TIME_FORMAT, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+        for (Object object : joinPoint.getArgs()) {
+            if (Objects.nonNull(object)) {
+                consumer.accept(LOG_PARAMETER_TYPE, object.getClass().getSimpleName());
+                consumer.accept(LOG_PARAMETER_VALUE, object.toString());
+            }
+        }
+    }
+
+    private void err(final JoinPoint joinPoint, Exception exception, final BiConsumer<String, String> consumer) {
+        consumer.accept(LOG_METHOD_NAME, joinPoint.getSignature().toShortString());
+        consumer.accept(LOG_TIME_FORMAT, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        consumer.accept(LOG_ERROR_MESSAGE, exception.getMessage());
+        consumer.accept(LOG_ERROR_CLASS, exception.getClass().getSimpleName());
     }
 
     @Pointcut("execution(* com.sokuri.plog.controller..*.*(..))")
     public void beforeExecute() {}
 
-    @Pointcut("execution(* com.sokuri.plog.controller..*.*(..))")
-    public void allController() {}
-
-    @Before("allController()")
-    public void controllerLog(final JoinPoint joinPoint) {
-        logging(joinPoint, log::info);
-    }
-
     @Before("beforeExecute()")
     public void requestLogging(final JoinPoint joinPoint) {
-
-        // 실행되는 메서드 이름을 가져오고 출력
-        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        Method method = methodSignature.getMethod();
-        log.info(method.getName() + "() 메서드 요청 시작");
-
-        log.info("요청 시작 시간 = {}", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-
-        // 메서드에 들어가는 매개변수 배열을 읽어온다.
-        Object[] paramArgs = joinPoint.getArgs();
-
-        // 매개변수 배열의 종류와 값을 출력한다.
-        for (Object object : paramArgs) {
-            if (Objects.nonNull(object)) {
-                log.info("parameter type => {}", object.getClass().getSimpleName());
-                log.info("parameter value => {}", object);
-            }
-        }
-
+        info(joinPoint, log::info);
     }
 
     @AfterReturning("beforeExecute()")
     public void afterRequesting(JoinPoint joinPoint) {
-        // 실행되는 메서드 이름을 가져온다
-        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        Method method = methodSignature.getMethod();
-
-        log.info("요청 종료 시간 = {}", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        log.info("요청 종료 , 종료된 메서드 => {}", method.getName());
+        info(joinPoint, log::debug);
     }
 
     @AfterThrowing(pointcut = "beforeExecute()", throwing = "exception")
     public void exceptionLogging(JoinPoint joinPoint, Exception exception) {
-        // 실행되는 메서드 이름을 가져오고 출력
-        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        Method method = methodSignature.getMethod();
-        log.error(method.getName() + "() 메서드 처리 중 예외 발생!!");
-
-        log.error("예외 발생 시간 = {}", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        log.error("예외 메시지 = {}", exception.getMessage());
+        err(joinPoint, exception, log::error);
     }
 
 }

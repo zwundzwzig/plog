@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -25,10 +26,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Optional;
 
-import static com.sokuri.plog.global.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
-import static com.sokuri.plog.global.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository.REFRESH_TOKEN;
+import static com.sokuri.plog.global.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository.*;
+import static com.sokuri.plog.global.security.util.CookieUtil.COOKIE_TOKEN_REFRESH;
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 @Slf4j
 @Component
@@ -37,7 +40,6 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
   @Value("${app.oauth2.authorizedRedirectUris}")
   private String redirectUri;
-  private static final int COOKIE_EXPIRE_SECONDS = 60;
   private final UserService userService;
   private final HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository;
 
@@ -72,12 +74,20 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     SignInRequest req = SignInRequest.builder().email(userInfo.getEmail()).build();
     HttpHeaders headers = userService.signIn(req);
 
-    CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+    List<String> accessTokenList = headers.get(HttpHeaders.AUTHORIZATION);
+    List<String> refreshTokenList = headers.get(REFRESH_TOKEN);
 
-    CookieUtil.addCookie(response
-            , HttpHeaders.AUTHORIZATION
-            , userService.resolveToken(headers.get(HttpHeaders.AUTHORIZATION).get(0))
-            , COOKIE_EXPIRE_SECONDS);
+    if ((accessTokenList != null ? accessTokenList.size() : 0) > 0) {
+      String accessToken = userService.resolveToken(accessTokenList.get(0));
+      ResponseCookie tokenInCookie = CookieUtil.addResponseCookie(HttpHeaders.AUTHORIZATION, accessToken, COOKIE_EXPIRE_SECONDS);
+      response.addHeader(SET_COOKIE, tokenInCookie.toString());
+    }
+
+    if ((refreshTokenList != null ? refreshTokenList.size() : 0) > 0) {
+      String refreshToken = userService.resolveToken(refreshTokenList.get(0));
+      ResponseCookie tokenInCookie = CookieUtil.addResponseCookie(COOKIE_TOKEN_REFRESH, refreshToken, COOKIE_EXPIRE_SECONDS);
+      response.addHeader(SET_COOKIE, tokenInCookie.toString());
+    }
 
     return UriComponentsBuilder.fromUriString(targetUrl)
             .build()
