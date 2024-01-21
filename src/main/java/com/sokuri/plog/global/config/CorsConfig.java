@@ -14,6 +14,8 @@ import java.util.Collections;
 public class CorsConfig {
   @Value("${sokuri.address}")
   private String address;
+  @Value("${sokuri.client}")
+  private String client;
   @Value("${server.port}")
   private Integer port;
 
@@ -22,7 +24,7 @@ public class CorsConfig {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.addAllowedOrigin(address + ":" + port);
     configuration.addAllowedOrigin("http://localhost:3000");
-    configuration.addAllowedOrigin("https://sokuri.vercel.app");
+    configuration.addAllowedOrigin(client);
 
     configuration.setAllowCredentials(true);
     configuration.setAllowedHeaders(

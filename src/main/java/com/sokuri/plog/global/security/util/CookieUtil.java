@@ -9,8 +9,12 @@ import org.springframework.util.SerializationUtils;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Base64;
 import java.util.Optional;
+
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 public class CookieUtil {
   public static final String COOKIE_TOKEN_REFRESH = "refresh-token";
@@ -46,6 +50,23 @@ public class CookieUtil {
             .build();
   }
 
+  public static ResponseCookie addResponseCookie(HttpServletResponse response, String name, String value, int maxAge, String url) {
+    String domain = extractDomain(url);
+
+    ResponseCookie cookie = ResponseCookie.from(name, value)
+            .maxAge(maxAge)
+            .sameSite("None")
+            .secure(true)
+            .httpOnly(true)
+            .path("/")
+            .domain(domain)
+            .build();
+
+    response.addHeader(SET_COOKIE, cookie.toString());
+
+    return cookie;
+  }
+
   public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
     Cookie[] cookies = request.getCookies();
 
@@ -74,6 +95,16 @@ public class CookieUtil {
     try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
          ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream)) {
       return objectInputStream.readObject();
+    }
+  }
+
+  private static String extractDomain(String url) {
+    try {
+      URI uri = new URI(url);
+      String domain = uri.getHost();
+      return domain.startsWith("www.") ? domain.substring(4) : domain;
+    } catch (URISyntaxException e) {
+      return "";
     }
   }
 

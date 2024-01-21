@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -31,7 +31,6 @@ import java.util.Optional;
 
 import static com.sokuri.plog.global.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository.*;
 import static com.sokuri.plog.global.security.util.CookieUtil.COOKIE_TOKEN_REFRESH;
-import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 @Slf4j
 @Component
@@ -42,13 +41,15 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
   private String redirectUri;
   private final UserService userService;
   private final HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository;
+  @Value("${sokuri.client}")
+  private String client;
 
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
     String targetUrl = determineTargetUrl(request, response, authentication);
 
     if (response.isCommitted()) {
-      log.error("Response has already been committed. Unable to redirect to " + targetUrl);
+      super.logger.error("Response has already been committed. Unable to redirect to " + targetUrl);
       return;
     }
 
@@ -77,16 +78,16 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     List<String> accessTokenList = headers.get(HttpHeaders.AUTHORIZATION);
     List<String> refreshTokenList = headers.get(REFRESH_TOKEN);
 
+    response.setStatus(HttpStatus.TEMPORARY_REDIRECT.value());
+
     if ((accessTokenList != null ? accessTokenList.size() : 0) > 0) {
       String accessToken = userService.resolveToken(accessTokenList.get(0));
-      ResponseCookie tokenInCookie = CookieUtil.addResponseCookie(HttpHeaders.AUTHORIZATION, accessToken, COOKIE_EXPIRE_SECONDS);
-      response.addHeader(SET_COOKIE, tokenInCookie.toString());
+      CookieUtil.addResponseCookie(response, HttpHeaders.AUTHORIZATION, accessToken, COOKIE_EXPIRE_SECONDS, client);
     }
 
     if ((refreshTokenList != null ? refreshTokenList.size() : 0) > 0) {
       String refreshToken = userService.resolveToken(refreshTokenList.get(0));
-      ResponseCookie tokenInCookie = CookieUtil.addResponseCookie(COOKIE_TOKEN_REFRESH, refreshToken, COOKIE_EXPIRE_SECONDS);
-      response.addHeader(SET_COOKIE, tokenInCookie.toString());
+      CookieUtil.addResponseCookie(response, COOKIE_TOKEN_REFRESH, refreshToken, COOKIE_EXPIRE_SECONDS, client);
     }
 
     return UriComponentsBuilder.fromUriString(targetUrl)
