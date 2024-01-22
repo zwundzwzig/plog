@@ -1,17 +1,16 @@
 package com.sokuri.plog.global.utils;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.security.GeneralSecurityException;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.google.api.client.auth.oauth2.TokenResponseException;
 import com.sokuri.plog.global.dto.sheet.GoogleSheetResponseDto;
 import com.sokuri.plog.global.dto.sheet.GoogleSheetsDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -41,6 +40,7 @@ import jakarta.annotation.PostConstruct;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class GoogleApiUtil implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
     private static String CREDENTIALS_FILE_PATH;
@@ -52,7 +52,7 @@ public class GoogleApiUtil implements ApplicationContextAware {
 
     @PostConstruct
     public void initializeVariable() {
-        SERVER_PORT = Integer.parseInt(applicationContext.getEnvironment().getProperty("server.port"));
+        SERVER_PORT = Integer.parseInt(Objects.requireNonNull(applicationContext.getEnvironment().getProperty("server.port")));
         CREDENTIALS_FILE_PATH = applicationContext.getEnvironment().getProperty("api.google.credentials-file-path");
         TOKENS_DIRECTORY_PATH = applicationContext.getEnvironment().getProperty("api.google.tokens-directory-path");
         APPLICATION_NAME = applicationContext.getEnvironment().getProperty("api.google.app-name");
@@ -61,8 +61,8 @@ public class GoogleApiUtil implements ApplicationContextAware {
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext context) throws BeansException {
-        this.applicationContext = context;
+    public void setApplicationContext(@NotNull ApplicationContext context) throws BeansException {
+        applicationContext = context;
     }
 
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
@@ -91,11 +91,34 @@ public class GoogleApiUtil implements ApplicationContextAware {
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY,
                 clientSecrets, SCOPES)
-                .setDataStoreFactory(new FileDataStoreFactory(
-                        new java.io.File(System.getProperty("user.home"), TOKENS_DIRECTORY_PATH)))
-                .setAccessType("offline").build();
+                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
+                .setAccessType("offline")
+                .build();
         LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(SERVER_PORT + 8).build();
-        return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+
+        Credential credential;
+        try {
+            credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+        } catch (TokenResponseException e) {
+            log.error("TokenResponseException: " + e.getMessage());
+            log.error("Attempting to refresh credentials...");
+
+            credential = refreshCredentials(flow);
+        }
+
+        return credential;
+    }
+
+    private static Credential refreshCredentials(GoogleAuthorizationCodeFlow flow)
+            throws IOException {
+        try {
+            Credential credential = flow.loadCredential("user");
+            credential.refreshToken();
+            return credential;
+        } catch (TokenResponseException e) {
+            log.error("Failed to refresh credentials. User needs to re-authenticate.");
+            throw e;
+        }
     }
 
     public Map<Object, Map<String, Object>> getDataFromSheet() throws GeneralSecurityException, IOException {
@@ -103,9 +126,9 @@ public class GoogleApiUtil implements ApplicationContextAware {
         Sheets service = getSheetService();
         ValueRange response = service.spreadsheets().values().get(SPREAD_SHEET_ID, SPREAD_SHEET_RANGE).execute();
         List<List<Object>> values = response.getValues();
-        List<String> keyList = values.get(0).stream().map(Object::toString).collect(Collectors.toList());
+        List<String> keyList = values.get(0).stream().map(Object::toString).toList();
         Map<Object, Map<String, Object>> storeDataFromGoogleSheet = new HashMap<>();
-        if (values == null || values.isEmpty()) System.out.println("No data found.");
+        if (values.isEmpty()) System.out.println("No data found.");
         else IntStream.range(1, values.size())
                 .forEach(i -> {
                     Map<String, Object> mapForReturnData = new HashMap<>();

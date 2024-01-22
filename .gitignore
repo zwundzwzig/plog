@@ -55,5 +55,6 @@ tokens/
 gradlew.bat
 gradlew
 /src/test/java/com/sokuri/plog/config/EncryptionTest.java
+/src/test/java/com/sokuri/plog/utils/GoogleApiUtilTest.java
 /src/main/resources/images/
 /src/main/generated/
