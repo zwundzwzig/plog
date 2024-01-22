@@ -28,10 +28,17 @@ public class FeedController {
 
   @Operation(summary = "전체 피드 목록 조회")
   @GetMapping("")
-  public ResponseEntity<List<FeedSummaryResponse>> getFeedList(@RequestParam(value = "status", required = false) String status) {
+  public ResponseEntity<List<FeedSummaryResponse>> getFeedList(
+          @RequestParam(value = "page", required = false) Integer page,
+          @RequestParam(value = "limit", required = false) Integer limit,
+          @RequestParam(value = "status", required = false) String status
+  ) {
+    page = page == null || page < 1 ? 1 : page;
+    limit = limit == null || limit < 1 ? 10 : limit;
+
     List<FeedSummaryResponse> response = EnumUtils.isValidEnumIgnoreCase(AccessStatus.class, status)
-            ? feedService.getFeedList(AccessStatus.valueOf(status.toUpperCase()))
-            : feedService.getAllFeedList();
+            ? feedService.getFeedList(AccessStatus.valueOf(status.toUpperCase()), page, limit)
+            : feedService.getAllFeedList(page, limit);
     return ResponseEntity.ok(response);
   }
 

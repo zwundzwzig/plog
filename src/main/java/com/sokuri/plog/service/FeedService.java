@@ -7,6 +7,10 @@ import com.sokuri.plog.global.dto.feed.FeedSummaryResponse;
 import com.sokuri.plog.domain.eums.AccessStatus;
 import com.sokuri.plog.domain.repository.feed.FeedRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,16 +41,22 @@ public class FeedService {
   }
 
   @Transactional(readOnly = true)
-  public List<FeedSummaryResponse> getFeedList(AccessStatus status) {
-    return feedRepository.findAllByStatusIs(status)
+  public List<FeedSummaryResponse> getFeedList(AccessStatus status, int page, int limit) {
+    Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdDate").descending());
+    Page<Feed> feedPage = feedRepository.findAllByStatusIs(status, pageable);
+
+    return feedPage
             .stream()
             .map(Feed::toSummaryResponse)
             .collect(Collectors.toList());
   }
 
   @Transactional(readOnly = true)
-  public List<FeedSummaryResponse> getAllFeedList() {
-    return feedRepository.findAll()
+  public List<FeedSummaryResponse> getAllFeedList(int page, int limit) {
+    PageRequest pageRequest = PageRequest.of(page - 1, limit, Sort.by("createdDate").descending());
+    Page<Feed> feedPage = feedRepository.findAll(pageRequest);
+
+    return feedPage.getContent()
             .stream()
             .map(Feed::toSummaryResponse)
             .collect(Collectors.toList());
