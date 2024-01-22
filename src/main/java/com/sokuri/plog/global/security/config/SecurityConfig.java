@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -81,6 +82,7 @@ public class SecurityConfig {
                     headerConfig.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
             .authorizeHttpRequests(authorizeRequest ->
                     authorizeRequest
+                            .requestMatchers(HttpMethod.GET).permitAll()
                             .requestMatchers(AUTH_WHITELIST).permitAll()
                             .anyRequest().authenticated())
 
