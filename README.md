@@ -21,6 +21,10 @@
 ### 👟 플로깅 크루를 직접 모집하거나 다른 크루에 가입할 수 있어요!
 ### 🚽 주변에 있는 쓰레기통 위치 정보를 알 수 있어요!
 ### 👍 간편 로그인 기능을 제공해요!
+---
+## 서비스 아키텍처
+
+<img width="828" alt="스크린샷 2024-01-22 오후 6 12 28" src="https://github.com/zwundzwzig/sokuri/assets/104782275/7ce3c0a4-a5b6-4157-b2c1-2201ac301fba">
 
 ----
 ## 주요 기능
@@ -82,14 +86,72 @@
 - `LogAspect` 클래스 구현, `aspectj` 활용해 전역 에러 확인하도록 구현
 
 ---
-## 개발 환경
-- JDK-17.0.5
-- SpringBoot 2.7.13 -> 3.1.4 (2023.11.07)
-- Gradle-8.0.2
-- Junit-5.8.2
-- MariaDB-10.6.14
+## 사용 기술
+#### Backend
+<a href="https://github.com/spring-projects" style="display: inline">
+    <img src="https://img.shields.io/badge/Spring Boot 3.1-6DB33F?style=flat-square&logo=Spring Boot&logoColor=white" width="110px" />
+</a>
+<a href="https://github.com/gradle" style="display: inline">
+    <img src="https://img.shields.io/badge/Gradle 8.0.2-02303A?logo=gradle" width="100px" />
+</a>
+<a href="https://github.com/spring-projects/spring-data-jpa" style="display: inline">
+    <img src="https://img.shields.io/badge/Spring Data JPA-6DB33F?style=flat-square&logo=JPA&logoColor=white" />
+</a>
+<a href="https://github.com/spring-projects/spring-data-jpa" style="display: inline">
+    <img src="https://img.shields.io/badge/Spring Mail-6DB33F?style=flat-square&logo=Mail&logoColor=white" />
+</a>
+<a href="" style="display: inline">
+    <img src="https://img.shields.io/badge/JUnit5-25A162?logo=junit5&logoColor=white" />
+</a>
+<a href="https://github.com/spring-projects/spring-security" style="display: inline">
+    <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat-square&logo=Spring Security&logoColor=white" />
+</a>
+
+<a href="" style="display: inline">
+    <img src="https://img.shields.io/badge/Swagger API-white?style=flat-square&logo=Swagger&logoColor=" />
+</a>
+
+#### Storage
+<a href="https://github.com/mariadb" style="display: inline">
+    <img src="https://img.shields.io/badge/MariaDB 10.6-003545?style=flat-square&logo=MariaDB&logoColor=white" />
+</a>
+<a href="https://github.com/hibernate" style="display: inline">
+    <img src="https://img.shields.io/badge/hibernate-59666C?logo=hibernate"  />
+</a>
+<a href="https://github.com/redis" style="display: inline">
+    <img src="https://img.shields.io/badge/redis-DC382D?style=flat-square&logo=redis&logoColor=white" />
+</a>
+
+
+#### Infra
+<a href="https://github.com/aws" style="display: inline">
+    <img src="https://img.shields.io/badge/Amazon Linux 2023-232F3E?style=flat-square&logo=Amazon EC2" width="140px" />
+</a>
+<a href="https://github.com/aws" style="display: inline">
+    <img src="https://img.shields.io/badge/RDS-232F3E?style=flat-square&logo=Amazon RDS" />
+</a>
+<a href="https://github.com/aws" style="display: inline">
+    <img src="https://img.shields.io/badge/S3-232F3E?style=flat-square&logo=Amazon S3" />
+</a>
+<a href="https://github.com/nginx" style="display: inline">
+    <img src="https://img.shields.io/badge/NGINX-009639?style=flat-square&logo=Nginx&logoColor=white" />
+</a>
+<a href="https://github.com/letsencrypt" style="display: inline">
+    <img src="https://img.shields.io/badge/Let's Encrypt-0E0F37?style=flat-square&logo=let's encrypt&logoColor=white" />
+</a>
+
+#### Etc
+<a href="https://github.com/kakao" style="display: inline">
+    <img src="https://img.shields.io/badge/Kakao API-FFCD00?style=flat-square&logo=Kakao&logoColor=white" />
+</a>
+<a href="https://github.com/naver" style="display: inline">
+    <img src="https://img.shields.io/badge/Naver API-03C75A?style=flat-square&logo=Naver&logoColor=white" />
+</a>
+<a href="https://github.com/google" style="display: inline">
+    <img src="https://img.shields.io/badge/Google API-EA4335?style=flat-square&logo=Google&logoColor=white" />
+</a>
 
 ## 협업 환경
-- [figma](https://www.figma.com/file/rfpNLaebQz5w88r06vZD1l/Sokuri?type=design&node-id=0-1&mode=design&t=WhaHjrrUwobF1442-0)
-- [notion](https://www.notion.so/Plog-b210015b6bfd4a5b946ef4b9261d96e3)
-- [github](https://github.com/sokuri-team)
+- [![](http://img.shields.io/badge/-피그마-white?style=flat-square&logo=figma&link=https://www.figma.com/file/rfpNLaebQz5w88r06vZD1l/Sokuri?type=design&node-id=0-1&mode=design&t=WhaHjrrUwobF1442-0)](https://www.figma.com/file/rfpNLaebQz5w88r06vZD1l/Sokuri?type=design&node-id=0-1&mode=design&t=WhaHjrrUwobF1442-0)
+- [![](http://img.shields.io/badge/-노션-gray?style=flat-square&logo=notion&link=https://www.notion.so/Plog-b210015b6bfd4a5b946ef4b9261d96e3)](https://www.notion.so/Plog-b210015b6bfd4a5b946ef4b9261d96e3)
+- [![](http://img.shields.io/badge/-칸반보드-black?style=flat-square&logo=github&link=https://github.com/sokuri-team/)](https://github.com/sokuri-team)
