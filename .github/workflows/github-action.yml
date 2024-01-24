@@ -7,8 +7,10 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  CI-CD:
     runs-on: ubuntu-latest
+    env:
+      JASYPT_PASSWORD: ${{ secrets.JASYPT_PASSWORD }}
 
     steps:
       - name: Github Repository Checkout
@@ -20,12 +22,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build and create application.yml
+      - name: make application-prod.yml
         run: |
           ./gradlew bootJar
-          echo "${{ secrets.APPLICATION_PROD }}" > ./build/resources/main/application.yml
-        env:
-          APPLICATION_PROD: ${{ secrets.APPLICATION_PROD }}
 
       - name: Docker Hub Login
         uses: docker/login-action@v2
@@ -45,9 +44,7 @@ jobs:
         with:
           host: ${{ secrets.EC2_INSTANCE_HOST }}
           username: ${{ secrets.EC2_INSTANCE_USERNAME }}
-          port: ${{ secrets.EC2_INSTANCE_PORT }}
           key: ${{ secrets.EC2_INSTANCE_PRIVATE_KEY }}
-          envs: ${{ secrets.JASYPT_PASSWORD }}
           script: |
             whoami
 
