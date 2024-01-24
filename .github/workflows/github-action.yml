@@ -9,8 +9,6 @@ on:
 jobs:
   CI-CD:
     runs-on: ubuntu-latest
-    env:
-      JASYPT_PASSWORD: ${{ secrets.JASYPT_PASSWORD }}
 
     steps:
       - name: Github Repository Checkout
@@ -22,9 +20,20 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: make application-prod.yml
+      - name: make application-properties.yml
+        if: contains(github.ref, 'main')
         run: |
-          ./gradlew bootJar
+          pwd
+          cd src/main/resources/
+          touch ./application.yml
+          echo "${{ secrets.APPLICATION_PROD }}" > ./application.yml
+        shell: bash
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build -x test
 
       - name: Docker Hub Login
         uses: docker/login-action@v2
@@ -55,8 +64,15 @@ jobs:
           username: ${{ secrets.EC2_INSTANCE_USERNAME }}
           key: ${{ secrets.EC2_INSTANCE_PRIVATE_KEY }}
           script: |
-            docker pull ${{ secrets.DOCKER_HUB_REPOSITORY_TAG_NAME }}
-            docker stop $(docker ps -a -q)
-            docker run -p 8080:8080 ${{ secrets.DOCKER_HUB_REPOSITORY_TAG_NAME }}
-            docker rm $(docker ps --filter 'status=exited' -a -q)
+            # 현재 실행 중인 컨테이너 확인
+            CURRENT_CONTAINER=$(docker ps -q --filter "name=server")
+            if [ -n "$CURRENT_CONTAINER" ]; then
+              docker stop "$CURRENT_CONTAINER"
+              docker rm "$CURRENT_CONTAINER"
+            fi
+            # 기존에 사용한 이름으로 prune을 수행하여 이전 컨테이너 및 이미지 삭제
+            docker container prune -f
             docker image prune -a -f
+            # 새로운 컨테이너 실행
+            docker pull ${{ secrets.DOCKER_HUB_REPOSITORY_TAG_NAME }}
+            docker run -d --rm --name server -p 8080:8080 -e JASYPT_PASSWORD=${{ secrets.JASYPT_PASSWORD }} ${{ secrets.DOCKER_HUB_REPOSITORY_TAG_NAME }}
