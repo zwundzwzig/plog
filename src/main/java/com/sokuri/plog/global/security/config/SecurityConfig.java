@@ -127,7 +127,8 @@ public class SecurityConfig {
             redisTemplate.delete(keysToDelete);
       } catch (Exception e) {
         request.setAttribute("exception", NOT_EXIST_TOKEN);
-        e.printStackTrace();
+        log.error(e.getMessage());
+        log.error(e.getClass().getName());
       }
     };
   }

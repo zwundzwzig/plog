@@ -28,7 +28,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             .map(Cookie::getValue)
             .orElse(("/"));
 
-    exception.printStackTrace();
+    log.debug(exception.getMessage());
 
     targetUrl = UriComponentsBuilder.fromUriString(targetUrl)
             .queryParam("error", exception.getLocalizedMessage())

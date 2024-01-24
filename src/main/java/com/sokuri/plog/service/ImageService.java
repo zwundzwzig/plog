@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,11 +47,11 @@ public class ImageService {
   }
 
   @Transactional
-  protected Image saveImage(String url) {
+  public Image saveImage(String url) {
     return imageRepository.save(Image.builder().url(url).build());
   }
 
-  @Transactional
+  @Transactional(propagation = Propagation.MANDATORY)
   public void saveAllCommunityImage(List<MultipartFile> files, Community community) {
     List<CommunityImage> communityImageList = files.parallelStream()
             .map(communityImage -> setCommunityImageEntity(communityImage, community))
@@ -75,7 +76,7 @@ public class ImageService {
     }
   }
 
-  @Transactional
+  @Transactional(propagation = Propagation.MANDATORY)
   public void saveAllFeedImage(List<MultipartFile> files, Feed feed) {
     List<FeedImage> feedImageList = files.parallelStream()
             .map(feedImage -> setFeedImageEntity(feedImage, feed))
@@ -100,7 +101,7 @@ public class ImageService {
     }
   }
 
-  @Transactional
+  @Transactional(propagation = Propagation.MANDATORY)
   public void saveAllEventImage(List<MultipartFile> files, Event event) {
     List<EventImage> eventImageList = files.parallelStream()
             .map(eventImage -> setEventImageEntity(eventImage, event))
@@ -125,6 +126,7 @@ public class ImageService {
     }
   }
 
+  @Transactional
   public void updateCommunityImage(List<MultipartFile> files, Community community) {
     deleteAllByCommunity(community);
     saveAllCommunityImage(files, community);
@@ -134,6 +136,7 @@ public class ImageService {
     communityImageRepository.deleteAllByCommunity(community);
   }
 
+  @Transactional
   public void updateEventImage(List<MultipartFile> files, Event event) {
     deleteAllByEvent(event);
     saveAllEventImage(files, event);
@@ -143,6 +146,7 @@ public class ImageService {
     eventImageRepository.deleteAllByEvent(event);
   }
 
+  @Transactional
   public void updateFeedImage(List<MultipartFile> files, Feed feed) {
     deleteAllByFeed(feed);
     saveAllFeedImage(files, feed);

@@ -1,5 +1,6 @@
 package com.sokuri.plog.controller;
 
+import com.sokuri.plog.global.dto.SimpleDataResponse;
 import com.sokuri.plog.global.dto.event.EventDetailResponse;
 import com.sokuri.plog.global.dto.event.EventSummaryResponse;
 import com.sokuri.plog.global.dto.event.CreateEventsRequest;
@@ -16,7 +17,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,11 +46,11 @@ public class EventController {
                                              @RequestPart("request") CreateEventsRequest request
     ) {
         request.setImages(files);
-        Map<String, String> response = eventService.create(request);
+        SimpleDataResponse response = eventService.create(request);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(response.get("id"))
+                .buildAndExpand(response.id())
                 .toUri();
 
         return ResponseEntity.created(location).build();
@@ -65,11 +65,11 @@ public class EventController {
             @RequestPart("request") CreateEventsRequest request
     ) {
         request.setImages(file);
-        Map<String, String> response = eventService.update(request, id);
+        SimpleDataResponse response = eventService.update(request, id);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(response.get("id"))
+                .buildAndExpand(response.id())
                 .toUri();
 
         return ResponseEntity.ok().location(location).build();

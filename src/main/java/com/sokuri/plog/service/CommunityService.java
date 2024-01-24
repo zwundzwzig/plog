@@ -2,6 +2,7 @@ package com.sokuri.plog.service;
 
 import com.sokuri.plog.domain.entity.Community;
 import com.sokuri.plog.domain.converter.RoadNameAddressToCoordinateConverter;
+import com.sokuri.plog.global.dto.SimpleDataResponse;
 import com.sokuri.plog.global.dto.community.CommunityDetailResponse;
 import com.sokuri.plog.global.dto.community.CommunitySummaryResponse;
 import com.sokuri.plog.global.dto.CoordinateDto;
@@ -63,7 +64,7 @@ public class CommunityService {
             .block();
 
     response.setVenue(
-            coordinate.getBuildingName().isEmpty()
+            Objects.requireNonNull(coordinate).getBuildingName().isEmpty()
             ? community.getLocation() : coordinate.getBuildingName());
 
     coordinate = new CoordinateDto(coordinate.getLat(), coordinate.getLng());
@@ -72,24 +73,22 @@ public class CommunityService {
   }
 
   @Transactional
-  public Map<String, String> create(CreateCommunityRequest request) {
+  public SimpleDataResponse create(CreateCommunityRequest request) {
     checkDuplicatedCommunity(request.getTitle());
 
     Community community = request.toEntity();
     community.setOrganizer(userService.findById(request.getUser()));
 
-    Community response = communityRepository.save(community);
+    Community targetCommunity = communityRepository.save(community);
 
     Optional.ofNullable(request.getImages())
-            .ifPresent(files -> imageService.saveAllCommunityImage(files, response));
+            .ifPresent(files -> imageService.saveAllCommunityImage(files, targetCommunity));
 
-    return new HashMap<>() {{
-      put("id", response.getId().toString());
-    }};
+    return new SimpleDataResponse(targetCommunity.getId().toString());
   }
 
   @Transactional
-  public Map<String, String> update(CreateCommunityRequest request, String id) {
+  public SimpleDataResponse update(CreateCommunityRequest request, String id) {
     Community targetCommunity = findById(id);
 
     Optional.ofNullable(request.getDescription()).ifPresent(targetCommunity::setDescription);
@@ -97,9 +96,7 @@ public class CommunityService {
     Optional.ofNullable(request.getImages())
             .ifPresent(files -> imageService.updateCommunityImage(files, targetCommunity));
 
-    return new HashMap<>() {{
-      put("id", id);
-    }};
+    return new SimpleDataResponse(id);
   }
 
   @Transactional

@@ -179,7 +179,8 @@ public class GoogleApiUtil implements ApplicationContextAware {
                 driveService.permissions().create(createdResponse.getSpreadsheetId(), permission)
                         .setSendNotificationEmail(true).setEmailMessage("Google Sheet Permission testing");
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
+                log.error(e.getClass().getName());
             }
         });
         return googleSheetResponseDTO;

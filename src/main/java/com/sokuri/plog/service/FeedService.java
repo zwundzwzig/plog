@@ -1,6 +1,7 @@
 package com.sokuri.plog.service;
 
 import com.sokuri.plog.domain.entity.Feed;
+import com.sokuri.plog.global.dto.SimpleDataResponse;
 import com.sokuri.plog.global.dto.feed.CreateFeedRequest;
 import com.sokuri.plog.global.dto.feed.FeedDetailResponse;
 import com.sokuri.plog.global.dto.feed.FeedSummaryResponse;
@@ -72,7 +73,7 @@ public class FeedService {
   }
 
   @Transactional
-  public Map<String, String> create(CreateFeedRequest request) {
+  public SimpleDataResponse create(CreateFeedRequest request) {
     Feed feed = request.toEntity();
     feed.setUser(userService.findById(request.getUser()));
 
@@ -83,13 +84,11 @@ public class FeedService {
     Optional.ofNullable(request.getHashtags())
             .ifPresent(hashtag -> hashtagService.saveAllFeedHashtag(hashtag, response));
 
-    return new HashMap<>() {{
-      put("id", response.getId().toString());
-    }};
+    return new SimpleDataResponse(response.getId().toString());
   }
 
   @Transactional
-  public Map<String, String> update(CreateFeedRequest request, String id) {
+  public SimpleDataResponse update(CreateFeedRequest request, String id) {
     Feed targetFeed = findById(id);
 
     Optional.ofNullable(request.getDescription()).ifPresent(targetFeed::setDescription);
@@ -98,9 +97,7 @@ public class FeedService {
     Optional.ofNullable(request.getImages())
             .ifPresent(files -> imageService.updateFeedImage(files, targetFeed));
 
-    return new HashMap<>() {{
-      put("id", id);
-    }};
+    return new SimpleDataResponse(id);
   }
 
   @Transactional

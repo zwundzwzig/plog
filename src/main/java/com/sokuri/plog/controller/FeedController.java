@@ -1,5 +1,6 @@
 package com.sokuri.plog.controller;
 
+import com.sokuri.plog.global.dto.SimpleDataResponse;
 import com.sokuri.plog.global.dto.feed.CreateFeedRequest;
 import com.sokuri.plog.global.dto.feed.FeedDetailResponse;
 import com.sokuri.plog.global.dto.feed.FeedSummaryResponse;
@@ -16,7 +17,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -54,11 +54,11 @@ public class FeedController {
                                       @RequestPart("request") CreateFeedRequest request
   ) {
     request.setImages(files);
-    Map<String, String> response = feedService.create(request);
+    SimpleDataResponse response = feedService.create(request);
 
     URI location = ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")
-            .buildAndExpand(response.get("id"))
+            .buildAndExpand(response.id())
             .toUri();
 
     return ResponseEntity.created(location).build();
@@ -72,11 +72,11 @@ public class FeedController {
           @RequestPart("request") CreateFeedRequest request
   ) {
     request.setImages(file);
-    Map<String, String> response = feedService.update(request, id);
+    SimpleDataResponse response = feedService.update(request, id);
 
     URI location = ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")
-            .buildAndExpand(response.get("id"))
+            .buildAndExpand(response.id())
             .toUri();
 
     return ResponseEntity.ok().location(location).build();

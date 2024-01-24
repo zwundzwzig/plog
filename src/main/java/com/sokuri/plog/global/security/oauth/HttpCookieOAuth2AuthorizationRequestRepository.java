@@ -29,7 +29,8 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
               try {
                 return CookieUtil.deserialize(cookie, OAuth2AuthorizationRequest.class);
               } catch (IllegalArgumentException | IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
+                log.error(e.getClass().getName());
                 return null;
               }
             })

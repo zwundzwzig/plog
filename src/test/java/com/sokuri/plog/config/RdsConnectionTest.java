@@ -21,7 +21,7 @@ public class RdsConnectionTest {
         try (Connection connection = dataSource.getConnection()) {
             assertThat(connection).isNotNull();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e);
         }
     }
 }

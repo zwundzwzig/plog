@@ -1,5 +1,6 @@
 package com.sokuri.plog.controller;
 
+import com.sokuri.plog.global.dto.SimpleDataResponse;
 import com.sokuri.plog.global.dto.community.CommunityDetailResponse;
 import com.sokuri.plog.global.dto.community.CommunitySummaryResponse;
 import com.sokuri.plog.global.dto.community.CreateCommunityRequest;
@@ -17,7 +18,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
 
 @Tag(name = "크루 정보", description = "크루 API")
 @RestController
@@ -49,11 +49,11 @@ public class CommunityController {
                                          @RequestPart("request") CreateCommunityRequest request
   ) {
     request.setImages(files);
-    Map<String, String> response = communityService.create(request);
+    SimpleDataResponse response = communityService.create(request);
 
     URI location = ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")
-            .buildAndExpand(response.get("id"))
+            .buildAndExpand(response.id())
             .toUri();
 
     return ResponseEntity.created(location).build();
@@ -67,11 +67,11 @@ public class CommunityController {
           @RequestPart("request") CreateCommunityRequest request
   ) {
     request.setImages(file);
-    Map<String, String> response = communityService.update(request, id);
+    SimpleDataResponse response = communityService.update(request, id);
 
     URI location = ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")
-            .buildAndExpand(response.get("id"))
+            .buildAndExpand(response.id())
             .toUri();
 
     return ResponseEntity.ok().location(location).build();

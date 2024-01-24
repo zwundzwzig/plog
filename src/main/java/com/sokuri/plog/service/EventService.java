@@ -3,6 +3,7 @@ package com.sokuri.plog.service;
 import com.sokuri.plog.domain.entity.Event;
 import com.sokuri.plog.domain.converter.RoadNameAddressToCoordinateConverter;
 import com.sokuri.plog.global.dto.CoordinateDto;
+import com.sokuri.plog.global.dto.SimpleDataResponse;
 import com.sokuri.plog.global.dto.event.CreateEventsRequest;
 import com.sokuri.plog.global.dto.event.EventDetailResponse;
 import com.sokuri.plog.global.dto.event.EventSummaryResponse;
@@ -66,31 +67,31 @@ public class EventService {
     CoordinateDto coordinate = roadNameAddressToCoordinateConverter.convertAddressToCoordinate(event.getLocation())
             .block();
 
-    response.setVenue(
-            coordinate.getBuildingName().isEmpty()
-            ? event.getLocation() : coordinate.getBuildingName() + " (" + event.getLocation() + ")");
+    if (coordinate != null) {
+      response.setVenue(
+              coordinate.getBuildingName().isEmpty()
+              ? event.getLocation() : coordinate.getBuildingName() + " (" + event.getLocation() + ")");
 
-    coordinate = new CoordinateDto(coordinate.getLat(), coordinate.getLng());
+      coordinate = new CoordinateDto(coordinate.getLat(), coordinate.getLng());
+    }
     response.setPosition(coordinate);
 
     return response;
   }
 
   @Transactional
-  public Map<String, String> create(CreateEventsRequest request) {
+  public SimpleDataResponse create(CreateEventsRequest request) {
     checkDuplicatedEvent(request.getTitle());
     Event response = eventRepository.save(request.toEntity());
 
     Optional.ofNullable(request.getImages())
             .ifPresent(files -> imageService.saveAllEventImage(files, response));
 
-    return new HashMap<>() {{
-      put("id", response.getId().toString());
-    }};
+    return new SimpleDataResponse(response.getId().toString());
   }
 
   @Transactional
-  public Map<String, String> update(CreateEventsRequest request, String id) {
+  public SimpleDataResponse update(CreateEventsRequest request, String id) {
     Event targetEvent = findById(id);
 
     Optional.ofNullable(request.getDescription()).ifPresent(targetEvent::setDescription);
@@ -98,9 +99,7 @@ public class EventService {
     Optional.ofNullable(request.getImages())
             .ifPresent(files -> imageService.updateEventImage(files, targetEvent));
 
-    return new HashMap<>() {{
-      put("id", id);
-    }};
+    return new SimpleDataResponse(id);
   }
 
   @Transactional
