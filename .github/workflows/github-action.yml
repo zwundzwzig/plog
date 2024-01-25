@@ -75,4 +75,6 @@ jobs:
             docker image prune -a -f
             # 새로운 컨테이너 실행
             docker pull ${{ secrets.DOCKER_HUB_REPOSITORY_TAG_NAME }}
-            docker run -d --rm --name server -p 8080:8080 -e JASYPT_PASSWORD=${{ secrets.JASYPT_PASSWORD }} ${{ secrets.DOCKER_HUB_REPOSITORY_TAG_NAME }}
+            cd /home/${{ secrets.EC2_INSTANCE_USERNAME }}/app/sokuri
+            docker-compose up -d
+            docker image prune -f
