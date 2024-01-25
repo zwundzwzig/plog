@@ -24,7 +24,8 @@
 ---
 ## 서비스 아키텍처
 
-<img width="828" alt="스크린샷 2024-01-22 오후 6 12 28" src="https://github.com/zwundzwzig/sokuri/assets/104782275/7ce3c0a4-a5b6-4157-b2c1-2201ac301fba">
+
+<img width="944" alt="스크린샷 2024-01-25 오후 12 27 07" src="https://github.com/zwundzwzig/sokuri/assets/104782275/560b1e72-f7ff-4ae2-98f5-df67324bedc8">
 
 ----
 ## 주요 기능
