@@ -24,10 +24,14 @@
 ---
 ## 서비스 아키텍처
 
-
-<img width="944" alt="스크린샷 2024-01-25 오후 12 27 07" src="https://github.com/zwundzwzig/sokuri/assets/104782275/560b1e72-f7ff-4ae2-98f5-df67324bedc8">
-
+<img width="965" alt="스크린샷 2024-01-25 오후 1 27 50" src="https://github.com/zwundzwzig/sokuri/assets/104782275/28bdc552-9889-4d38-91dd-737d50a327c6">
 ----
+
+## CI / CD 파이프라인
+
+<img width="919" alt="스크린샷 2024-01-25 오후 2 10 02" src="https://github.com/zwundzwzig/sokuri/assets/104782275/2c1c57d4-c19f-4a5b-9985-7b0560c0d0ce">
+----
+
 ## 주요 기능
 
 **더미 데이터 생성 위한 구글 데이터 시트 연동**
@@ -139,6 +143,15 @@
 </a>
 <a href="https://github.com/letsencrypt" style="display: inline">
     <img src="https://img.shields.io/badge/Let's Encrypt-0E0F37?style=flat-square&logo=let's encrypt&logoColor=white" />
+</a>
+<a href="https://docs.github.com/ko/actions" style="display: inline">
+    <img src="https://img.shields.io/badge/Github Actions-2088FF?style=flat-square&logo=Github Actions&logoColor=white" />
+</a>
+<a href="https://github.com/docker" style="display: inline">
+    <img src="https://img.shields.io/badge/Docker-2088FF?style=flat-square&logo=Docker&logoColor=white" />
+</a>
+<a href="https://github.com/docker" style="display: inline">
+    <img src="https://img.shields.io/badge/Docker Compose-2088FF?style=flat-square&logo=Docker-compose&logoColor=white" />
 </a>
 
 #### Etc
