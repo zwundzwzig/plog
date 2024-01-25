@@ -5,6 +5,7 @@
 - 플로깅이 처음이면 크루 활동을 통해 함께 걷고 주워요!
 - 주변 쓰레기통 위치 정보를 알려줘요!
 ---
+
 ## ERD
 <img width="825" src="https://github.com/zwundzwzig/sokuri/assets/104782275/db97311d-d550-40bf-972d-c43076024f1c">
 
@@ -21,15 +22,18 @@
 ### 👟 플로깅 크루를 직접 모집하거나 다른 크루에 가입할 수 있어요!
 ### 🚽 주변에 있는 쓰레기통 위치 정보를 알 수 있어요!
 ### 👍 간편 로그인 기능을 제공해요!
+
 ---
 ## 서비스 아키텍처
 
 <img width="965" alt="스크린샷 2024-01-25 오후 1 27 50" src="https://github.com/zwundzwzig/sokuri/assets/104782275/28bdc552-9889-4d38-91dd-737d50a327c6">
+
 ----
 
 ## CI / CD 파이프라인
 
 <img width="919" alt="스크린샷 2024-01-25 오후 2 10 02" src="https://github.com/zwundzwzig/sokuri/assets/104782275/2c1c57d4-c19f-4a5b-9985-7b0560c0d0ce">
+
 ----
 
 ## 주요 기능
