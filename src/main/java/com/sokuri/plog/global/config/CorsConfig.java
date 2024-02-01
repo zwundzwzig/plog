@@ -7,7 +7,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -16,22 +15,15 @@ public class CorsConfig {
   private String address;
   @Value("${sokuri.client}")
   private String client;
-  @Value("${server.port}")
-  private Integer port;
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.addAllowedOrigin(address + ":" + port);
+    configuration.addAllowedOrigin(address);
     configuration.addAllowedOrigin("http://localhost:3000");
     configuration.addAllowedOrigin(client);
 
     configuration.setAllowCredentials(true);
-    configuration.setAllowedHeaders(
-            Arrays.asList("Authorization", "Requestor-Type", "Content-Type",
-                    "Access-Control-Allow-Headers", "Access-Control-Allow-Origin"));
-    configuration.setExposedHeaders(
-            Arrays.asList("X-Get-Header", "Access-Control-Allow-Methods", "Access-Control-Allow-Origin"));
     configuration.setAllowedMethods(Collections.singletonList("*"));
 
     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

@@ -37,8 +37,6 @@ import static com.sokuri.plog.global.security.util.CookieUtil.COOKIE_TOKEN_REFRE
 @RequiredArgsConstructor
 public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-  @Value("${app.oauth2.authorizedRedirectUris}")
-  private String redirectUri;
   private final UserService userService;
   private final HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository;
   @Value("${sokuri.client}")
@@ -103,7 +101,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
   private boolean isAuthorizedRedirectUri(String uri) {
     URI clientRedirectUri = URI.create(uri);
-    URI authorizedUri = URI.create(redirectUri);
+    URI authorizedUri = URI.create(client);
 
     return authorizedUri.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
             && authorizedUri.getPort() == clientRedirectUri.getPort();
